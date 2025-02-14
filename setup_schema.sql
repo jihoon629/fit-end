@@ -1,0 +1,40 @@
+-- 데이터베이스 생성
+CREATE DATABASE IF NOT EXISTS test;
+USE test;
+
+-- 사용자 생성 (이미 존재하면 생략 가능)
+CREATE USER IF NOT EXISTS 'JH'@'localhost' IDENTIFIED BY '1234';
+
+-- 'JH' 계정에 test 데이터베이스 접근 권한 부여
+GRANT ALL PRIVILEGES ON test.* TO 'JH'@'localhost';
+
+-- 변경 사항 적용
+FLUSH PRIVILEGES;
+
+-- 테이블 생성 (최신 버전)
+DROP TABLE IF EXISTS entity_name;
+CREATE TABLE entity_name (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NULL,
+  description VARCHAR(255) NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS user_body_info;
+CREATE TABLE user_body_info (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  date DATETIME(6) DEFAULT NULL,
+  fat_mass DOUBLE NOT NULL,
+  fatpercentage DOUBLE NOT NULL,
+  height DOUBLE NOT NULL,
+  inbody_score DOUBLE NOT NULL,
+  userid VARCHAR(255) DEFAULT NULL,
+  weight DOUBLE NOT NULL,
+  bmi DOUBLE NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+DROP TABLE IF EXISTS user_info;
+CREATE TABLE user_info (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  userid VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL UNIQUE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
