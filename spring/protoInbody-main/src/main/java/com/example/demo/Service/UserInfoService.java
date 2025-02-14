@@ -22,10 +22,7 @@ public class UserInfoService {
 
     public boolean authenticateUser(String userid, String password) {
         UserInfo user = RepoUserInfo.findByUserid(userid);
-        if (user != null && user.getPassword().equals(password)) {
-            return true;
-        }
-        return false;
+        return user != null && passwordEncoder.matches(password, user.getPassword()); //해시 암호화된 비밀번호 비교
     }
 
 }
