@@ -25,14 +25,17 @@ export default function Login() {
 
       if (response.ok) {
         console.log("Login successful");
-        sessionStorage.setItem("userid", userid);
-        navigate("/main");
+        sessionStorage.setItem("userid", userid); // 로그인한 사용자 정보 저장
+        alert("로그인 성공!");
+        navigate("/main"); //메인 페이지 이동
         // 성공 시 추가적인 로직 (예: 리다이렉트)
       } else {
+        alert("로그인 실패! 아이디 또는 비밀번호를 확인하세요.");
         console.error("Invalid credentials");
         // 실패 시 추가적인 로직
       }
     } catch (error) {
+      alert("서버 오류 발생! 관리자에게 문의하세요.");
       console.error("Error:", error);
     }
   };

@@ -7,6 +7,7 @@ import Register from "./Component/Register";
 import Login from "./Component/Login";
 import Main from "./Component/Main"; // 메인 화면 컴포넌트
 import RecordBody from "./Component/RecordBody";
+import RankPage from "./Component/RankPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,7 +18,8 @@ root.render(
         <Route path="/login" element={<Login />} />
         <Route path="/main" element={<Main />} />
         <Route path="/" element={<Login />} />
-        <Route path="/recodbody" element={<RecordBody />} />
+        <Route path="/recordbody" element={<RecordBody />} />
+        <Route path="/rank" element={<RankPage />} />
       </Routes>
     </Router>
   </React.StrictMode>
