@@ -1,5 +1,6 @@
 package com.example.demo.Service;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,10 @@ public class UserInfoService {
     @Autowired
     private RepoUserInfo RepoUserInfo;
 
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public UserInfo registerUser(UserInfo userInfo) {
+        userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
         return RepoUserInfo.save(userInfo);
     }
 
