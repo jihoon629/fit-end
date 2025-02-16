@@ -33,7 +33,11 @@ public class UserInfo {
 
     @NotBlank
     @Column(nullable = false)
-    private String location; // 활동 지역
+    private String region1; // 도/광역시
+
+    @NotBlank
+    @Column(nullable = false)
+    private String region2; // 시/구
 
     @NotBlank
     @Column(nullable = false)
@@ -79,12 +83,20 @@ public class UserInfo {
         this.sex = sex;
     }
 
-    public String getLocation() {
-        return location;
+    public String getRegion1() {
+        return region1;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setRegion1(String region1) {
+        this.region1 = region1;
+    }
+
+    public String getRegion2() {
+        return region2;
+    }
+
+    public void setRegion2(String region2) {
+        this.region2 = region2;
     }
 
     public LocalDate getBirth() {
