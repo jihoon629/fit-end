@@ -26,7 +26,6 @@ public class RequestHandlerApi {
             return ResponseEntity.ok("Login successful");
         } else {
             System.out.println("로그인실패");
-
             return ResponseEntity.status(401).body("Invalid credentials");
         }
     }

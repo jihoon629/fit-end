@@ -43,6 +43,21 @@ public class UserInfo {
     @Column(nullable = false)
     private LocalDate birth; // 생년 월일
 
+    public UserInfo() {
+    }
+
+    public UserInfo(Long id, @NotBlank String userid, @NotBlank String password, @NotBlank String email,
+            @NotBlank int sex, @NotBlank String region1, @NotBlank String region2, @NotBlank LocalDate birth) {
+        this.id = id;
+        this.userid = userid;
+        this.password = password;
+        this.email = email;
+        this.sex = sex;
+        this.region1 = region1;
+        this.region2 = region2;
+        this.birth = birth;
+    }
+
     public Long getId() {
         return id;
     }
