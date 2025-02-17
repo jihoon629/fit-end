@@ -37,6 +37,8 @@ export default function RankPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  console.log(maleRank?.[0]?.userInfo.userid);
+
   if (loading) {
     return <p>📡 데이터를 불러오는 중입니다...</p>;
   }
@@ -54,7 +56,7 @@ export default function RankPage() {
         <ul>
           {maleRank.map((item, index) => (
             <li key={index}>
-              {index + 1}위 - {item.userId} (점수: {item.score})
+              {index + 1}위 - {item.userInfo.userid} (점수: {item.score})
             </li>
           ))}
         </ul>
@@ -67,7 +69,7 @@ export default function RankPage() {
         <ul>
           {femaleRank.map((item, index) => (
             <li key={index}>
-              {index + 1}위 - {item.userId} (점수: {item.score})
+              {index + 1}위 - {item.userInfo.userid} (점수: {item.score})
             </li>
           ))}
         </ul>

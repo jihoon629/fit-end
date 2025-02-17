@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RepoScoreRankMale extends JpaRepository<ScoreRankMale, Long> {
 
-    ScoreRankMale findByUserId(String userId);
+    ScoreRankMale findByUserInfo_Userid(String userid);
 
     List<ScoreRankMale> findAllByOrderByScoreDesc();
 

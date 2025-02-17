@@ -14,26 +14,33 @@ export default function RecordBody() {
     event.preventDefault();
 
     const userInfo = {
-      userid,
+      userid: userid, // UserInfo 객체의 userid 필드
+    };
+
+    const userBodyInfo = {
+      userInfo: userInfo,
       height: parseFloat(height),
       weight: parseFloat(weight),
       fatpercentage: parseFloat(fatpercentage),
     };
 
-    console.log("📌 보내는 데이터:", userInfo);
+    console.log("📌 보내는 데이터:", userBodyInfo);
 
     try {
-      const response = await fetch("http://localhost:8080/upload/recorduserbody", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userInfo),
-      });
+      const response = await fetch(
+        "http://localhost:8080/upload/recorduserbody",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userBodyInfo),
+        }
+      );
 
       if (response.ok) {
         const responseData = await response.json();
-        console.log("📌 서버 응답 데이터:", responseData); // 서버 응답 데이터 확인
+        console.log("📌 서버 응답 데이터:", responseData);
 
         setBmi(responseData.bmi);
         setInbodyScore(responseData.inbodyScore);

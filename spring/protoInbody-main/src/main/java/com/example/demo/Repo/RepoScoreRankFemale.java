@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RepoScoreRankFemale extends JpaRepository<ScoreRankFemale, Long> {
-    ScoreRankFemale findByUserId(String userId);
+    ScoreRankFemale findByUserInfo_Userid(String userid);
 
     List<ScoreRankFemale> findAllByOrderByScoreDesc();
 

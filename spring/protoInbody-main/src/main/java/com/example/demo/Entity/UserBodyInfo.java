@@ -9,18 +9,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.*;
 import javax.validation.constraints.NotBlank;
+import jakarta.persistence.ManyToOne;
 
 @Entity // db랑 연동될떄 필요한 클래스랑 어노테이션이에요 연관되는 레포랑 연결해주세요 세터게터 필수
 @Table(name = "user_body_info")
 public class UserBodyInfo {
 
+    @ManyToOne
+    @JoinColumn(name = "userid", referencedColumnName = "userid", nullable = false)
+    private UserInfo userInfo;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String userid;
 
     @NotBlank
     @Column(nullable = false)
@@ -36,7 +37,7 @@ public class UserBodyInfo {
 
     @NotBlank
     @Column(nullable = false)
-    private double fatMass;
+    private double fatmass;
 
     @NotBlank
     @Column(nullable = false)
@@ -63,6 +64,37 @@ public class UserBodyInfo {
     @Column(nullable = false)
     private int age; // 나이
 
+    public UserBodyInfo() {
+
+    }
+
+    public UserBodyInfo(UserInfo userInfo, Long id, @NotBlank double height,
+            @NotBlank double weight, @NotBlank double fatpercentage, @NotBlank double fatmass,
+            @NotBlank double leanmass, @NotBlank double bmi, @NotBlank double inbodyScore, @NotBlank Date date,
+            @NotBlank int sex, @NotBlank int age) {
+
+        this.userInfo = userInfo;
+        this.id = id;
+        this.height = height;
+        this.weight = weight;
+        this.fatpercentage = fatpercentage;
+        this.fatmass = fatmass;
+        this.leanmass = leanmass;
+        this.bmi = bmi;
+        this.inbodyScore = inbodyScore;
+        this.date = date;
+        this.sex = sex;
+        this.age = age;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
     public Long getId() {
         return id;
     }
@@ -71,13 +103,13 @@ public class UserBodyInfo {
         this.id = id;
     }
 
-    public String getUserid() {
-        return userid;
-    }
+    // public String getUserid() {
+    // return userid;
+    // }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
+    // public void setUserid(String userid) {
+    // this.userid = userid;
+    // }
 
     public double getHeight() {
         return height;
@@ -104,11 +136,11 @@ public class UserBodyInfo {
     }
 
     public double getFatMass() {
-        return fatMass;
+        return fatmass;
     }
 
     public void setFatMass(double fatMass) {
-        this.fatMass = fatMass;
+        this.fatmass = fatMass;
     }
 
     public double getLeanmass() {
