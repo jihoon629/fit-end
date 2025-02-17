@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.example.demo.Entity.ScoreRankFemale;
 import com.example.demo.Entity.ScoreRankMale;
-import com.example.demo.Repo.ScoreRankFemaleRepository;
-import com.example.demo.Repo.ScoreRankMaleRepository;
+import com.example.demo.Repo.RepoScoreRankFemale;
+import com.example.demo.Repo.RepoScoreRankMale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +25,10 @@ public class UserBodyInfoService {
     private RepoUserInfo RepoUserInfo;
 
     @Autowired
-    private ScoreRankMaleRepository scoreRankMaleRepository;
+    private RepoScoreRankMale scoreRankMaleRepository;
 
     @Autowired
-    private ScoreRankFemaleRepository scoreRankFemaleRepository;
+    private RepoScoreRankFemale scoreRankFemaleRepository;
 
     public UserBodyInfo recordeUserBodyInfo(UserBodyInfo UserBodyInfo) {
         double fatMass = UserBodyInfo.getWeight() * (UserBodyInfo.getFatpercentage() / 100);
@@ -56,45 +56,48 @@ public class UserBodyInfoService {
         return savedInfo;
     }
 
-
-    //사용자 정보를 기반으로 점수를 저장하는 메서드입니다.
-    //성별(sex)에 따라 score_rank_male 또는 score_rank_female 테이블에 저장합니다.
+    // 사용자 정보를 기반으로 점수를 저장하는 메서드입니다.
+    // 성별(sex)에 따라 score_rank_male 또는 score_rank_female 테이블에 저장합니다.
     private void saveToScoreRank(UserBodyInfo userBodyInfo, int score) {
         if (userBodyInfo.getSex() == 1) { // 남성
-            ScoreRankMale rankMale = new ScoreRankMale(
-                    userBodyInfo.getSex(),
-                    userBodyInfo.getAge(),
-                    userBodyInfo.getHeight(),
-                    userBodyInfo.getWeight(),
-                    userBodyInfo.getLeanmass(),
-                    userBodyInfo.getFatMass(),
-                    (float) userBodyInfo.getFatpercentage(), // double → float 변환
-                    score,
-                    userBodyInfo.getUserid()
-            );
+            ScoreRankMale rankMale = scoreRankMaleRepository.findByUserId(userBodyInfo.getUserid());
+            if (rankMale == null) {
+                rankMale = new ScoreRankMale();
+            }
+            rankMale.setSex(userBodyInfo.getSex());
+            rankMale.setAge(userBodyInfo.getAge());
+            rankMale.setHeight(userBodyInfo.getHeight());
+            rankMale.setWeight(userBodyInfo.getWeight());
+            rankMale.setLeanBodyMass(userBodyInfo.getLeanmass());
+            rankMale.setFatMass(userBodyInfo.getFatMass());
+            rankMale.setFatPercentage((float) userBodyInfo.getFatpercentage());
+            rankMale.setScore(score);
+            rankMale.setUserId(userBodyInfo.getUserid());
             scoreRankMaleRepository.save(rankMale);
         } else if (userBodyInfo.getSex() == 2) { // 여성
-            ScoreRankFemale rankFemale = new ScoreRankFemale(
-                    userBodyInfo.getSex(),
-                    userBodyInfo.getAge(),
-                    userBodyInfo.getHeight(),
-                    userBodyInfo.getWeight(),
-                    userBodyInfo.getLeanmass(),
-                    userBodyInfo.getFatMass(),
-                    (float) userBodyInfo.getFatpercentage(), // double > float 변환
-                    score,
-                    userBodyInfo.getUserid()
-            );
+            ScoreRankFemale rankFemale = scoreRankFemaleRepository.findByUserId(userBodyInfo.getUserid());
+            if (rankFemale == null) {
+                rankFemale = new ScoreRankFemale();
+            }
+            rankFemale.setSex(userBodyInfo.getSex());
+            rankFemale.setAge(userBodyInfo.getAge());
+            rankFemale.setHeight(userBodyInfo.getHeight());
+            rankFemale.setWeight(userBodyInfo.getWeight());
+            rankFemale.setLeanBodyMass(userBodyInfo.getLeanmass());
+            rankFemale.setFatMass(userBodyInfo.getFatMass());
+            rankFemale.setFatPercentage((float) userBodyInfo.getFatpercentage());
+            rankFemale.setScore(score);
+            rankFemale.setUserId(userBodyInfo.getUserid());
             scoreRankFemaleRepository.save(rankFemale);
         }
     }
 
-    //특정 사용자의 최근 신체 정보 기록을 가져옴
+    // 특정 사용자의 최근 신체 정보 기록을 가져옴
     public List<UserBodyInfo> getRecentUserBodyRecords(String userid) {
         return RepoUserBodyInfo.findRecentByUserid(userid);
     }
 
-    //사용자의 생년월일을 기반으로 현재 연도와 비교하여 나이를 반환합니다.
+    // 사용자의 생년월일을 기반으로 현재 연도와 비교하여 나이를 반환합니다.
     private int calAge(LocalDate birth) {
         int age = 0;
 

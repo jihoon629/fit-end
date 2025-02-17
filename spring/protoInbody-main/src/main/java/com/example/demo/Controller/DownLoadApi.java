@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.demo.Entity.UserBodyInfo;
 import com.example.demo.Service.UserBodyInfoService;
-import com.example.demo.Service.ScoreRankMaleService;
-import com.example.demo.Service.ScoreRankFemaleService;
+import com.example.demo.Service.ScoreRankService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,13 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/download")
 public class DownLoadApi {
     @Autowired
-    UserBodyInfoService UserBodyInfoService;
+    private UserBodyInfoService UserBodyInfoService;
 
     @Autowired
-    private ScoreRankMaleService scoreRankMaleService;
-
-    @Autowired
-    private ScoreRankFemaleService scoreRankFemaleService;
+    private ScoreRankService ScoreRankService;
 
     @GetMapping("/recentuserbody/{userid}") // 최근 신체정보 기록 조회 컨트롤러
     public ResponseEntity<List<UserBodyInfo>> getRecentUserBodyRecords(@PathVariable String userid) {
@@ -37,12 +33,12 @@ public class DownLoadApi {
 
     @GetMapping("/scorerankmale") // 남성 스코어 랭킹 조회
     public ResponseEntity<List<ScoreRankMale>> getScoreRankMale() {
-        return ResponseEntity.ok(scoreRankMaleService.getAll());
+        return ResponseEntity.ok(ScoreRankService.showRankMale());
     }
 
     @GetMapping("/scorerankfemale") // 여성 스코어 랭킹 조회
     public ResponseEntity<List<ScoreRankFemale>> getScoreRankFemale() {
-        return ResponseEntity.ok(scoreRankFemaleService.getAll());
+        return ResponseEntity.ok(ScoreRankService.showRankFemale());
     }
 
 }
