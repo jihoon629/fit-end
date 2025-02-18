@@ -5,10 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.demo.DTO.UserBodyInfoDTO;
-import com.example.demo.Entity.ScoreRankFemale;
-import com.example.demo.Entity.ScoreRankMale;
-import com.example.demo.Repo.RepoScoreRankFemale;
-import com.example.demo.Repo.RepoScoreRankMale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +23,7 @@ public class UserBodyInfoService {
     private RepoUserInfo RepoUserInfo;
 
     @Autowired
-    private RepoScoreRankMale scoreRankMaleRepository;
-
-    @Autowired
-    private RepoScoreRankFemale scoreRankFemaleRepository;
+    private ScoreRankService ScoreRankService;
 
     public UserBodyInfoDTO recordeUserBodyInfo(UserBodyInfoDTO userBodyInfoDTO) {
         System.out.println(userBodyInfoDTO);
@@ -62,48 +55,9 @@ public class UserBodyInfoService {
 
         UserBodyInfo savedInfo = RepoUserBodyInfo.save(userBodyInfo);
 
-        saveToScoreRank(userBodyInfo, (int) inbodyScore);
+        ScoreRankService.saveToScoreRank(userBodyInfo, (int) inbodyScore);
 
         return convertToDTO(savedInfo);
-    }
-
-    // 사용자 정보를 기반으로 점수를 저장하는 메서드입니다.
-    // 성별(sex)에 따라 score_rank_male 또는 score_rank_female 테이블에 저장합니다.
-    private void saveToScoreRank(UserBodyInfo userBodyInfo, int score) {
-
-        if (userBodyInfo.getSex() == 1) { // 남성
-            ScoreRankMale rankMale = scoreRankMaleRepository
-                    .findByUserInfo_Userid(userBodyInfo.getUserInfo().getUserid());
-            if (rankMale == null) {
-                rankMale = new ScoreRankMale();
-            }
-            rankMale.setSex(userBodyInfo.getSex());
-            rankMale.setAge(userBodyInfo.getAge());
-            rankMale.setHeight(userBodyInfo.getHeight());
-            rankMale.setWeight(userBodyInfo.getWeight());
-            rankMale.setLeanmass(userBodyInfo.getLeanmass());
-            rankMale.setFatmass(userBodyInfo.getFatMass());
-            rankMale.setFatpercentage((float) userBodyInfo.getFatpercentage());
-            rankMale.setScore(score);
-            rankMale.setUserInfo(userBodyInfo.getUserInfo());
-            scoreRankMaleRepository.save(rankMale);
-        } else if (userBodyInfo.getSex() == 2) { // 여성
-            ScoreRankFemale rankFemale = scoreRankFemaleRepository
-                    .findByUserInfo_Userid(userBodyInfo.getUserInfo().getUserid());
-            if (rankFemale == null) {
-                rankFemale = new ScoreRankFemale();
-            }
-            rankFemale.setSex(userBodyInfo.getSex());
-            rankFemale.setAge(userBodyInfo.getAge());
-            rankFemale.setHeight(userBodyInfo.getHeight());
-            rankFemale.setWeight(userBodyInfo.getWeight());
-            rankFemale.setLeanmass(userBodyInfo.getLeanmass());
-            rankFemale.setFatmass(userBodyInfo.getFatMass());
-            rankFemale.setFatpercentage((float) userBodyInfo.getFatpercentage());
-            rankFemale.setScore(score);
-            rankFemale.setUserInfo(userBodyInfo.getUserInfo());
-            scoreRankFemaleRepository.save(rankFemale);
-        }
     }
 
     // 특정 사용자의 최근 신체 정보 기록을 가져옴
