@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.demo.DTO.ScoreRankFemaleDTO;
 import com.example.demo.DTO.ScoreRankMaleDTO;
 import com.example.demo.DTO.UserBodyInfoDTO;
-import com.example.demo.Entity.ScoreRankFemale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
