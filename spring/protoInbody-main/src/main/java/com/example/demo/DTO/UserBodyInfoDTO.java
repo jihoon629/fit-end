@@ -1,80 +1,28 @@
-package com.example.demo.Entity;
+package com.example.demo.DTO;
 
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.*;
-import javax.validation.constraints.NotNull;
-import jakarta.persistence.ManyToOne;
-
-@Entity // db랑 연동될떄 필요한 클래스랑 어노테이션이에요 연관되는 레포랑 연결해주세요 세터게터 필수
-@Table(name = "user_body_info")
-public class UserBodyInfo {
-
-    @ManyToOne
-    @JoinColumn(name = "userid", referencedColumnName = "userid", nullable = false)
-    private UserInfo userInfo;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserBodyInfoDTO {
     private Long id;
-
-    @NotNull
-    @Column(nullable = false)
+    private String userid; // 추가된 필드
     private double height;
-
-    @NotNull
-    @Column(nullable = false)
     private double weight;
-
-    @NotNull
-    @Column(nullable = false)
     private double fatpercentage;
-
-    @NotNull
-    @Column(nullable = false)
     private double fatmass;
-
-    @NotNull
-    @Column(nullable = false)
-    private double leanmass; // 제지방량
-
-    @NotNull
-    @Column(nullable = false)
+    private double leanmass;
     private double bmi;
-
-    @NotNull
-    @Column(nullable = false)
     private double inbodyScore;
-
-    @NotNull
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP) // 날짜 시간정보 모두저장
     private Date date;
+    private int sex;
+    private int age;
 
-    @NotNull
-    @Column(nullable = false)
-    private int sex; // 성별
-
-    @NotNull
-    @Column(nullable = false)
-    private int age; // 나이
-
-    public UserBodyInfo() {
-
+    public UserBodyInfoDTO() {
     }
 
-    public UserBodyInfo(UserInfo userInfo, Long id, @NotNull double height,
-            @NotNull double weight, @NotNull double fatpercentage, @NotNull double fatmass,
-            @NotNull double leanmass, @NotNull double bmi, @NotNull double inbodyScore, @NotNull Date date,
-            @NotNull int sex, @NotNull int age) {
-
-        this.userInfo = userInfo;
+    public UserBodyInfoDTO(Long id, String userid, double height, double weight, double fatpercentage, double fatmass,
+            double leanmass, double bmi, double inbodyScore, Date date, int sex, int age) {
         this.id = id;
+        this.userid = userid; // 추가된 필드 초기화
         this.height = height;
         this.weight = weight;
         this.fatpercentage = fatpercentage;
@@ -87,20 +35,20 @@ public class UserBodyInfo {
         this.age = age;
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserid() { // 추가된 메서드
+        return userid;
+    }
+
+    public void setUserid(String userid) { // 추가된 메서드
+        this.userid = userid;
     }
 
     public double getHeight() {
@@ -127,12 +75,12 @@ public class UserBodyInfo {
         this.fatpercentage = fatpercentage;
     }
 
-    public double getFatMass() {
+    public double getFatmass() {
         return fatmass;
     }
 
-    public void setFatMass(double fatMass) {
-        this.fatmass = fatMass;
+    public void setFatmass(double fatmass) {
+        this.fatmass = fatmass;
     }
 
     public double getLeanmass() {
@@ -181,6 +129,13 @@ public class UserBodyInfo {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "UserBodyInfoDTO [id=" + id + ", userid=" + userid + ", height=" + height + ", weight=" + weight
+                + ", fatpercentage=" + fatpercentage + ", fatmass=" + fatmass + ", leanmass=" + leanmass + ", bmi="
+                + bmi + ", inbodyScore=" + inbodyScore + ", date=" + date + ", sex=" + sex + ", age=" + age + "]";
     }
 
 }

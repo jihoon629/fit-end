@@ -2,8 +2,10 @@ package com.example.demo.Controller;
 
 import java.util.List;
 
+import com.example.demo.DTO.ScoreRankFemaleDTO;
+import com.example.demo.DTO.ScoreRankMaleDTO;
+import com.example.demo.DTO.UserBodyInfoDTO;
 import com.example.demo.Entity.ScoreRankFemale;
-import com.example.demo.Entity.ScoreRankMale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,17 +29,19 @@ public class DownLoadApi {
 
     @GetMapping("/recentuserbody/{userid}") // 최근 신체정보 기록 조회 컨트롤러
     public ResponseEntity<List<UserBodyInfo>> getRecentUserBodyRecords(@PathVariable String userid) {
-        List<UserBodyInfo> records = UserBodyInfoService.getRecentUserBodyRecords(userid);
+        UserBodyInfoDTO userBodyInfoDTO = new UserBodyInfoDTO();
+        userBodyInfoDTO.setUserid(userid);
+        List<UserBodyInfo> records = UserBodyInfoService.getRecentUserBodyRecords(userBodyInfoDTO);
         return ResponseEntity.ok(records);
     }
 
     @GetMapping("/scorerankmale") // 남성 스코어 랭킹 조회
-    public ResponseEntity<List<ScoreRankMale>> getScoreRankMale() {
+    public ResponseEntity<List<ScoreRankMaleDTO>> getScoreRankMale() {
         return ResponseEntity.ok(ScoreRankService.showRankMale());
     }
 
     @GetMapping("/scorerankfemale") // 여성 스코어 랭킹 조회
-    public ResponseEntity<List<ScoreRankFemale>> getScoreRankFemale() {
+    public ResponseEntity<List<ScoreRankFemaleDTO>> getScoreRankFemale() {
         return ResponseEntity.ok(ScoreRankService.showRankFemale());
     }
 

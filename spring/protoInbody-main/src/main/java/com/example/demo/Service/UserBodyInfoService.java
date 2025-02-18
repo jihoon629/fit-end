@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import com.example.demo.DTO.UserBodyInfoDTO;
 import com.example.demo.Entity.ScoreRankFemale;
 import com.example.demo.Entity.ScoreRankMale;
 import com.example.demo.Repo.RepoScoreRankFemale;
@@ -31,46 +32,45 @@ public class UserBodyInfoService {
     @Autowired
     private RepoScoreRankFemale scoreRankFemaleRepository;
 
-    public UserBodyInfo recordeUserBodyInfo(UserBodyInfo UserBodyInfo) {
+    public UserBodyInfoDTO recordeUserBodyInfo(UserBodyInfoDTO userBodyInfoDTO) {
+        System.out.println(userBodyInfoDTO);
+
+        UserBodyInfo userBodyInfo = convertToEntity(userBodyInfoDTO);
 
         // UserInfo 엔티티 먼저 확인 및 저장
-        UserInfo userInfo = UserBodyInfo.getUserInfo();
-        if (userInfo != null) {
-            UserInfo foundUserInfo = RepoUserInfo.findByUserid(userInfo.getUserid());
-            if (foundUserInfo == null) {
-                throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다.");
-            }
-            UserBodyInfo.setUserInfo(foundUserInfo);
+        String userid = userBodyInfo.getUserInfo().getUserid(); // DTO에서 userid 가져오기
+        UserInfo foundUserInfo = RepoUserInfo.findByUserid(userid);
+        if (foundUserInfo == null) {
+            throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다.");
         }
+        userBodyInfo.setUserInfo(foundUserInfo);
 
-        double fatMass = UserBodyInfo.getWeight() * (UserBodyInfo.getFatpercentage() / 100);
-        // BMI 계산 몸무게kg / (키(m) * 키(m)))
-        double heightInMeters = UserBodyInfo.getHeight() / 100.0; // 키 cm -> m 변환
-        double bmi = UserBodyInfo.getWeight() / (heightInMeters * heightInMeters); // BMI 계산
-        double inbodyScore = (100 - UserBodyInfo.getFatpercentage()) + (UserBodyInfo.getWeight() * 0.1); // 인바디 점수 나중에
-        double leanmass = UserBodyInfo.getWeight() - fatMass; // 제지방량 계산
-        LocalDate birth = RepoUserInfo.getUserBirthById(UserBodyInfo.getUserInfo().getUserid()); // 생년월일 가져오기
+        double fatMass = userBodyInfo.getWeight() * (userBodyInfo.getFatpercentage() / 100);
+        double heightInMeters = userBodyInfo.getHeight() / 100.0;
+        double bmi = userBodyInfo.getWeight() / (heightInMeters * heightInMeters);
+        double inbodyScore = (100 - userBodyInfo.getFatpercentage()) + (userBodyInfo.getWeight() * 0.1);
+        double leanmass = userBodyInfo.getWeight() - fatMass;
+        LocalDate birth = RepoUserInfo.getUserBirthById(userid);
 
-        UserBodyInfo.setAge(calAge(birth)); // 넘길어서 메소드 만듬
-        UserBodyInfo.setSex(RepoUserInfo.getUserSexById(UserBodyInfo.getUserInfo().getUserid())); // 성별 가져오기
-        UserBodyInfo.setLeanmass(Math.round(leanmass * 100.0) / 100.0); // 제지방량 반올림
-        UserBodyInfo.setFatMass(Math.round(fatMass * 100.0) / 100.0); // 체지방량 반올림
-        UserBodyInfo.setBmi(Math.round(bmi * 100.0) / 100.0); // BMI 반올림
-        UserBodyInfo.setInbodyScore(Math.round(inbodyScore * 100.0) / 100.0); // 인바디 점수 반올림
-        UserBodyInfo.setDate(new Date()); // 기록시간 나중에 그래프 만들때 알아서 변경해서 사용해주세요
+        userBodyInfo.setAge(calAge(birth));
+        userBodyInfo.setSex(RepoUserInfo.getUserSexById(userid));
+        userBodyInfo.setLeanmass(Math.round(leanmass * 100.0) / 100.0);
+        userBodyInfo.setFatMass(Math.round(fatMass * 100.0) / 100.0);
+        userBodyInfo.setBmi(Math.round(bmi * 100.0) / 100.0);
+        userBodyInfo.setInbodyScore(Math.round(inbodyScore * 100.0) / 100.0);
+        userBodyInfo.setDate(new Date());
 
-        // 신체 정보 저장
-        UserBodyInfo savedInfo = RepoUserBodyInfo.save(UserBodyInfo);
+        UserBodyInfo savedInfo = RepoUserBodyInfo.save(userBodyInfo);
 
-        // 점수 랭킹 저장 (남성/여성 분리)
-        saveToScoreRank(UserBodyInfo, (int) inbodyScore);
+        saveToScoreRank(userBodyInfo, (int) inbodyScore);
 
-        return savedInfo;
+        return convertToDTO(savedInfo);
     }
 
     // 사용자 정보를 기반으로 점수를 저장하는 메서드입니다.
     // 성별(sex)에 따라 score_rank_male 또는 score_rank_female 테이블에 저장합니다.
     private void saveToScoreRank(UserBodyInfo userBodyInfo, int score) {
+
         if (userBodyInfo.getSex() == 1) { // 남성
             ScoreRankMale rankMale = scoreRankMaleRepository
                     .findByUserInfo_Userid(userBodyInfo.getUserInfo().getUserid());
@@ -107,8 +107,8 @@ public class UserBodyInfoService {
     }
 
     // 특정 사용자의 최근 신체 정보 기록을 가져옴
-    public List<UserBodyInfo> getRecentUserBodyRecords(String userid) {
-        return RepoUserBodyInfo.findRecentByUserInfo_Userid(userid);
+    public List<UserBodyInfo> getRecentUserBodyRecords(UserBodyInfoDTO userBodyInfoDTO) {
+        return RepoUserBodyInfo.findByUserInfo_UseridOrderByDateDesc(userBodyInfoDTO.getUserid());
     }
 
     // 사용자의 생년월일을 기반으로 현재 연도와 비교하여 나이를 반환합니다.
@@ -122,5 +122,38 @@ public class UserBodyInfoService {
         }
 
         return age;
+    }
+
+    private UserBodyInfo convertToEntity(UserBodyInfoDTO UserBodyInfoDTO) {
+        UserInfo userInfo = RepoUserInfo.findByUserid(UserBodyInfoDTO.getUserid());
+        return new UserBodyInfo(
+                userInfo,
+                UserBodyInfoDTO.getId(),
+                UserBodyInfoDTO.getHeight(),
+                UserBodyInfoDTO.getWeight(),
+                UserBodyInfoDTO.getFatpercentage(),
+                UserBodyInfoDTO.getFatmass(),
+                UserBodyInfoDTO.getLeanmass(),
+                UserBodyInfoDTO.getBmi(),
+                UserBodyInfoDTO.getInbodyScore(),
+                UserBodyInfoDTO.getDate(),
+                UserBodyInfoDTO.getSex(),
+                UserBodyInfoDTO.getAge());
+    }
+
+    private UserBodyInfoDTO convertToDTO(UserBodyInfo userBodyInfo) {
+        return new UserBodyInfoDTO(
+                userBodyInfo.getId(),
+                userBodyInfo.getUserInfo().getUserid(),
+                userBodyInfo.getHeight(),
+                userBodyInfo.getWeight(),
+                userBodyInfo.getFatpercentage(),
+                userBodyInfo.getFatMass(),
+                userBodyInfo.getLeanmass(),
+                userBodyInfo.getBmi(),
+                userBodyInfo.getInbodyScore(),
+                userBodyInfo.getDate(),
+                userBodyInfo.getSex(),
+                userBodyInfo.getAge());
     }
 }

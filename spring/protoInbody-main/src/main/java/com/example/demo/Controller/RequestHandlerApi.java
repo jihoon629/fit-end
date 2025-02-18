@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.Entity.UserInfo;
+import com.example.demo.DTO.UserInfoDTO;
 import com.example.demo.Service.UserInfoService;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +19,8 @@ public class RequestHandlerApi {
     UserInfoService UserInfoService;
 
     @PostMapping("/login") // 로그인 관련 컨트롤러
-    public ResponseEntity<String> loginUser(@RequestBody UserInfo userInfo) {
-        boolean isAuthenticated = UserInfoService.authenticateUser(userInfo.getUserid(), userInfo.getPassword());
+    public ResponseEntity<String> loginUser(@RequestBody UserInfoDTO UserInfoDTO) {
+        boolean isAuthenticated = UserInfoService.authenticateUser(UserInfoDTO);
         if (isAuthenticated) {
             System.out.println("로그인성공");
             return ResponseEntity.ok("Login successful");

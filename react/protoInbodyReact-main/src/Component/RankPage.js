@@ -20,7 +20,6 @@ export default function RankPage() {
         console.error("남성 랭킹 조회 오류:", error);
         setError(error.message);
       });
-
     // 여성 랭킹 조회
     fetch("http://localhost:8080/download/scorerankfemale")
       .then((res) => {
@@ -37,8 +36,6 @@ export default function RankPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  console.log(maleRank?.[0]?.userInfo.userid);
-
   if (loading) {
     return <p>📡 데이터를 불러오는 중입니다...</p>;
   }
@@ -46,6 +43,10 @@ export default function RankPage() {
   if (error) {
     return <p>⚠️ 오류 발생: {error}</p>;
   }
+
+  console.log(maleRank, "여긴남자");
+
+  console.log(femaleRank, "여긴 여자");
 
   return (
     <div>
@@ -56,7 +57,7 @@ export default function RankPage() {
         <ul>
           {maleRank.map((item, index) => (
             <li key={index}>
-              {index + 1}위 - {item.userInfo.userid} (점수: {item.score})
+              {index + 1}위 - {item.userid} (점수: {item.score})
             </li>
           ))}
         </ul>
@@ -69,7 +70,7 @@ export default function RankPage() {
         <ul>
           {femaleRank.map((item, index) => (
             <li key={index}>
-              {index + 1}위 - {item.userInfo.userid} (점수: {item.score})
+              {index + 1}위 - {item.userid} (점수: {item.score})
             </li>
           ))}
         </ul>

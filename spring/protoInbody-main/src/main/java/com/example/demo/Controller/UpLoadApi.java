@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Service.UserInfoService;
 import com.example.demo.Service.UserBodyInfoService;
-
-import com.example.demo.Entity.UserBodyInfo;
-import com.example.demo.Entity.UserInfo;
+import com.example.demo.DTO.UserBodyInfoDTO;
+import com.example.demo.DTO.UserInfoDTO;
 
 @RestController // 업로드 관련 컨트롤러 입니다
 @RequestMapping("/upload")
@@ -24,14 +23,14 @@ public class UpLoadApi {
     private UserBodyInfoService UserBodyInfoService;
 
     @PostMapping("/register") // 회원가입 기능
-    public UserInfo registerUser(@RequestBody UserInfo userInfo) {
-        return UserInfoService.registerUser(userInfo);
+    public UserInfoDTO registerUser(@RequestBody UserInfoDTO UserInfoDTO) {
+        return UserInfoService.registerUser(UserInfoDTO);
     }
 
     @PostMapping("/recorduserbody") // 신체정보 기록 컨트롤러
-    public ResponseEntity<UserBodyInfo> recordUserBody(@RequestBody UserBodyInfo userBodyInfo) {
-        System.out.println("[LOG] 데이터 수신: " + userBodyInfo);
-        UserBodyInfo savedRecord = UserBodyInfoService.recordeUserBodyInfo(userBodyInfo);
+    public ResponseEntity<UserBodyInfoDTO> recordUserBody(@RequestBody UserBodyInfoDTO UserBodyInfoDTO) {
+        System.out.println("[LOG] 데이터 수신: " + UserBodyInfoDTO);
+        UserBodyInfoDTO savedRecord = UserBodyInfoService.recordeUserBodyInfo(UserBodyInfoDTO);
         return ResponseEntity.ok(savedRecord);
     }
 

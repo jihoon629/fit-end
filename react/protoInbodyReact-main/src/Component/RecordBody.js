@@ -13,12 +13,8 @@ export default function RecordBody() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const userInfo = {
-      userid: userid, // UserInfo 객체의 userid 필드
-    };
-
     const userBodyInfo = {
-      userInfo: userInfo,
+      userid: userid,
       height: parseFloat(height),
       weight: parseFloat(weight),
       fatpercentage: parseFloat(fatpercentage),
