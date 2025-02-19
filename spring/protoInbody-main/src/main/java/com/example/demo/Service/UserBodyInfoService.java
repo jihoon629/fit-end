@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.demo.DTO.UserBodyInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +61,11 @@ public class UserBodyInfoService {
         return convertToDTO(savedInfo);
     }
 
-    // 특정 사용자의 최근 신체 정보 기록을 가져옴
-    public List<UserBodyInfo> getRecentUserBodyRecords(UserBodyInfoDTO userBodyInfoDTO) {
-        return RepoUserBodyInfo.findByUserInfo_UseridOrderByDateDesc(userBodyInfoDTO.getUserid());
+    public List<UserBodyInfoDTO> getRecentUserBodyRecords(String userid) {
+        List<UserBodyInfo> records = RepoUserBodyInfo.findByUserInfo_UseridOrderByDateDesc(userid);
+        return records.stream()
+                .map(UserBodyInfo -> new UserBodyInfoDTO(UserBodyInfo))
+                .collect(Collectors.toList());
     }
 
     // 사용자의 생년월일을 기반으로 현재 연도와 비교하여 나이를 반환합니다.

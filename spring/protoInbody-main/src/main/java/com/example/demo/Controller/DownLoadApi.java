@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.example.demo.Entity.UserBodyInfo;
 import com.example.demo.Service.UserBodyInfoService;
 import com.example.demo.Service.ScoreRankService;
 
@@ -27,10 +26,10 @@ public class DownLoadApi {
     private ScoreRankService ScoreRankService;
 
     @GetMapping("/recentuserbody/{userid}") // 최근 신체정보 기록 조회 컨트롤러
-    public ResponseEntity<List<UserBodyInfo>> getRecentUserBodyRecords(@PathVariable String userid) {
-        UserBodyInfoDTO userBodyInfoDTO = new UserBodyInfoDTO();
-        userBodyInfoDTO.setUserid(userid);
-        List<UserBodyInfo> records = UserBodyInfoService.getRecentUserBodyRecords(userBodyInfoDTO);
+    public ResponseEntity<List<UserBodyInfoDTO>> getRecentUserBodyRecords(@PathVariable String userid) {
+
+        List<UserBodyInfoDTO> records = UserBodyInfoService.getRecentUserBodyRecords(userid);
+
         return ResponseEntity.ok(records);
     }
 

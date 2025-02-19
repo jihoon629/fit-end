@@ -2,6 +2,8 @@ package com.example.demo.DTO;
 
 import java.util.Date;
 
+import com.example.demo.Entity.UserBodyInfo;
+
 public class UserBodyInfoDTO {
     private Long id;
     private String userid; // 추가된 필드
@@ -19,10 +21,25 @@ public class UserBodyInfoDTO {
     public UserBodyInfoDTO() {
     }
 
-    public UserBodyInfoDTO(Long id, String userid, double height, double weight, double fatpercentage, double fatmass,
-            double leanmass, double bmi, double inbodyScore, Date date, int sex, int age) {
+    public UserBodyInfoDTO(UserBodyInfo UserBodyInfo) {
+        this.id = UserBodyInfo.getId();
+        this.userid = UserBodyInfo.getUserInfo().getUserid(); // 추가된 필드 초기화
+        this.height = UserBodyInfo.getHeight();
+        this.weight = UserBodyInfo.getWeight();
+        this.fatpercentage = UserBodyInfo.getFatpercentage();
+        this.fatmass = UserBodyInfo.getFatMass();
+        this.leanmass = UserBodyInfo.getLeanmass();
+        this.bmi = UserBodyInfo.getBmi();
+        this.inbodyScore = UserBodyInfo.getInbodyScore();
+        this.date = UserBodyInfo.getDate();
+        this.sex = UserBodyInfo.getSex();
+        this.age = UserBodyInfo.getAge();
+    }
+
+    public UserBodyInfoDTO(Long id, String userid, double height, double weight, double fatpercentage,
+            double fatmass, double leanmass, double bmi, double inbodyScore, Date date, int sex, int age) {
         this.id = id;
-        this.userid = userid; // 추가된 필드 초기화
+        this.userid = userid;
         this.height = height;
         this.weight = weight;
         this.fatpercentage = fatpercentage;

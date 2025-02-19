@@ -20,6 +20,7 @@ public class ScoreRankService {
 
     @Autowired
     private RepoScoreRankMale RepoScoreRankMale;
+
     @Autowired
     private RepoScoreRankFemale RepoScoreRankFemale;
 
