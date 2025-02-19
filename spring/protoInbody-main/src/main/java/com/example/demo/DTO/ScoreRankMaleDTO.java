@@ -1,9 +1,12 @@
 package com.example.demo.DTO;
 
+import javax.validation.constraints.*;
+
 import com.example.demo.Entity.ScoreRankMale;
 
 public class ScoreRankMaleDTO {
     private Long id;
+    @Min(value = 20)
     private int sex;
     private int age;
     private double height;

@@ -1,6 +1,7 @@
 package com.example.demo.DTO;
 
 import java.time.LocalDate;
+import javax.validation.constraints.*;
 
 public class UserInfoDTO {
     private Long id;
