@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.DTO.UserInfoDTO;
+import org.modelmapper.ModelMapper;
 
 import com.example.demo.Entity.UserInfo;
 import com.example.demo.Repo.RepoUserInfo;
@@ -14,14 +15,15 @@ public class UserInfoService {
     @Autowired
     private RepoUserInfo RepoUserInfo;
 
-    public UserInfoDTO registerUser(UserInfoDTO userInfoDTO) {
-        UserInfo userInfo = convertToEntity(userInfoDTO);
-        userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
-        UserInfo savedUser = RepoUserInfo.save(userInfo);
-        return convertToDTO(savedUser);
-    }
-
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    private ModelMapper modelMapper = new ModelMapper();
+
+    public UserInfoDTO registerUser(UserInfoDTO userInfoDTO) {
+        userInfoDTO.setPassword(passwordEncoder.encode(userInfoDTO.getPassword()));
+        RepoUserInfo.save(convertToEntity(userInfoDTO));
+        return userInfoDTO;
+    }
 
     public boolean authenticateUser(UserInfoDTO UserInfoDTO) {
         UserInfo user = RepoUserInfo.findByUserid(UserInfoDTO.getUserid());
@@ -31,26 +33,7 @@ public class UserInfoService {
 
     // DTO를 엔티티로 변환
     private UserInfo convertToEntity(UserInfoDTO userInfoDTO) {
-        return new UserInfo(
-                userInfoDTO.getId(),
-                userInfoDTO.getUserid(),
-                userInfoDTO.getPassword(),
-                userInfoDTO.getEmail(),
-                userInfoDTO.getSex(),
-                userInfoDTO.getRegion1(),
-                userInfoDTO.getRegion2(),
-                userInfoDTO.getBirth());
+        return modelMapper.map(userInfoDTO, UserInfo.class);
     }
 
-    private UserInfoDTO convertToDTO(UserInfo userInfo) {
-        return new UserInfoDTO(
-                userInfo.getId(),
-                userInfo.getUserid(),
-                userInfo.getPassword(),
-                userInfo.getEmail(),
-                userInfo.getSex(),
-                userInfo.getRegion1(),
-                userInfo.getRegion2(),
-                userInfo.getBirth());
-    }
 }

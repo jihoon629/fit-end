@@ -14,6 +14,8 @@ import com.example.demo.Entity.UserInfo;
 import com.example.demo.Repo.RepoUserBodyInfo;
 import com.example.demo.Repo.RepoUserInfo;
 
+import org.modelmapper.ModelMapper;
+
 @Service
 public class UserBodyInfoService {
 
@@ -26,39 +28,38 @@ public class UserBodyInfoService {
     @Autowired
     private ScoreRankService ScoreRankService;
 
-    public UserBodyInfoDTO recordeUserBodyInfo(UserBodyInfoDTO userBodyInfoDTO) {
-        System.out.println(userBodyInfoDTO);
+    private ModelMapper modelMapper = new ModelMapper();
 
-        UserBodyInfo userBodyInfo = convertToEntity(userBodyInfoDTO);
+    public UserBodyInfoDTO recordeUserBodyInfo(UserBodyInfoDTO UserBodyInfoDTO) {
 
         // UserInfo 엔티티 먼저 확인 및 저장
-        String userid = userBodyInfo.getUserInfo().getUserid(); // DTO에서 userid 가져오기
+        String userid = UserBodyInfoDTO.getUserid(); // DTO에서 userid 가져오기
         UserInfo foundUserInfo = RepoUserInfo.findByUserid(userid);
         if (foundUserInfo == null) {
             throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다.");
         }
-        userBodyInfo.setUserInfo(foundUserInfo);
+        // UserBodyInfoDTO.setUserInfo(foundUserInfo);
 
-        double fatMass = userBodyInfo.getWeight() * (userBodyInfo.getFatpercentage() / 100);
-        double heightInMeters = userBodyInfo.getHeight() / 100.0;
-        double bmi = userBodyInfo.getWeight() / (heightInMeters * heightInMeters);
-        double inbodyScore = (100 - userBodyInfo.getFatpercentage()) + (userBodyInfo.getWeight() * 0.1);
-        double leanmass = userBodyInfo.getWeight() - fatMass;
+        double fatMass = UserBodyInfoDTO.getWeight() * (UserBodyInfoDTO.getFatpercentage() / 100);
+        double heightInMeters = UserBodyInfoDTO.getHeight() / 100.0;
+        double bmi = UserBodyInfoDTO.getWeight() / (heightInMeters * heightInMeters);
+        double inbodyScore = (100 - UserBodyInfoDTO.getFatpercentage()) + (UserBodyInfoDTO.getWeight() * 0.1);
+        double leanmass = UserBodyInfoDTO.getWeight() - fatMass;
         LocalDate birth = RepoUserInfo.getUserBirthById(userid);
 
-        userBodyInfo.setAge(calAge(birth));
-        userBodyInfo.setSex(RepoUserInfo.getUserSexById(userid));
-        userBodyInfo.setLeanmass(Math.round(leanmass * 100.0) / 100.0);
-        userBodyInfo.setFatMass(Math.round(fatMass * 100.0) / 100.0);
-        userBodyInfo.setBmi(Math.round(bmi * 100.0) / 100.0);
-        userBodyInfo.setInbodyScore(Math.round(inbodyScore * 100.0) / 100.0);
-        userBodyInfo.setDate(new Date());
+        UserBodyInfoDTO.setAge(calAge(birth));
+        UserBodyInfoDTO.setSex(RepoUserInfo.getUserSexById(userid));
+        UserBodyInfoDTO.setLeanmass(Math.round(leanmass * 100.0) / 100.0);
+        UserBodyInfoDTO.setFatmass(Math.round(fatMass * 100.0) / 100.0);
+        UserBodyInfoDTO.setBmi(Math.round(bmi * 100.0) / 100.0);
+        UserBodyInfoDTO.setInbodyScore(Math.round(inbodyScore * 100.0) / 100.0);
+        UserBodyInfoDTO.setDate(new Date());
 
-        UserBodyInfo savedInfo = RepoUserBodyInfo.save(userBodyInfo);
+        ScoreRankService.saveToScoreRank(UserBodyInfoDTO);
 
-        ScoreRankService.saveToScoreRank(userBodyInfo, (int) inbodyScore);
+        RepoUserBodyInfo.save(convertToEntity(UserBodyInfoDTO));
 
-        return convertToDTO(savedInfo);
+        return UserBodyInfoDTO;
     }
 
     public List<UserBodyInfoDTO> getRecentUserBodyRecords(String userid) {
@@ -82,35 +83,11 @@ public class UserBodyInfoService {
     }
 
     private UserBodyInfo convertToEntity(UserBodyInfoDTO UserBodyInfoDTO) {
-        UserInfo userInfo = RepoUserInfo.findByUserid(UserBodyInfoDTO.getUserid());
-        return new UserBodyInfo(
-                userInfo,
-                UserBodyInfoDTO.getId(),
-                UserBodyInfoDTO.getHeight(),
-                UserBodyInfoDTO.getWeight(),
-                UserBodyInfoDTO.getFatpercentage(),
-                UserBodyInfoDTO.getFatmass(),
-                UserBodyInfoDTO.getLeanmass(),
-                UserBodyInfoDTO.getBmi(),
-                UserBodyInfoDTO.getInbodyScore(),
-                UserBodyInfoDTO.getDate(),
-                UserBodyInfoDTO.getSex(),
-                UserBodyInfoDTO.getAge());
+        UserInfo UserInfo = RepoUserInfo.findByUserid(UserBodyInfoDTO.getUserid());
+        UserBodyInfo UserBodyInfo = modelMapper.map(UserBodyInfoDTO, UserBodyInfo.class);
+        UserBodyInfo.setUserInfo(UserInfo);
+        return UserBodyInfo;
+
     }
 
-    private UserBodyInfoDTO convertToDTO(UserBodyInfo userBodyInfo) {
-        return new UserBodyInfoDTO(
-                userBodyInfo.getId(),
-                userBodyInfo.getUserInfo().getUserid(),
-                userBodyInfo.getHeight(),
-                userBodyInfo.getWeight(),
-                userBodyInfo.getFatpercentage(),
-                userBodyInfo.getFatMass(),
-                userBodyInfo.getLeanmass(),
-                userBodyInfo.getBmi(),
-                userBodyInfo.getInbodyScore(),
-                userBodyInfo.getDate(),
-                userBodyInfo.getSex(),
-                userBodyInfo.getAge());
-    }
 }

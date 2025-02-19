@@ -2,8 +2,9 @@ package com.example.demo.Service;
 
 import com.example.demo.Repo.RepoScoreRankFemale;
 import com.example.demo.Repo.RepoScoreRankMale;
+import com.example.demo.Repo.RepoUserInfo;
 import com.example.demo.Entity.ScoreRankMale;
-import com.example.demo.Entity.UserBodyInfo;
+import com.example.demo.Entity.UserInfo;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.ScoreRankFemaleDTO;
 import com.example.demo.DTO.ScoreRankMaleDTO;
+import com.example.demo.DTO.UserBodyInfoDTO;
 import com.example.demo.Entity.ScoreRankFemale;
+
+import org.modelmapper.ModelMapper;
 
 @Service
 public class ScoreRankService {
@@ -25,10 +29,9 @@ public class ScoreRankService {
     private RepoScoreRankFemale RepoScoreRankFemale;
 
     @Autowired
-    private RepoScoreRankMale scoreRankMaleRepository;
+    private RepoUserInfo RepoUserInfo;
 
-    @Autowired
-    private RepoScoreRankFemale scoreRankFemaleRepository;
+    private ModelMapper modelMapper = new ModelMapper();
 
     public List<ScoreRankMaleDTO> showRankMale() {
         List<ScoreRankMale> scoreRankMales = RepoScoreRankMale.findAllByOrderByScoreDesc();
@@ -46,40 +49,68 @@ public class ScoreRankService {
 
     // 사용자 정보를 기반으로 점수를 저장하는 메서드입니다.
     // 성별(sex)에 따라 score_rank_male 또는 score_rank_female 테이블에 저장합니다.
-    public void saveToScoreRank(UserBodyInfo userBodyInfo, int score) {
+    public void saveToScoreRank(UserBodyInfoDTO UserBodyInfoDTO) {
+        String userid = UserBodyInfoDTO.getUserid();
+        ScoreRankMale ScoreRankMale = RepoScoreRankMale.findByUserInfo_Userid(userid);
+        ScoreRankFemale ScoreRankFemale = RepoScoreRankFemale.findByUserInfo_Userid(userid);
 
-        if (userBodyInfo.getSex() == 1) { // 남성
-            ScoreRankMale rankMale = scoreRankMaleRepository
-                    .findByUserInfo_Userid(userBodyInfo.getUserInfo().getUserid());
-            if (rankMale == null) {
-                rankMale = new ScoreRankMale();
+        System.out.println("아아아아ㅏ아아아");
+        System.out.println(ScoreRankFemale + "여기이");
+        if (UserBodyInfoDTO.getSex() == 1) { // 남성
+            if (ScoreRankMale == null) {
+                ScoreRankMale = new ScoreRankMale();
+                ScoreRankMale.setUserInfo(RepoUserInfo.findByUserid(userid));
+
             }
-            rankMale.setSex(userBodyInfo.getSex());
-            rankMale.setAge(userBodyInfo.getAge());
-            rankMale.setHeight(userBodyInfo.getHeight());
-            rankMale.setWeight(userBodyInfo.getWeight());
-            rankMale.setLeanmass(userBodyInfo.getLeanmass());
-            rankMale.setFatmass(userBodyInfo.getFatMass());
-            rankMale.setFatpercentage((float) userBodyInfo.getFatpercentage());
-            rankMale.setScore(score);
-            rankMale.setUserInfo(userBodyInfo.getUserInfo());
-            scoreRankMaleRepository.save(rankMale);
-        } else if (userBodyInfo.getSex() == 2) { // 여성
-            ScoreRankFemale rankFemale = scoreRankFemaleRepository
-                    .findByUserInfo_Userid(userBodyInfo.getUserInfo().getUserid());
-            if (rankFemale == null) {
-                rankFemale = new ScoreRankFemale();
+            ScoreRankMaleDTO ScoreRankMaleDTO = new ScoreRankMaleDTO(ScoreRankMale);
+            ScoreRankMaleDTO.setSex(UserBodyInfoDTO.getSex());
+            ScoreRankMaleDTO.setAge(UserBodyInfoDTO.getAge());
+            ScoreRankMaleDTO.setHeight(UserBodyInfoDTO.getHeight());
+            ScoreRankMaleDTO.setWeight(UserBodyInfoDTO.getWeight());
+            ScoreRankMaleDTO.setLeanmass(UserBodyInfoDTO.getLeanmass());
+            ScoreRankMaleDTO.setFatmass(UserBodyInfoDTO.getFatmass());
+            ScoreRankMaleDTO.setFatpercentage((float) UserBodyInfoDTO.getFatpercentage());
+            ScoreRankMaleDTO.setScore((int) UserBodyInfoDTO.getInbodyScore());
+            ScoreRankMaleDTO.setUserid(UserBodyInfoDTO.getUserid());
+
+            RepoScoreRankMale.save(convertToEntity(ScoreRankMaleDTO));
+
+        } else if (UserBodyInfoDTO.getSex() == 2) { // 여성
+            if (ScoreRankFemale == null) {
+                ScoreRankFemale = new ScoreRankFemale();
+                ScoreRankFemale.setUserInfo(RepoUserInfo.findByUserid(userid));
+
             }
-            rankFemale.setSex(userBodyInfo.getSex());
-            rankFemale.setAge(userBodyInfo.getAge());
-            rankFemale.setHeight(userBodyInfo.getHeight());
-            rankFemale.setWeight(userBodyInfo.getWeight());
-            rankFemale.setLeanmass(userBodyInfo.getLeanmass());
-            rankFemale.setFatmass(userBodyInfo.getFatMass());
-            rankFemale.setFatpercentage((float) userBodyInfo.getFatpercentage());
-            rankFemale.setScore(score);
-            rankFemale.setUserInfo(userBodyInfo.getUserInfo());
-            scoreRankFemaleRepository.save(rankFemale);
+            ScoreRankFemaleDTO ScoreRankFemaleDTO = new ScoreRankFemaleDTO(ScoreRankFemale);
+            ScoreRankFemaleDTO.setSex(UserBodyInfoDTO.getSex());
+            ScoreRankFemaleDTO.setAge(UserBodyInfoDTO.getAge());
+            ScoreRankFemaleDTO.setHeight(UserBodyInfoDTO.getHeight());
+            ScoreRankFemaleDTO.setWeight(UserBodyInfoDTO.getWeight());
+            ScoreRankFemaleDTO.setLeanmass(UserBodyInfoDTO.getLeanmass());
+            ScoreRankFemaleDTO.setFatmass(UserBodyInfoDTO.getFatmass());
+            ScoreRankFemaleDTO.setFatpercentage((float) UserBodyInfoDTO.getFatpercentage());
+            ScoreRankFemaleDTO.setScore((int) UserBodyInfoDTO.getInbodyScore());
+            ScoreRankFemaleDTO.setUserid(UserBodyInfoDTO.getUserid());
+
+            RepoScoreRankFemale.save(convertToEntityF(ScoreRankFemaleDTO));
         }
+
     }
+
+    private ScoreRankMale convertToEntity(ScoreRankMaleDTO ScoreRankMaleDTO) {
+        UserInfo UserInfo = RepoUserInfo.findByUserid(ScoreRankMaleDTO.getUserid());
+        ScoreRankMale ScoreRankMale = modelMapper.map(ScoreRankMaleDTO, ScoreRankMale.class);
+        ScoreRankMale.setUserInfo(UserInfo);
+        return ScoreRankMale;
+
+    }
+
+    private ScoreRankFemale convertToEntityF(ScoreRankFemaleDTO ScoreRankFemaleDTO) {
+        UserInfo UserInfo = RepoUserInfo.findByUserid(ScoreRankFemaleDTO.getUserid());
+        ScoreRankFemale ScoreRankFemale = modelMapper.map(ScoreRankFemaleDTO, ScoreRankFemale.class);
+        ScoreRankFemale.setUserInfo(UserInfo);
+        return ScoreRankFemale;
+
+    }
+
 }

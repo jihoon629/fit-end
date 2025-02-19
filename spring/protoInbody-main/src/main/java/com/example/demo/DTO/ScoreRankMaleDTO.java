@@ -32,6 +32,20 @@ public class ScoreRankMaleDTO {
 
     }
 
+    public ScoreRankMaleDTO(Long id, int sex, int age, double height, double weight, double leanmass, double fatmass,
+            double fatpercentage, int score, String userid) {
+        this.id = id;
+        this.sex = sex;
+        this.age = age;
+        this.height = height;
+        this.weight = weight;
+        this.leanmass = leanmass;
+        this.fatmass = fatmass;
+        this.fatpercentage = fatpercentage;
+        this.score = score;
+        this.userid = userid;
+    }
+
     public Long getId() {
         return id;
     }
