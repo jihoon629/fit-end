@@ -19,12 +19,14 @@ public class UserInfoService {
 
     private ModelMapper modelMapper = new ModelMapper();
 
+    // 회원가입 서비스
     public UserInfoDTO registerUser(UserInfoDTO userInfoDTO) {
         userInfoDTO.setPassword(passwordEncoder.encode(userInfoDTO.getPassword()));
         RepoUserInfo.save(convertToEntity(userInfoDTO));
         return userInfoDTO;
     }
 
+    // 로그인 관련 서비스
     public boolean authenticateUser(UserInfoDTO UserInfoDTO) {
         UserInfo user = RepoUserInfo.findByUserid(UserInfoDTO.getUserid());
         return user != null && passwordEncoder.matches(UserInfoDTO.getPassword(), user.getPassword()); // 해시 암호화된 비밀번호

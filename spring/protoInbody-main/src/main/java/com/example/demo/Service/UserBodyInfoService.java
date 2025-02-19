@@ -30,6 +30,7 @@ public class UserBodyInfoService {
 
     private ModelMapper modelMapper = new ModelMapper();
 
+    // 신체기록 서비스
     public UserBodyInfoDTO recordeUserBodyInfo(UserBodyInfoDTO UserBodyInfoDTO) {
 
         // UserInfo 엔티티 먼저 확인 및 저장
@@ -62,8 +63,9 @@ public class UserBodyInfoService {
         return UserBodyInfoDTO;
     }
 
+    // 최근 신체 기록 가져오기 최근 5개만 가져옴
     public List<UserBodyInfoDTO> getRecentUserBodyRecords(String userid) {
-        List<UserBodyInfo> records = RepoUserBodyInfo.findByUserInfo_UseridOrderByDateDesc(userid);
+        List<UserBodyInfo> records = RepoUserBodyInfo.findTop5ByUserInfo_UseridOrderByDateDesc(userid);
         return records.stream()
                 .map(UserBodyInfo -> new UserBodyInfoDTO(UserBodyInfo))
                 .collect(Collectors.toList());

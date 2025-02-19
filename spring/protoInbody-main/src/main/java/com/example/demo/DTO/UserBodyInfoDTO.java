@@ -148,11 +148,4 @@ public class UserBodyInfoDTO {
         this.age = age;
     }
 
-    @Override
-    public String toString() {
-        return "UserBodyInfoDTO [id=" + id + ", userid=" + userid + ", height=" + height + ", weight=" + weight
-                + ", fatpercentage=" + fatpercentage + ", fatmass=" + fatmass + ", leanmass=" + leanmass + ", bmi="
-                + bmi + ", inbodyScore=" + inbodyScore + ", date=" + date + ", sex=" + sex + ", age=" + age + "]";
-    }
-
 }

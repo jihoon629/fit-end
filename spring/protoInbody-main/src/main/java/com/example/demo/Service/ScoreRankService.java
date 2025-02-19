@@ -33,6 +33,7 @@ public class ScoreRankService {
 
     private ModelMapper modelMapper = new ModelMapper();
 
+    // 남성쪽 점수랭킹
     public List<ScoreRankMaleDTO> showRankMale() {
         List<ScoreRankMale> scoreRankMales = RepoScoreRankMale.findAllByOrderByScoreDesc();
         return scoreRankMales.stream()
@@ -40,6 +41,7 @@ public class ScoreRankService {
                 .collect(Collectors.toList());
     }
 
+    // 여성쪽 점수랭킹
     public List<ScoreRankFemaleDTO> showRankFemale() {
         List<ScoreRankFemale> scoreRankFemales = RepoScoreRankFemale.findAllByOrderByScoreDesc();
         return scoreRankFemales.stream()
@@ -54,8 +56,6 @@ public class ScoreRankService {
         ScoreRankMale ScoreRankMale = RepoScoreRankMale.findByUserInfo_Userid(userid);
         ScoreRankFemale ScoreRankFemale = RepoScoreRankFemale.findByUserInfo_Userid(userid);
 
-        System.out.println("아아아아ㅏ아아아");
-        System.out.println(ScoreRankFemale + "여기이");
         if (UserBodyInfoDTO.getSex() == 1) { // 남성
             if (ScoreRankMale == null) {
                 ScoreRankMale = new ScoreRankMale();

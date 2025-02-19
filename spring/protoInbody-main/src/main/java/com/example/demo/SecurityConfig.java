@@ -29,6 +29,7 @@ public class SecurityConfig {
 
         // localhost:3000 (리액트) 에서만 요청 허용
         config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://172.30.113.14:3000"); // 모바일 기기의 IP 주소 허용
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");
         config.addAllowedMethod("PUT");

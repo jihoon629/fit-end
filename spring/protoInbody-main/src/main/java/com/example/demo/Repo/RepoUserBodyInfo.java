@@ -9,7 +9,7 @@ import com.example.demo.Entity.UserBodyInfo;
 public interface RepoUserBodyInfo extends JpaRepository<UserBodyInfo, Long> {
     // 디비랑 연결되는거 여기에 자체적인 쿼리문 작성가능해요
 
-    List<UserBodyInfo> findByUserInfo_UseridOrderByDateDesc(String userid);
+    List<UserBodyInfo> findTop5ByUserInfo_UseridOrderByDateDesc(String userid);
 
     // @Query("SELECT u FROM UserBodyInfo u WHERE u.userid = :userid ORDER BY u.date
     // DESC")
