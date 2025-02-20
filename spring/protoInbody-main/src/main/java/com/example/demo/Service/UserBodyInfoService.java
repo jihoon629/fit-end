@@ -41,11 +41,10 @@ public class UserBodyInfoService {
         }
         // UserBodyInfoDTO.setUserInfo(foundUserInfo);
 
-        double fatMass = UserBodyInfoDTO.getWeight() * (UserBodyInfoDTO.getFatpercentage() / 100);
+        double fatMass = UserBodyInfoDTO.getWeight() * (UserBodyInfoDTO.getFatpercentage() / 100); // 체지방량(fat mass) 계산 공식, 몸무게x (체지방률 / 100)
         double heightInMeters = UserBodyInfoDTO.getHeight() / 100.0;
-        double bmi = UserBodyInfoDTO.getWeight() / (heightInMeters * heightInMeters);
-        double inbodyScore = (100 - UserBodyInfoDTO.getFatpercentage()) + (UserBodyInfoDTO.getWeight() * 0.1);
-        double leanmass = UserBodyInfoDTO.getWeight() - fatMass;
+        double bmi = UserBodyInfoDTO.getWeight() / (heightInMeters * heightInMeters);  // 키를 cm에서 m 단위로 변환 후, 몸무게를 나눠서 BMI 계산
+        double leanmass = UserBodyInfoDTO.getWeight() - fatMass; // 몸무게에서 체지방량을 빼서 제지방량 계산 (몸무게 - 체지방량)
         LocalDate birth = RepoUserInfo.getUserBirthById(userid);
 
         UserBodyInfoDTO.setAge(calAge(birth));
@@ -53,8 +52,17 @@ public class UserBodyInfoService {
         UserBodyInfoDTO.setLeanmass(Math.round(leanmass * 100.0) / 100.0);
         UserBodyInfoDTO.setFatmass(Math.round(fatMass * 100.0) / 100.0);
         UserBodyInfoDTO.setBmi(Math.round(bmi * 100.0) / 100.0);
-        UserBodyInfoDTO.setInbodyScore(Math.round(inbodyScore * 100.0) / 100.0);
         UserBodyInfoDTO.setDate(new Date());
+
+        // 성별에 따른 inbodyScore 계산
+        double inbodyScore;
+        if (UserBodyInfoDTO.getSex() == 1) { // 남성
+            inbodyScore = (100 - UserBodyInfoDTO.getFatpercentage()) + (UserBodyInfoDTO.getLeanmass() * 0.2); // 체지방률이 낮을수록 점수가 높아짐, 제지방량(Lean Mass)이 많을수록 추가 점수 부여
+        } else { // 여성
+            inbodyScore = (100 - UserBodyInfoDTO.getFatpercentage()) * 0.8 + (UserBodyInfoDTO.getWeight() * 0.1); //체지방률의 영향을 줄이고, 몸무게를 일부 반영, 남성과 다르게 제지방량을 고려하지 않음
+
+        }
+        UserBodyInfoDTO.setInbodyScore(Math.round(inbodyScore * 100.0) / 100.0);
 
         ScoreRankService.saveToScoreRank(UserBodyInfoDTO);
 
@@ -77,8 +85,7 @@ public class UserBodyInfoService {
 
         if (birth != null) {
             LocalDate currentDate = LocalDate.now();
-            age = currentDate.getYear() - birth.getYear() -
-                    (currentDate.getDayOfYear() < birth.getDayOfYear() ? 1 : 0);
+            age = currentDate.getYear() - birth.getYear() - (currentDate.getDayOfYear() < birth.getDayOfYear() ? 1 : 0);
         }
 
         return age;
