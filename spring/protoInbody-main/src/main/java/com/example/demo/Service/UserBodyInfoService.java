@@ -41,15 +41,17 @@ public class UserBodyInfoService {
         }
         // UserBodyInfoDTO.setUserInfo(foundUserInfo);
 
-        double fatMass = UserBodyInfoDTO.getWeight() * (UserBodyInfoDTO.getFatpercentage() / 100); // 체지방량(fat mass) 계산 공식, 몸무게x (체지방률 / 100)
-        double heightInMeters = UserBodyInfoDTO.getHeight() / 100.0;
-        double bmi = UserBodyInfoDTO.getWeight() / (heightInMeters * heightInMeters);  // 키를 cm에서 m 단위로 변환 후, 몸무게를 나눠서 BMI 계산
-        double leanmass = UserBodyInfoDTO.getWeight() - fatMass; // 몸무게에서 체지방량을 빼서 제지방량 계산 (몸무게 - 체지방량)
-        LocalDate birth = RepoUserInfo.getUserBirthById(userid);
+        // 키,몸무게,체지방률 가져오기
+        double heightInMeters = UserBodyInfoDTO.getHeight() / 100.0;  // cm -> m 변환
+        double fatMass = UserBodyInfoDTO.getWeight() * (UserBodyInfoDTO.getFatpercentage() / 100.0); // 체지방량(FatMass) = 몸무게 x 체지방률
+        double leanMass = UserBodyInfoDTO.getWeight() - fatMass; // 제지방량(LeanMass) = 몸무게  - 체지방량
+        double bmi = UserBodyInfoDTO.getWeight() / (heightInMeters * heightInMeters); // BMI = 몸무게 ÷ (키(m)²)
+        LocalDate birth = RepoUserInfo.getUserBirthById(userid); // DB에서 생년월일 불러오기
 
-        UserBodyInfoDTO.setAge(calAge(birth));
-        UserBodyInfoDTO.setSex(RepoUserInfo.getUserSexById(userid));
-        UserBodyInfoDTO.setLeanmass(Math.round(leanmass * 100.0) / 100.0);
+        // 나이 및 성별 정보 설정
+        UserBodyInfoDTO.setAge(calAge(birth)); // 나이 게산후 DTO 저장
+        UserBodyInfoDTO.setSex(RepoUserInfo.getUserSexById(userid)); // 성별 가져오기
+        UserBodyInfoDTO.setLeanmass(Math.round(leanMass * 100.0) / 100.0);
         UserBodyInfoDTO.setFatmass(Math.round(fatMass * 100.0) / 100.0);
         UserBodyInfoDTO.setBmi(Math.round(bmi * 100.0) / 100.0);
         UserBodyInfoDTO.setDate(new Date());
@@ -57,15 +59,20 @@ public class UserBodyInfoService {
         // 성별에 따른 inbodyScore 계산
         double inbodyScore;
         if (UserBodyInfoDTO.getSex() == 1) { // 남성
-            inbodyScore = (100 - UserBodyInfoDTO.getFatpercentage()) + (UserBodyInfoDTO.getLeanmass() * 0.2); // 체지방률이 낮을수록 점수가 높아짐, 제지방량(Lean Mass)이 많을수록 추가 점수 부여
+            inbodyScore = Math.round(UserBodyInfoDTO.getLeanmass() -
+                    ((Math.pow(heightInMeters, 2)) * 22 * 0.85) + 80);
         } else { // 여성
-            inbodyScore = (100 - UserBodyInfoDTO.getFatpercentage()) * 0.8 + (UserBodyInfoDTO.getWeight() * 0.1); //체지방률의 영향을 줄이고, 몸무게를 일부 반영, 남성과 다르게 제지방량을 고려하지 않음
-
+            inbodyScore = Math.round(UserBodyInfoDTO.getLeanmass() -
+                    ((Math.pow(heightInMeters, 2)) * 21.5 * 0.77) + 80);
         }
-        UserBodyInfoDTO.setInbodyScore(Math.round(inbodyScore * 100.0) / 100.0);
 
+        // DTO에 인바디 점수 저장
+        UserBodyInfoDTO.setInbodyScore(inbodyScore);
+
+        // 점수 랭킹에 반영
         ScoreRankService.saveToScoreRank(UserBodyInfoDTO);
 
+        // 데이터베이스에 저장
         RepoUserBodyInfo.save(convertToEntity(UserBodyInfoDTO));
 
         return UserBodyInfoDTO;
