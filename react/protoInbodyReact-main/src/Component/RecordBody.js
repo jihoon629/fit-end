@@ -24,7 +24,7 @@ export default function RecordBody() {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/upload/recorduserbody",
+        "http://172.30.113.136:8080/upload/recorduserbody",
         {
           method: "POST",
           headers: {

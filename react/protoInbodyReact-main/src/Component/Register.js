@@ -6,7 +6,7 @@ export default function Register() {
 
   const [isKakaoLoaded, setIsKakaoLoaded] = useState(false);
   const [isPostcodeLoaded, setIsPostcodeLoaded] = useState(false);
-  
+
   const [userInfo, setUserInfo] = useState({
     userid: "",
     password: "",
@@ -26,7 +26,9 @@ export default function Register() {
   useEffect(() => {
     const kakaoApiKey = process.env.REACT_APP_KAKAO_API_KEY;
     if (!kakaoApiKey) {
-      console.error("🚨 Kakao API 키가 설정되지 않았습니다! .env 파일을 확인하세요.");
+      console.error(
+        "🚨 Kakao API 키가 설정되지 않았습니다! .env 파일을 확인하세요."
+      );
       return;
     }
 
@@ -45,7 +47,8 @@ export default function Register() {
       }
 
       const script = document.createElement("script");
-      script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+      script.src =
+        "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
       script.async = true;
       script.onload = () => setIsPostcodeLoaded(true);
       script.onerror = () => console.error("🚨 우편번호 API 로드 실패!");
@@ -68,13 +71,16 @@ export default function Register() {
     event.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8080/upload/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userInfo),
-      });
+      const response = await fetch(
+        "http://172.30.113.136:8080/upload/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userInfo),
+        }
+      );
 
       if (response.ok) {
         alert("회원가입이 성공적으로 완료되었습니다.");
@@ -93,12 +99,16 @@ export default function Register() {
 
   const handleAddressSearch = () => {
     if (!isKakaoLoaded || !isPostcodeLoaded) {
-      alert("🚨 카카오맵 API 또는 우편번호 API가 아직 완전히 로드되지 않았습니다. 잠시 후 다시 시도해주세요.");
+      alert(
+        "🚨 카카오맵 API 또는 우편번호 API가 아직 완전히 로드되지 않았습니다. 잠시 후 다시 시도해주세요."
+      );
       return;
     }
 
     if (!window.daum || !window.daum.Postcode) {
-      alert("🚨 우편번호 검색 API가 아직 로드되지 않았습니다. 새로고침 후 다시 시도해주세요.");
+      alert(
+        "🚨 우편번호 검색 API가 아직 로드되지 않았습니다. 새로고침 후 다시 시도해주세요."
+      );
       return;
     }
 
@@ -172,22 +182,14 @@ export default function Register() {
         </div>
         <div>
           <label>Province:</label>
-          <input
-            type="text"
-            name="region1"
-            value={userInfo.region1}
-            readOnly
-          />
+          <input type="text" name="region1" value={userInfo.region1} readOnly />
         </div>
         <div>
           <label>City:</label>
-          <input 
-            type="text" 
-            name="region2" 
-            value={userInfo.region2} 
-            readOnly 
-          />
-          <button type="button" onClick={handleAddressSearch}>주소 검색</button>
+          <input type="text" name="region2" value={userInfo.region2} readOnly />
+          <button type="button" onClick={handleAddressSearch}>
+            주소 검색
+          </button>
         </div>
         <div>
           <label>Birth:</label>

@@ -39,12 +39,12 @@ public class UserBodyInfoService {
         if (foundUserInfo == null) {
             throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다.");
         }
-        // UserBodyInfoDTO.setUserInfo(foundUserInfo);
 
         // 키,몸무게,체지방률 가져오기
-        double heightInMeters = UserBodyInfoDTO.getHeight() / 100.0;  // cm -> m 변환
-        double fatMass = UserBodyInfoDTO.getWeight() * (UserBodyInfoDTO.getFatpercentage() / 100.0); // 체지방량(FatMass) = 몸무게 x 체지방률
-        double leanMass = UserBodyInfoDTO.getWeight() - fatMass; // 제지방량(LeanMass) = 몸무게  - 체지방량
+        double heightInMeters = UserBodyInfoDTO.getHeight() / 100.0; // cm -> m 변환
+        double fatMass = UserBodyInfoDTO.getWeight() * (UserBodyInfoDTO.getFatpercentage() / 100.0); // 체지방량(FatMass)
+                                                                                                     // =몸무게 x 체지방률
+        double leanMass = UserBodyInfoDTO.getWeight() - fatMass; // 제지방량(LeanMass) = 몸무게 - 체지방량
         double bmi = UserBodyInfoDTO.getWeight() / (heightInMeters * heightInMeters); // BMI = 몸무게 ÷ (키(m)²)
         LocalDate birth = RepoUserInfo.getUserBirthById(userid); // DB에서 생년월일 불러오기
 
@@ -57,17 +57,8 @@ public class UserBodyInfoService {
         UserBodyInfoDTO.setDate(new Date());
 
         // 성별에 따른 inbodyScore 계산
-        double inbodyScore;
-        if (UserBodyInfoDTO.getSex() == 1) { // 남성
-            inbodyScore = Math.round(UserBodyInfoDTO.getLeanmass() -
-                    ((Math.pow(heightInMeters, 2)) * 22 * 0.85) + 80);
-        } else { // 여성
-            inbodyScore = Math.round(UserBodyInfoDTO.getLeanmass() -
-                    ((Math.pow(heightInMeters, 2)) * 21.5 * 0.77) + 80);
-        }
-
         // DTO에 인바디 점수 저장
-        UserBodyInfoDTO.setInbodyScore(inbodyScore);
+        UserBodyInfoDTO.setInbodyScore(calInbodyScore(UserBodyInfoDTO, heightInMeters));
 
         // 점수 랭킹에 반영
         ScoreRankService.saveToScoreRank(UserBodyInfoDTO);
@@ -96,6 +87,19 @@ public class UserBodyInfoService {
         }
 
         return age;
+    }
+
+    // 성별에 따른 inbodyScore 계산
+    private double calInbodyScore(UserBodyInfoDTO UserBodyInfoDTO, double heightInMeters) {
+        double inbodyScore;
+        if (UserBodyInfoDTO.getSex() == 1) { // 남성
+            inbodyScore = Math.round(UserBodyInfoDTO.getLeanmass() -
+                    ((Math.pow(heightInMeters, 2)) * 22 * 0.85) + 80);
+        } else { // 여성
+            inbodyScore = Math.round(UserBodyInfoDTO.getLeanmass() -
+                    ((Math.pow(heightInMeters, 2)) * 21.5 * 0.77) + 80);
+        }
+        return inbodyScore;
     }
 
     private UserBodyInfo convertToEntity(UserBodyInfoDTO UserBodyInfoDTO) {
