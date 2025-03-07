@@ -8,6 +8,7 @@ import Login from "./Component/Login";
 import Main from "./Component/Main"; // 메인 화면 컴포넌트
 import RecordBody from "./Component/RecordBody";
 import RankPage from "./Component/RankPage";
+import FoodSearchR from "./Component/FoodSearchR";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/recordbody" element={<RecordBody />} />
         <Route path="/rank" element={<RankPage />} />
+        <Route path="/food" element={<FoodSearchR />} />
       </Routes>
     </Router>
   );

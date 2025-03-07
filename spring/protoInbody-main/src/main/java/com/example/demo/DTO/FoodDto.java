@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class FoodDto {
 
     private String foodNm;
+    private String mfrNm;
     private double enerc;
     private double prot;
     private double fatce;
@@ -15,8 +16,10 @@ public class FoodDto {
     public FoodDto() {
     }
 
-    public FoodDto(String foodNm, double enerc, double prot, double fatce, double chocdf, double foodSize) {
+    public FoodDto(String foodNm, String mfrNm, double enerc, double prot, double fatce, double chocdf,
+            double foodSize) {
         this.foodNm = foodNm;
+        this.mfrNm = mfrNm;
         this.enerc = enerc;
         this.prot = prot;
         this.fatce = fatce;
@@ -30,6 +33,14 @@ public class FoodDto {
 
     public void setFoodNm(String foodNm) {
         this.foodNm = foodNm;
+    }
+
+    public String getMfrNm() {
+        return mfrNm;
+    }
+
+    public void setMfrNm(String mfrNm) {
+        this.mfrNm = mfrNm;
     }
 
     public double getEnerc() {
@@ -70,12 +81,6 @@ public class FoodDto {
 
     public void setFoodSize(double foodSize) {
         this.foodSize = foodSize;
-    }
-
-    @Override
-    public String toString() {
-        return "FoodDto [foodNm=" + foodNm + ", enerc=" + enerc + ", prot=" + prot + ", fatce=" + fatce + ", chocdf="
-                + chocdf + ", foodSize=" + foodSize + "]";
     }
 
 }

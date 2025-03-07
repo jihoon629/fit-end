@@ -8,7 +8,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import com.example.demo.DTO.FoodDto;
@@ -65,16 +67,23 @@ public class FoodService {
             JsonNode rootNode = objectMapper.readTree(sb.toString());
             JsonNode itemsNode = rootNode.path("response").path("body").path("items");
 
+            Set<String> seenItems = new HashSet<>();
             for (JsonNode itemNode : itemsNode) {
                 String foodNm = itemNode.path("foodNm").asText();
-                double enerc = itemNode.path("enerc").asDouble();
-                double prot = itemNode.path("prot").asDouble();
-                double fatce = itemNode.path("fatce").asDouble();
-                double chocdf = itemNode.path("chocdf").asDouble();
-                double foodSize = itemNode.path("foodSize").asDouble();
+                String mfrNm = itemNode.path("mfrNm").asText();
+                String identifier = foodNm + "-" + mfrNm;
 
-                FoodDto foodDto = new FoodDto(foodNm, enerc, prot, fatce, chocdf, foodSize);
-                foodDetailsList.add(foodDto);
+                if (!seenItems.contains(identifier)) {
+                    seenItems.add(identifier);
+                    double enerc = itemNode.path("enerc").asDouble();
+                    double prot = itemNode.path("prot").asDouble();
+                    double fatce = itemNode.path("fatce").asDouble();
+                    double chocdf = itemNode.path("chocdf").asDouble();
+                    double foodSize = itemNode.path("foodSize").asDouble();
+
+                    FoodDto foodDto = new FoodDto(foodNm, mfrNm, enerc, prot, fatce, chocdf, foodSize);
+                    foodDetailsList.add(foodDto);
+                }
             }
 
         } catch (UnsupportedEncodingException e) {
