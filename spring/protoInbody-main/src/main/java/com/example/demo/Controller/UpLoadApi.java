@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Service.UserInfoService;
 import com.example.demo.Service.UserBodyInfoService;
+import com.example.demo.DTO.FoodDto;
 import com.example.demo.DTO.UserBodyInfoDTO;
 import com.example.demo.DTO.UserInfoDTO;
 
@@ -32,6 +33,12 @@ public class UpLoadApi {
         System.out.println("[LOG] 데이터 수신: " + UserBodyInfoDTO);
         UserBodyInfoDTO savedRecord = UserBodyInfoService.recordeUserBodyInfo(UserBodyInfoDTO);
         return ResponseEntity.ok(savedRecord);
+    }
+
+    @PostMapping("/recordfood") // 신체정보 기록 컨트롤러
+    public ResponseEntity<FoodDto> recordfood(@RequestBody FoodDto FoodDto) {
+        System.out.println("[LOG] 데이터 수신: " + FoodDto);
+        return ResponseEntity.ok(FoodDto);
     }
 
 }

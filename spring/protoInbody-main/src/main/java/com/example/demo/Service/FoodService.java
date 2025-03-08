@@ -81,7 +81,7 @@ public class FoodService {
                     double chocdf = itemNode.path("chocdf").asDouble();
                     double foodSize = itemNode.path("foodSize").asDouble();
 
-                    FoodDto foodDto = new FoodDto(foodNm, mfrNm, enerc, prot, fatce, chocdf, foodSize);
+                    FoodDto foodDto = new FoodDto(foodNm, mfrNm, enerc, prot, fatce, chocdf, foodSize, null);
                     foodDetailsList.add(foodDto);
                 }
             }

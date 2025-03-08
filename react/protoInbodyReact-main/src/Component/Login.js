@@ -5,7 +5,9 @@ export default function Login() {
   const [userid, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  const navigateToRegister = () => {
+    navigate("/register");
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -63,6 +65,7 @@ export default function Login() {
           />
         </div>
         <button type="submit">Login</button>
+        <button onClick={navigateToRegister}>회원 가입</button>
       </form>
     </div>
   );

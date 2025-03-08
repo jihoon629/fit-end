@@ -14,7 +14,9 @@ export default function Main() {
   const navigateToRank = () => {
     navigate("/rank");
   };
-
+  const navigateToTodo = () => {
+    navigate("/todo");
+  };
   const handleLogout = () => {
     sessionStorage.removeItem("userid"); // 로그아웃 시 사용자 정보 삭제
     navigate("/login"); // 로그인 페이지로 이동
@@ -85,6 +87,7 @@ export default function Main() {
           </button>
 
           <button onClick={navigateToRecordBody}>신체 정보 입력</button>
+          <button onClick={navigateToTodo}>음식 다이어리</button>
           <button onClick={handleLogout} style={{ marginLeft: "10px" }}>
             로그아웃
           </button>

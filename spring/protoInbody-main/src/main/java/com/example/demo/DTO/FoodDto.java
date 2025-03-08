@@ -12,12 +12,13 @@ public class FoodDto {
     private double fatce;
     private double chocdf;
     private double foodSize;
+    private String userid;
 
     public FoodDto() {
     }
 
-    public FoodDto(String foodNm, String mfrNm, double enerc, double prot, double fatce, double chocdf,
-            double foodSize) {
+    public FoodDto(String foodNm, String mfrNm, double enerc, double prot, double fatce, double chocdf, double foodSize,
+            String userid) {
         this.foodNm = foodNm;
         this.mfrNm = mfrNm;
         this.enerc = enerc;
@@ -25,6 +26,7 @@ public class FoodDto {
         this.fatce = fatce;
         this.chocdf = chocdf;
         this.foodSize = foodSize;
+        this.userid = userid;
     }
 
     public String getFoodNm() {
@@ -81,6 +83,20 @@ public class FoodDto {
 
     public void setFoodSize(double foodSize) {
         this.foodSize = foodSize;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    @Override
+    public String toString() {
+        return "FoodDto [foodNm=" + foodNm + ", mfrNm=" + mfrNm + ", enerc=" + enerc + ", prot=" + prot + ", fatce="
+                + fatce + ", chocdf=" + chocdf + ", foodSize=" + foodSize + ", userid=" + userid + "]";
     }
 
 }

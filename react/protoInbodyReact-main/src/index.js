@@ -9,7 +9,7 @@ import Main from "./Component/Main"; // 메인 화면 컴포넌트
 import RecordBody from "./Component/RecordBody";
 import RankPage from "./Component/RankPage";
 import FoodSearchR from "./Component/FoodSearchR";
-
+import TodoCalender from "./Component/TodoCalender";
 const App = () => {
   return (
     <Router>
@@ -21,6 +21,7 @@ const App = () => {
         <Route path="/recordbody" element={<RecordBody />} />
         <Route path="/rank" element={<RankPage />} />
         <Route path="/food" element={<FoodSearchR />} />
+        <Route path="/todo" element={<TodoCalender />} />
       </Routes>
     </Router>
   );

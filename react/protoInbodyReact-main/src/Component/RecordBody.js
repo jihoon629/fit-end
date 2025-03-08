@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function RecordBody() {
-  const [userid, setuserid] = useState(sessionStorage.getItem("userid"));
+  const [userid] = useState(sessionStorage.getItem("userid"));
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [fatpercentage, setFatPercentage] = useState("");
