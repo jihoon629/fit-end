@@ -81,7 +81,8 @@ public class FoodService {
                     double chocdf = itemNode.path("chocdf").asDouble();
                     double foodSize = itemNode.path("foodSize").asDouble();
 
-                    FoodDto foodDto = new FoodDto(foodNm, mfrNm, enerc, prot, fatce, chocdf, foodSize, null);
+                    // API에서 음식정보만 가져와 FoodDto 리스트에 반환후 리액트에서 dietMemo와 timestamp을 추가해서 백엔드로 전송함
+                    FoodDto foodDto = new FoodDto(foodNm, mfrNm, enerc, prot, fatce, chocdf, foodSize, null, null, null);
                     foodDetailsList.add(foodDto);
                 }
             }

@@ -1,9 +1,9 @@
 package com.example.demo.Entity;
 
 import java.util.Date;
-
 import jakarta.persistence.*;
 
+@Entity
 public class DietRecord {
 
     @Id
@@ -29,11 +29,14 @@ public class DietRecord {
     @Column(nullable = false)
     private double totalfat;
 
+    @Column(nullable = true)
+    private String dietMemo;  // diet_memo 필드 추가
+
     public DietRecord() {
     }
 
     public DietRecord(Long id, UserInfo userInfo, Date timestamp, double totalcalori, double totalcarbs,
-            double totalprotein, double totalfat) {
+                      double totalprotein, double totalfat, String dietMemo) {
         this.id = id;
         this.userInfo = userInfo;
         this.timestamp = timestamp;
@@ -41,6 +44,7 @@ public class DietRecord {
         this.totalcarbs = totalcarbs;
         this.totalprotein = totalprotein;
         this.totalfat = totalfat;
+        this.dietMemo = dietMemo;
     }
 
     public Long getId() {
@@ -99,4 +103,11 @@ public class DietRecord {
         this.totalfat = totalfat;
     }
 
+    public String getDietMemo() {
+        return dietMemo;
+    }
+
+    public void setDietMemo(String dietMemo) {
+        this.dietMemo = dietMemo;
+    }
 }
