@@ -73,7 +73,7 @@ export default function Register() {
 
     try {
       const response = await fetch(
-        `http://${config.SERVER_URL}/uplaod/register`,
+        `http://${config.SERVER_URL}/upload/register`,
         {
           method: "POST",
           headers: {
