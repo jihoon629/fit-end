@@ -17,7 +17,7 @@ export default function Login() {
     };
 
     try {
-      const response = await fetch("http://172.30.113.136:8080/request/login", {
+      const response = await fetch(`${config.SERVER_URL}/request/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

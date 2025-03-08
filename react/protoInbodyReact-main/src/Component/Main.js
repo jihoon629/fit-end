@@ -28,7 +28,7 @@ export default function Main() {
       return;
     }
 
-    fetch(`http://172.30.113.136:8080/download/recentuserbody/${userid}`)
+    fetch(`${config.SERVER_URL}/download/recentuserbody/${userid}`)
       .then((response) => response.json())
       .then((data) => {
         setBodyRecod(data);
