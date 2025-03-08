@@ -8,7 +8,7 @@ export default function RankPage() {
 
   useEffect(() => {
     // 남성 랭킹 조회
-    fetch("http://172.30.113.136:8080/download/scorerankmale")
+    fetch(`${config.SERVER_URL}/download/scorerankmale`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("서버 응답 오류 (남성 랭킹)");
@@ -21,7 +21,7 @@ export default function RankPage() {
         setError(error.message);
       });
     // 여성 랭킹 조회
-    fetch("http://172.30.113.136:8080/download/scorerankfemale")
+    fetch(`${config.SERVER_URL}/download/scorerankfemale`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("서버 응답 오류 (여성 랭킹)");
