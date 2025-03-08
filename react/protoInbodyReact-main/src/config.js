@@ -1,6 +1,5 @@
 const config = {
-    SERVER_URL: "http://172.30.33.172:8080",
-  };
-  
-  export default config;
-  
+  SERVER_URL: "172.30.113.136:8080",
+};
+
+export default config;

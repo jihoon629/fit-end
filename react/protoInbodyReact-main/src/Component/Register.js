@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // 페이지 이동을 위한 훅
+import config from "../config";
 
 export default function Register() {
   const navigate = useNavigate(); // 페이지이동 userNavigate()
@@ -72,7 +73,7 @@ export default function Register() {
 
     try {
       const response = await fetch(
-        `${config.SERVER_URL}/upload/register`,
+        `http://${config.SERVER_URL}/request/login`,
         {
           method: "POST",
           headers: {

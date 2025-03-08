@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import config from "../config";
 
 export default function FoodSearchR() {
   const [data, setData] = useState(null);
@@ -13,7 +14,7 @@ export default function FoodSearchR() {
 
   const fetchData = () => {
     if (foodNm) {
-      fetch(`${config.SERVER_URL}/request/foodname/${foodNm}`)
+      fetch(`http://${config.SERVER_URL}/request/login`)
         .then((response) => response.json())
         .then((data) => setData(data))
         .catch((error) => console.error("Error fetching data:", error));

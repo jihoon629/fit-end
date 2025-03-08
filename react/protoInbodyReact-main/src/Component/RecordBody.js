@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import config from "../config";
 
 export default function RecordBody() {
   const [userid] = useState(sessionStorage.getItem("userid"));
@@ -24,7 +25,8 @@ export default function RecordBody() {
 
     try {
       const response = await fetch(
-        `${config.SERVER_URL}/upload/recorduserbody`,
+        `http://${config.SERVER_URL}/request/login`,
+
         {
           method: "POST",
           headers: {

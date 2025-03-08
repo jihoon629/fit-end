@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import config from "../config";
 
 export default function Main() {
   const userid = sessionStorage.getItem("userid");
@@ -28,7 +29,7 @@ export default function Main() {
       return;
     }
 
-    fetch(`${config.SERVER_URL}/download/recentuserbody/${userid}`)
+    fetch(`http://${config.SERVER_URL}/request/login`)
       .then((response) => response.json())
       .then((data) => {
         setBodyRecod(data);

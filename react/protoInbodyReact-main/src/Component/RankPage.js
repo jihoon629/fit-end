@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import config from "../config";
 
 export default function RankPage() {
   const [maleRank, setMaleRank] = useState([]);
@@ -8,7 +9,7 @@ export default function RankPage() {
 
   useEffect(() => {
     // 남성 랭킹 조회
-    fetch(`${config.SERVER_URL}/download/scorerankmale`)
+    fetch(`http://${config.SERVER_URL}/request/login`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("서버 응답 오류 (남성 랭킹)");
