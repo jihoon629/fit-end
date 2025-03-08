@@ -17,4 +17,5 @@ public interface RepoUserInfo extends JpaRepository<UserInfo, Long> {
     // 성별 조회 메서드 추가
     @Query("SELECT u.sex FROM UserInfo u WHERE u.userid = :userid")
     Integer getUserSexById(@Param("userid") String userid);
+
 }

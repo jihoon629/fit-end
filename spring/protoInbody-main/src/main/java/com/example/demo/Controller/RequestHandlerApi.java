@@ -1,6 +1,9 @@
 package com.example.demo.Controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.FoodDto;
 import com.example.demo.DTO.UserInfoDTO;
+import com.example.demo.Entity.DietRecord;
+import com.example.demo.Entity.UserInfo;
+import com.example.demo.Repo.RepoDietRecord;
+import com.example.demo.Repo.RepoUserInfo;
 import com.example.demo.Service.FoodService;
 import com.example.demo.Service.UserInfoService;
 
@@ -27,6 +34,12 @@ public class RequestHandlerApi {
     @Autowired
     FoodService FoodService;
 
+    @Autowired
+    RepoDietRecord dietRecordRepository;// 식단 기록 저장소
+
+    @Autowired
+    RepoUserInfo userInfoRepository; // 유저 정보 저장소
+
     @PostMapping("/login") // 로그인 관련 컨트롤러
     public ResponseEntity<String> loginUser(@RequestBody UserInfoDTO UserInfoDTO) {
         boolean isAuthenticated = UserInfoService.authenticateUser(UserInfoDTO);
@@ -39,11 +52,40 @@ public class RequestHandlerApi {
         }
     }
 
-    @GetMapping("/foodname/{foodNm}")
+    @GetMapping("/foodname/{foodNm}") // 음식 이름으로 검색하는 컨트롤러
     public ResponseEntity<List<FoodDto>> FoodName(@PathVariable String foodNm) {
         System.out.println(foodNm);
         List<FoodDto> foodDetails = FoodService.getFoodDetails(foodNm);
         return ResponseEntity.ok(foodDetails);
     }
+
+    @PostMapping("/saveFoodRecord")
+    public ResponseEntity<Map<String, String>> saveFoodRecord(@RequestBody FoodDto foodDto) {
+        System.out.println("전송받은 음식 데이터: " + foodDto);
+
+        if (foodDto == null || foodDto.getUserid() == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "잘못된 요청: 사용자 ID 누락"));
+        }
+
+        UserInfo userInfo = userInfoRepository.findByUserid(foodDto.getUserid());
+        if (userInfo == null) {
+            return ResponseEntity.status(404).body(Map.of("error", "사용자 찾을 수 없음"));
+        }
+
+        DietRecord dietRecord = new DietRecord();
+        dietRecord.setUserInfo(userInfo);
+        dietRecord.setTimestamp(foodDto.getTimestamp());
+        dietRecord.setDietMemo(foodDto.getDietMemo());
+        dietRecord.setTotalcalori(foodDto.getEnerc());
+        dietRecord.setTotalcarbs(foodDto.getChocdf());
+        dietRecord.setTotalprotein(foodDto.getProt());
+        dietRecord.setTotalfat(foodDto.getFatce());
+
+        dietRecordRepository.save(dietRecord);
+        System.out.println("음식 기록이 성공적으로 저장되었습니다!");
+
+        return ResponseEntity.ok(Map.of("message", "음식 기록이 성공적으로 저장되었습니다!"));
+    }
+
 
 }

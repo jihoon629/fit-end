@@ -5,13 +5,17 @@ import config from "../config";
 export default function FoodSearchR() {
   const [data, setData] = useState(null);
   const [foodNm, setFoodNm] = useState("");
+  const [selectedDate, setSelectedDate] = useState(""); // 날짜 선택
+  const [dietMemo, setDietMemo] = useState(""); // 메모 입력
   const userid = sessionStorage.getItem("userid");
   const navigate = useNavigate();
 
+  // 뒤로가기 버튼 (임시)
   const navigateToFood = () => {
     navigate("/todo");
   };
 
+  // 음식 검색 API 호출
   const fetchData = () => {
     if (foodNm) {
       fetch(`http://${config.SERVER_URL}/request/foodname/${foodNm}`)
@@ -21,24 +25,55 @@ export default function FoodSearchR() {
     }
   };
 
+  // 음식 선택 후 저장 API 호출
   const handleButtonClick = (item) => {
-    console.log(item);
-    const itemWithUserId = { ...item, userid };
+    if (!selectedDate) {
+        alert("날짜를 선택하세요!");
+        return;
+    }
 
-    fetch(`http://${config.SERVER_URL}/upload/recordfood`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(itemWithUserId),
+    const foodData = {
+        ...item,
+        userid: sessionStorage.getItem("userid") || "default_user",  // 유저 ID 기본값 설정
+        timestamp: selectedDate || new Date().toISOString(),         // 선택한 날짜가 없으면 현재 날짜
+        dietMemo: dietMemo || "메모 없음"                           // 메모 기본값 설정
+    };
+
+    console.log("전송할 데이터:", foodData); // 전송 전에 확인
+
+    fetch(`http://${config.SERVER_URL}/request/saveFoodRecord`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(foodData),
     })
-      .then((response) => response.json())
-      .then((data) => console.log("Success:", data))
+      .then((response) => response.text()) // JSON 형식이 아니라면 .json() 대신 .text() 사용
+      .then((data) => {
+          console.log("서버 응답:", data);
+          alert(data);  // 성공 메시지 출력
+      })
       .catch((error) => console.error("Error:", error));
   };
 
   return (
     <div>
+      <h2>날짜 선택</h2>
+      <input
+        type="date"
+        value={selectedDate}
+        onChange={(e) => setSelectedDate(e.target.value)}
+      />
+
+      <h2>메모 입력</h2>
+      <input
+        type="text"
+        placeholder="메모 입력"
+        value={dietMemo}
+        onChange={(e) => setDietMemo(e.target.value)}
+      />
+
+      <h2>음식 검색</h2>
       <input
         type="text"
         value={foodNm}
