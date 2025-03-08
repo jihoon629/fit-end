@@ -25,7 +25,7 @@ export default function RecordBody() {
 
     try {
       const response = await fetch(
-        `http://${config.SERVER_URL}/request/login`,
+        `http://${config.SERVER_URL}/upload/recorduserbody`,
 
         {
           method: "POST",
