@@ -9,7 +9,7 @@ export default function RankPage() {
 
   useEffect(() => {
     // 남성 랭킹 조회
-    fetch(`http://${config.SERVER_URL}/down/scorerankmale`)
+    fetch(`http://${config.SERVER_URL}/download/scorerankmale`)
       .then((res) => {
         if (!res.ok) {
           throw new Error("서버 응답 오류 (남성 랭킹)");

@@ -29,7 +29,7 @@ export default function Main() {
       return;
     }
 
-    fetch(`http://${config.SERVER_URL}/request/${userid}`)
+    fetch(`http://${config.SERVER_URL}/download/recentuserbody/${userid}`)
       .then((response) => response.json())
       .then((data) => {
         setBodyRecod(data);

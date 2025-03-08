@@ -14,7 +14,7 @@ export default function FoodSearchR() {
 
   const fetchData = () => {
     if (foodNm) {
-      fetch(`http://${config.SERVER_URL}/request/login`)
+      fetch(`http://${config.SERVER_URL}/request/foodname/${foodNm}`)
         .then((response) => response.json())
         .then((data) => setData(data))
         .catch((error) => console.error("Error fetching data:", error));
@@ -25,7 +25,7 @@ export default function FoodSearchR() {
     console.log(item);
     const itemWithUserId = { ...item, userid };
 
-    fetch("${config.SERVER_URL}/upload/recordfood", {
+    fetch(`http://${config.SERVER_URL}/upload/recordfood`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
