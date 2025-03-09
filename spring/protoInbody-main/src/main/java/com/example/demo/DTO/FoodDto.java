@@ -1,6 +1,7 @@
 package com.example.demo.DTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FoodDto {
@@ -13,12 +14,14 @@ public class FoodDto {
     private double chocdf;
     private double foodSize;
     private String userid;
+    private String dietMemo;  // 추가된 필드
+    private Date timestamp;   // 추가된 필드
 
     public FoodDto() {
     }
 
-    public FoodDto(String foodNm, String mfrNm, double enerc, double prot, double fatce, double chocdf, double foodSize,
-            String userid) {
+    public FoodDto(String foodNm, String mfrNm, double enerc, double prot, double fatce, double chocdf,
+                   double foodSize, String userid, String dietMemo, Date timestamp) {
         this.foodNm = foodNm;
         this.mfrNm = mfrNm;
         this.enerc = enerc;
@@ -27,6 +30,8 @@ public class FoodDto {
         this.chocdf = chocdf;
         this.foodSize = foodSize;
         this.userid = userid;
+        this.dietMemo = dietMemo;
+        this.timestamp = timestamp;
     }
 
     public String getFoodNm() {
@@ -93,10 +98,26 @@ public class FoodDto {
         this.userid = userid;
     }
 
-    @Override
-    public String toString() {
-        return "FoodDto [foodNm=" + foodNm + ", mfrNm=" + mfrNm + ", enerc=" + enerc + ", prot=" + prot + ", fatce="
-                + fatce + ", chocdf=" + chocdf + ", foodSize=" + foodSize + ", userid=" + userid + "]";
+    public String getDietMemo() {
+        return dietMemo;
     }
 
+    public void setDietMemo(String dietMemo) {
+        this.dietMemo = dietMemo;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @Override
+    public String toString() {
+        return "FoodDto [foodNm=" + foodNm + ", mfrNm=" + mfrNm + ", enerc=" + enerc + ", prot=" + prot +
+                ", fatce=" + fatce + ", chocdf=" + chocdf + ", foodSize=" + foodSize +
+                ", userid=" + userid + ", dietMemo=" + dietMemo + ", timestamp=" + timestamp + "]";
+    }
 }
