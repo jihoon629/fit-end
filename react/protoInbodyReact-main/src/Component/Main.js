@@ -4,6 +4,8 @@ import config from "../config";
 
 export default function Main() {
   const userid = sessionStorage.getItem("userid");
+  const token = sessionStorage.getItem("token");
+
   const navigate = useNavigate();
   const [bodyrecod, setBodyRecod] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,22 +26,27 @@ export default function Main() {
   };
 
   useEffect(() => {
-    if (!userid) {
+    if (!token) {
       navigate("/login"); // 로그인 안 했으면 로그인 페이지로 강제 이동
       return;
     }
 
-    fetch(`http://${config.SERVER_URL}/download/recentuserbody/${userid}`)
+    fetch(`http://${config.SERVER_URL}/download/recentuserbody/${userid}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`, // JWT 토큰을 Authorization 헤더에 포함
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setBodyRecod(data);
-        setLoading(false); // 데이터 로드 완료 후 로딩 상태 업데이트
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
-        setLoading(false); // 에러 발생 시에도 로딩 상태 업데이트
+        setLoading(false);
       });
-  }, [userid]);
+  }, [userid, token, navigate]);
 
   console.log(bodyrecod, "여기여");
 

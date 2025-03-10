@@ -13,6 +13,8 @@ import com.example.demo.DTO.FoodDto;
 import com.example.demo.DTO.UserInfoDTO;
 import com.example.demo.Entity.DietRecord;
 import com.example.demo.Entity.UserInfo;
+import com.example.demo.Jwt.AuthenticationResponse;
+import com.example.demo.Jwt.JwtUtil;
 import com.example.demo.Repo.RepoDietRecord;
 import com.example.demo.Repo.RepoUserInfo;
 import com.example.demo.Service.FoodService;
@@ -40,12 +42,16 @@ public class RequestHandlerApi {
     @Autowired
     RepoUserInfo userInfoRepository; // 유저 정보 저장소
 
+    @Autowired
+    JwtUtil jwtUtil;
+
     @PostMapping("/login") // 로그인 관련 컨트롤러
-    public ResponseEntity<String> loginUser(@RequestBody UserInfoDTO UserInfoDTO) {
+    public ResponseEntity<?> loginUser(@RequestBody UserInfoDTO UserInfoDTO) {
         boolean isAuthenticated = UserInfoService.authenticateUser(UserInfoDTO);
         if (isAuthenticated) {
             System.out.println("로그인성공");
-            return ResponseEntity.ok("Login successful");
+            String jwt = jwtUtil.generateToken(UserInfoDTO.getUserid());
+            return ResponseEntity.ok(new AuthenticationResponse(jwt));
         } else {
             System.out.println("로그인실패");
             return ResponseEntity.status(401).body("Invalid credentials");

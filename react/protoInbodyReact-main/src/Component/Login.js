@@ -29,8 +29,12 @@ export default function Login() {
       );
 
       if (response.ok) {
+        const data = await response.json();
+
         console.log("Login successful");
+        sessionStorage.setItem("token", data.jwt); // JWT 토큰 저장
         sessionStorage.setItem("userid", userid); // 로그인한 사용자 정보 저장
+
         alert("로그인 성공!");
         navigate("/main"); //메인 페이지 이동
         // 성공 시 추가적인 로직 (예: 리다이렉트)

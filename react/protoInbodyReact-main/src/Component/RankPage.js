@@ -6,10 +6,16 @@ export default function RankPage() {
   const [femaleRank, setFemaleRank] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     // 남성 랭킹 조회
-    fetch(`http://${config.SERVER_URL}/download/scorerankmale`)
+    fetch(`http://${config.SERVER_URL}/download/scorerankmale`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`, // JWT 토큰을 Authorization 헤더에 포함
+      },
+    })
       .then((res) => {
         if (!res.ok) {
           throw new Error("서버 응답 오류 (남성 랭킹)");
@@ -22,7 +28,12 @@ export default function RankPage() {
         setError(error.message);
       });
     // 여성 랭킹 조회
-    fetch(`http://${config.SERVER_URL}/download/scorerankfemale`)
+    fetch(`http://${config.SERVER_URL}/download/scorerankfemale`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`, // JWT 토큰을 Authorization 헤더에 포함
+      },
+    })
       .then((res) => {
         if (!res.ok) {
           throw new Error("서버 응답 오류 (여성 랭킹)");

@@ -50,7 +50,6 @@ public class FoodService {
             } else {
                 rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
             }
-
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = rd.readLine()) != null) {
@@ -82,7 +81,8 @@ public class FoodService {
                     double foodSize = itemNode.path("foodSize").asDouble();
 
                     // API에서 음식정보만 가져와 FoodDto 리스트에 반환후 리액트에서 dietMemo와 timestamp을 추가해서 백엔드로 전송함
-                    FoodDto foodDto = new FoodDto(foodNm, mfrNm, enerc, prot, fatce, chocdf, foodSize, null, null, null);
+                    FoodDto foodDto = new FoodDto(foodNm, mfrNm, enerc, prot, fatce, chocdf, foodSize, null, null,
+                            null);
                     foodDetailsList.add(foodDto);
                 }
             }

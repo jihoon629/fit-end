@@ -10,6 +10,7 @@ export default function RecordBody() {
   const [bmi, setBmi] = useState(null);
   const [inbodyScore, setInbodyScore] = useState(null);
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("token");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,6 +32,7 @@ export default function RecordBody() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // JWT 토큰 추가
           },
           body: JSON.stringify(userBodyInfo),
         }

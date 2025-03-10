@@ -9,6 +9,7 @@ export default function FoodSearchR() {
   const [dietMemo, setDietMemo] = useState(""); // 메모 입력
   const userid = sessionStorage.getItem("userid");
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("token");
 
   // 뒤로가기 버튼 (임시)
   const navigateToFood = () => {
@@ -18,7 +19,11 @@ export default function FoodSearchR() {
   // 음식 검색 API 호출
   const fetchData = () => {
     if (foodNm) {
-      fetch(`http://${config.SERVER_URL}/request/foodname/${foodNm}`)
+      fetch(`http://${config.SERVER_URL}/request/foodname/${foodNm}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // JWT 토큰 추가
+        },
+      })
         .then((response) => response.json())
         .then((data) => setData(data))
         .catch((error) => console.error("Error fetching data:", error));
@@ -28,30 +33,31 @@ export default function FoodSearchR() {
   // 음식 선택 후 저장 API 호출
   const handleButtonClick = (item) => {
     if (!selectedDate) {
-        alert("날짜를 선택하세요!");
-        return;
+      alert("날짜를 선택하세요!");
+      return;
     }
 
     const foodData = {
-        ...item,
-        userid: sessionStorage.getItem("userid") || "default_user",  // 유저 ID 기본값 설정
-        timestamp: selectedDate || new Date().toISOString(),         // 선택한 날짜가 없으면 현재 날짜
-        dietMemo: dietMemo || "메모 없음"                           // 메모 기본값 설정
+      ...item,
+      userid: sessionStorage.getItem("userid") || "default_user", // 유저 ID 기본값 설정
+      timestamp: selectedDate || new Date().toISOString(), // 선택한 날짜가 없으면 현재 날짜
+      dietMemo: dietMemo || "메모 없음", // 메모 기본값 설정
     };
 
     console.log("전송할 데이터:", foodData); // 전송 전에 확인
 
     fetch(`http://${config.SERVER_URL}/request/saveFoodRecord`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(foodData),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // JWT 토큰 추가
+      },
+      body: JSON.stringify(foodData),
     })
       .then((response) => response.text()) // JSON 형식이 아니라면 .json() 대신 .text() 사용
       .then((data) => {
-          console.log("서버 응답:", data);
-          alert(data);  // 성공 메시지 출력
+        console.log("서버 응답:", data);
+        alert(data); // 성공 메시지 출력
       })
       .catch((error) => console.error("Error:", error));
   };
