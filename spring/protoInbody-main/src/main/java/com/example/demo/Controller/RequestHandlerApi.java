@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.DTO.FoodDto;
 import com.example.demo.DTO.UserInfoDTO;
@@ -20,11 +20,6 @@ import com.example.demo.Repo.RepoUserInfo;
 import com.example.demo.Service.FoodService;
 import com.example.demo.Service.UserInfoService;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController // 클라이언트에서 서버에서 특정한 행동을 요청 받고 처리하는 컨트롤러 입니다
 @RequestMapping("/request")
@@ -70,4 +65,24 @@ public class RequestHandlerApi {
         FoodService.saveFood(foodDto);
         return ResponseEntity.ok(Map.of("message", "음식 기록이 성공적으로 저장되었습니다!"));
     }
+
+    // 사용자의 diet_record 조회
+    @GetMapping("/diet-records")
+    public ResponseEntity<List<DietRecord>> getUserDietRecords(
+            @RequestHeader("Authorization") String token) {
+
+        try {
+            // JWT 토큰에서 사용자 ID 추출 (Bearer 접두어 제거)
+            String userid = jwtUtil.extractUsername(token.replace("Bearer ", ""));
+            // 사용자 ID로 식단 기록 가져오기
+            List<DietRecord> dietRecords = FoodService.getDietRecordsByUser(userid);
+            return ResponseEntity.ok()
+                    .header("Content-Type", "application/json")
+                    .body(dietRecords);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).build(); // Unauthorized (401)
+        }
+    }
+
+
 }

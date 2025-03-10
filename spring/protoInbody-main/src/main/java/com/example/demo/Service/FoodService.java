@@ -33,6 +33,7 @@ public class FoodService {
     RepoDietRecord RepoDietRecord;
     @Autowired
     EntityConversionService EntityConversionService;
+    
 
     public boolean saveFood(FoodDto FoodDto) {
         UserInfo userInfo = RepoUserInfo.findByUserid(FoodDto.getUserid());
@@ -40,11 +41,19 @@ public class FoodService {
             return false;
         }
 
-        System.out.println(EntityConversionService.convertToEntity(FoodDto,
-                DietRecord.class));
-        RepoDietRecord.save(EntityConversionService.convertToEntity(FoodDto,
-                DietRecord.class));
+        // 변환된 DietRecord 확인용 로그 추가
+        DietRecord dietRecord = EntityConversionService.convertToEntity(FoodDto, DietRecord.class);
+        System.out.println("변환된 DietRecord: " + dietRecord);
+
+        // 저장하기 전에 필드 값이 비어있는지 확인 후 기본값 설정
+        if (dietRecord.getTotalcalori() == 0.0) dietRecord.setTotalcalori(FoodDto.getEnerc());
+        if (dietRecord.getTotalcarbs() == 0.0) dietRecord.setTotalcarbs(FoodDto.getChocdf());
+        if (dietRecord.getTotalprotein() == 0.0) dietRecord.setTotalprotein(FoodDto.getProt());
+        if (dietRecord.getTotalfat() == 0.0) dietRecord.setTotalfat(FoodDto.getFatce());
+
+        RepoDietRecord.save(dietRecord);
         System.out.println("음식 기록이 성공적으로 저장되었습니다!");
+
         return true;
     }
 
@@ -126,5 +135,10 @@ public class FoodService {
             }
         }
         return foodDetailsList;
+    }
+    
+    // 로그인 사용자의 diet_record 조회
+    public List<DietRecord> getDietRecordsByUser(String userid) {
+        return RepoDietRecord.findByUserInfoUserid(userid);
     }
 }
