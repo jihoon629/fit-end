@@ -32,11 +32,14 @@ public class DietRecord {
     @Column(nullable = true)
     private String dietMemo;  // diet_memo 필드 추가
 
+    @Column(nullable = true)
+    private String foodName;
+
     public DietRecord() {
     }
 
     public DietRecord(Long id, UserInfo userInfo, Date timestamp, double totalcalori, double totalcarbs,
-                      double totalprotein, double totalfat, String dietMemo) {
+                      double totalprotein, double totalfat, String dietMemo, String foodName) {
         this.id = id;
         this.userInfo = userInfo;
         this.timestamp = timestamp;
@@ -45,6 +48,7 @@ public class DietRecord {
         this.totalprotein = totalprotein;
         this.totalfat = totalfat;
         this.dietMemo = dietMemo;
+        this.foodName = foodName;
     }
 
     public Long getId() {
@@ -109,5 +113,13 @@ public class DietRecord {
 
     public void setDietMemo(String dietMemo) {
         this.dietMemo = dietMemo;
+    }
+
+    public String getFoodName() {
+        return foodName;
+    }
+
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
     }
 }
