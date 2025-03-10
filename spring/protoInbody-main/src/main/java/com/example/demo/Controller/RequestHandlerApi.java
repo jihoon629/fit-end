@@ -80,12 +80,11 @@ public class RequestHandlerApi {
         dietRecord.setTotalcarbs(foodDto.getChocdf());
         dietRecord.setTotalprotein(foodDto.getProt());
         dietRecord.setTotalfat(foodDto.getFatce());
+        dietRecord.setFoodName(foodDto.getFoodNm());
 
         dietRecordRepository.save(dietRecord);
         System.out.println("음식 기록이 성공적으로 저장되었습니다!");
 
         return ResponseEntity.ok(Map.of("message", "음식 기록이 성공적으로 저장되었습니다!"));
     }
-
-
 }
