@@ -3,8 +3,9 @@ package com.example.demo.DTO;
 import javax.validation.constraints.*;
 
 import com.example.demo.Entity.ScoreRankMale;
+import com.example.demo.Service.Convert.HasUserId;
 
-public class ScoreRankMaleDTO {
+public class ScoreRankMaleDTO implements HasUserId {
     private Long id;
     @Min(value = 20)
     private int sex;

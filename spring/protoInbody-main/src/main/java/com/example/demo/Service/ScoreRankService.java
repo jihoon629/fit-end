@@ -16,6 +16,7 @@ import com.example.demo.DTO.ScoreRankFemaleDTO;
 import com.example.demo.DTO.ScoreRankMaleDTO;
 import com.example.demo.DTO.UserBodyInfoDTO;
 import com.example.demo.Entity.ScoreRankFemale;
+import com.example.demo.Service.Convert.EntityConversionService;
 
 import org.modelmapper.ModelMapper;
 
@@ -30,6 +31,9 @@ public class ScoreRankService {
 
     @Autowired
     private RepoUserInfo RepoUserInfo;
+
+    @Autowired
+    EntityConversionService EntityConversionService;
 
     private ModelMapper modelMapper = new ModelMapper();
 

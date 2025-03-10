@@ -22,11 +22,13 @@ export default function Main() {
   };
   const handleLogout = () => {
     sessionStorage.removeItem("userid"); // 로그아웃 시 사용자 정보 삭제
+    sessionStorage.removeItem("token"); // 로그아웃 시 사용자 정보 삭제
+
     navigate("/login"); // 로그인 페이지로 이동
   };
 
   useEffect(() => {
-    if (!token) {
+    if (!token || !userid) {
       navigate("/login"); // 로그인 안 했으면 로그인 페이지로 강제 이동
       return;
     }
@@ -59,6 +61,9 @@ export default function Main() {
       <div>
         <p>⚠️ 신체 기록이 없습니다. 데이터를 입력해주세요.</p>
         <button onClick={navigateToRecordBody}>기록 추가하기</button>
+        <button onClick={handleLogout} style={{ marginLeft: "10px" }}>
+          나가기
+        </button>
       </div>
     );
   }

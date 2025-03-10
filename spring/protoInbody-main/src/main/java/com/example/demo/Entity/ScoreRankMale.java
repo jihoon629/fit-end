@@ -1,10 +1,12 @@
 package com.example.demo.Entity;
 
+import com.example.demo.Service.Convert.HasUserInfo;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "score_rank_male", indexes = { @Index(name = "idx_score_male", columnList = "score DESC") })
-public class ScoreRankMale {
+public class ScoreRankMale implements HasUserInfo {
 
     @ManyToOne
     @JoinColumn(name = "userid", referencedColumnName = "userid", nullable = false)

@@ -37,12 +37,6 @@ public class RequestHandlerApi {
     FoodService FoodService;
 
     @Autowired
-    RepoDietRecord dietRecordRepository;// 식단 기록 저장소
-
-    @Autowired
-    RepoUserInfo userInfoRepository; // 유저 정보 저장소
-
-    @Autowired
     JwtUtil jwtUtil;
 
     @PostMapping("/login") // 로그인 관련 컨트롤러
@@ -73,24 +67,7 @@ public class RequestHandlerApi {
             return ResponseEntity.badRequest().body(Map.of("error", "잘못된 요청: 사용자 ID 누락"));
         }
 
-        UserInfo userInfo = userInfoRepository.findByUserid(foodDto.getUserid());
-        if (userInfo == null) {
-            return ResponseEntity.status(404).body(Map.of("error", "사용자 찾을 수 없음"));
-        }
-
-        DietRecord dietRecord = new DietRecord();
-        dietRecord.setUserInfo(userInfo);
-        dietRecord.setTimestamp(foodDto.getTimestamp());
-        dietRecord.setDietMemo(foodDto.getDietMemo());
-        dietRecord.setTotalcalori(foodDto.getEnerc());
-        dietRecord.setTotalcarbs(foodDto.getChocdf());
-        dietRecord.setTotalprotein(foodDto.getProt());
-        dietRecord.setTotalfat(foodDto.getFatce());
-        dietRecord.setFoodName(foodDto.getFoodNm());
-
-        dietRecordRepository.save(dietRecord);
-        System.out.println("음식 기록이 성공적으로 저장되었습니다!");
-
+        FoodService.saveFood(foodDto);
         return ResponseEntity.ok(Map.of("message", "음식 기록이 성공적으로 저장되었습니다!"));
     }
 }

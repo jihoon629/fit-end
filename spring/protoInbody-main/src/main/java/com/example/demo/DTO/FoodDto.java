@@ -1,10 +1,11 @@
 package com.example.demo.DTO;
 
+import com.example.demo.Service.Convert.HasUserId;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FoodDto {
+public class FoodDto implements HasUserId {
 
     private String foodNm;
     private String mfrNm;
@@ -14,14 +15,14 @@ public class FoodDto {
     private double chocdf;
     private double foodSize;
     private String userid;
-    private String dietMemo;  // 추가된 필드
-    private Date timestamp;   // 추가된 필드
+    private String dietMemo; // 추가된 필드
+    private Date timestamp; // 추가된 필드
 
     public FoodDto() {
     }
 
     public FoodDto(String foodNm, String mfrNm, double enerc, double prot, double fatce, double chocdf,
-                   double foodSize, String userid, String dietMemo, Date timestamp) {
+            double foodSize, String userid, String dietMemo, Date timestamp) {
         this.foodNm = foodNm;
         this.mfrNm = mfrNm;
         this.enerc = enerc;

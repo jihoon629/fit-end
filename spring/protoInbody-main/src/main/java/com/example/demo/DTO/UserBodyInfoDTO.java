@@ -3,8 +3,9 @@ package com.example.demo.DTO;
 import java.util.Date;
 
 import com.example.demo.Entity.UserBodyInfo;
+import com.example.demo.Service.Convert.HasUserId;
 
-public class UserBodyInfoDTO {
+public class UserBodyInfoDTO implements HasUserId {
     private Long id;
     private String userid; // 추가된 필드
     private double height;

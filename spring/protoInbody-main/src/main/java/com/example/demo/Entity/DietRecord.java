@@ -1,10 +1,13 @@
 package com.example.demo.Entity;
 
 import java.util.Date;
+
+import com.example.demo.Service.Convert.HasUserInfo;
+
 import jakarta.persistence.*;
 
 @Entity
-public class DietRecord {
+public class DietRecord implements HasUserInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +33,7 @@ public class DietRecord {
     private double totalfat;
 
     @Column(nullable = true)
-    private String dietMemo;  // diet_memo 필드 추가
+    private String dietMemo; // diet_memo 필드 추가
 
     @Column(nullable = true)
     private String foodName;
@@ -39,7 +42,7 @@ public class DietRecord {
     }
 
     public DietRecord(Long id, UserInfo userInfo, Date timestamp, double totalcalori, double totalcarbs,
-                      double totalprotein, double totalfat, String dietMemo, String foodName) {
+            double totalprotein, double totalfat, String dietMemo, String foodName) {
         this.id = id;
         this.userInfo = userInfo;
         this.timestamp = timestamp;

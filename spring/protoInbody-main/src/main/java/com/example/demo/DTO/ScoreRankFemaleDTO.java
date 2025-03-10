@@ -1,8 +1,9 @@
 package com.example.demo.DTO;
 
 import com.example.demo.Entity.ScoreRankFemale;
+import com.example.demo.Service.Convert.HasUserId;
 
-public class ScoreRankFemaleDTO {
+public class ScoreRankFemaleDTO implements HasUserId {
     private Long id;
     private int sex;
     private int age;

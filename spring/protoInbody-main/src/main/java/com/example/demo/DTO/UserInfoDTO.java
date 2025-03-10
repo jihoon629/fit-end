@@ -2,7 +2,9 @@ package com.example.demo.DTO;
 
 import java.time.LocalDate;
 
-public class UserInfoDTO {
+import com.example.demo.Service.Convert.HasUserId;
+
+public class UserInfoDTO implements HasUserId {
     private Long id;
     private String userid;
     private String password;
