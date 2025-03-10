@@ -1,5 +1,7 @@
 package com.example.demo.Service.Convert;
 
+import com.example.demo.DTO.FoodDto;
+import com.example.demo.Entity.DietRecord;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,17 @@ public class EntityConversionService {
     private RepoUserInfo repoUserInfo;
 
     public <D, E> E convertToEntity(D dto, Class<E> entityClass) {
+        ModelMapper modelMapper = new ModelMapper();
+
+        // 필드 매핑 추가 (FoodDto → DietRecord)
+        modelMapper.typeMap(FoodDto.class, DietRecord.class).addMappings(mapper -> {
+            mapper.map(FoodDto::getEnerc, DietRecord::setTotalcalori);
+            mapper.map(FoodDto::getChocdf, DietRecord::setTotalcarbs);
+            mapper.map(FoodDto::getProt, DietRecord::setTotalprotein);
+            mapper.map(FoodDto::getFatce, DietRecord::setTotalfat);
+            mapper.map(FoodDto::getFoodNm, DietRecord::setFoodName);
+        });
+
         // DTO를 엔티티로 변환합니다.
         E entity = modelMapper.map(dto, entityClass);
 
