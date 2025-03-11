@@ -14,7 +14,7 @@ public class FoodDto implements HasUserId {
     private double fatce;
     private double chocdf;
     private double foodSize;
-    private String userid;
+    private String userid; //
     private String dietMemo; // 추가된 필드
     private Date timestamp; // 추가된 필드
 

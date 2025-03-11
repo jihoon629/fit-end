@@ -122,4 +122,10 @@ public class UserInfo {
         this.birth = birth;
     }
 
+    @Override
+    public String toString() {
+        return "UserInfo [id=" + id + ", userid=" + userid + ", password=" + password + ", email=" + email + ", sex="
+                + sex + ", region1=" + region1 + ", region2=" + region2 + ", birth=" + birth + "]";
+    }
+
 }

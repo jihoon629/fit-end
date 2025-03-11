@@ -4,7 +4,6 @@ import com.example.demo.Repo.RepoScoreRankFemale;
 import com.example.demo.Repo.RepoScoreRankMale;
 import com.example.demo.Repo.RepoUserInfo;
 import com.example.demo.Entity.ScoreRankMale;
-import com.example.demo.Entity.UserInfo;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,8 +16,6 @@ import com.example.demo.DTO.ScoreRankMaleDTO;
 import com.example.demo.DTO.UserBodyInfoDTO;
 import com.example.demo.Entity.ScoreRankFemale;
 import com.example.demo.Service.Convert.EntityConversionService;
-
-import org.modelmapper.ModelMapper;
 
 @Service
 public class ScoreRankService {
@@ -34,8 +31,6 @@ public class ScoreRankService {
 
     @Autowired
     EntityConversionService EntityConversionService;
-
-    private ModelMapper modelMapper = new ModelMapper();
 
     // 남성쪽 점수랭킹
     public List<ScoreRankMaleDTO> showRankMale() {
@@ -77,7 +72,7 @@ public class ScoreRankService {
             ScoreRankMaleDTO.setScore((int) UserBodyInfoDTO.getInbodyScore());
             ScoreRankMaleDTO.setUserid(UserBodyInfoDTO.getUserid());
 
-            RepoScoreRankMale.save(convertToEntity(ScoreRankMaleDTO));
+            RepoScoreRankMale.save(EntityConversionService.convertToEntity(ScoreRankMaleDTO, ScoreRankMale.class));
 
         } else if (UserBodyInfoDTO.getSex() == 2) { // 여성
             if (ScoreRankFemale == null) {
@@ -96,24 +91,9 @@ public class ScoreRankService {
             ScoreRankFemaleDTO.setScore((int) UserBodyInfoDTO.getInbodyScore());
             ScoreRankFemaleDTO.setUserid(UserBodyInfoDTO.getUserid());
 
-            RepoScoreRankFemale.save(convertToEntityF(ScoreRankFemaleDTO));
+            RepoScoreRankFemale
+                    .save(EntityConversionService.convertToEntity(ScoreRankFemaleDTO, ScoreRankFemale.class));
         }
-
-    }
-
-    private ScoreRankMale convertToEntity(ScoreRankMaleDTO ScoreRankMaleDTO) {
-        UserInfo UserInfo = RepoUserInfo.findByUserid(ScoreRankMaleDTO.getUserid());
-        ScoreRankMale ScoreRankMale = modelMapper.map(ScoreRankMaleDTO, ScoreRankMale.class);
-        ScoreRankMale.setUserInfo(UserInfo);
-        return ScoreRankMale;
-
-    }
-
-    private ScoreRankFemale convertToEntityF(ScoreRankFemaleDTO ScoreRankFemaleDTO) {
-        UserInfo UserInfo = RepoUserInfo.findByUserid(ScoreRankFemaleDTO.getUserid());
-        ScoreRankFemale ScoreRankFemale = modelMapper.map(ScoreRankFemaleDTO, ScoreRankFemale.class);
-        ScoreRankFemale.setUserInfo(UserInfo);
-        return ScoreRankFemale;
 
     }
 

@@ -11,6 +11,8 @@ public interface RepoUserBodyInfo extends JpaRepository<UserBodyInfo, Long> {
 
     List<UserBodyInfo> findTop5ByUserInfo_UseridOrderByDateDesc(String userid);
 
+    List<UserBodyInfo> findByAge(int age);
+
     // @Query("SELECT u FROM UserBodyInfo u WHERE u.userid = :userid ORDER BY u.date
     // DESC")
     // List<UserBodyInfo> findRecentByUserid(@Param("userid") String userid);

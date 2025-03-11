@@ -17,41 +17,32 @@ public class DietRecord implements HasUserInfo {
     @JoinColumn(name = "userid", referencedColumnName = "userid", nullable = false)
     private UserInfo userInfo;
 
-    @Column(nullable = false)
-    private Date timestamp;
-
-    @Column(nullable = false)
-    private double totalcalori;
-
-    @Column(nullable = false)
-    private double totalcarbs;
-
-    @Column(nullable = false)
-    private double totalprotein;
-
-    @Column(nullable = false)
-    private double totalfat;
-
-    @Column(nullable = true)
-    private String dietMemo; // diet_memo 필드 추가
-
-    @Column(nullable = true)
-    private String foodName;
+    private String foodNm;
+    private String mfrNm;
+    private double enerc;
+    private double prot;
+    private double fatce;
+    private double chocdf;
+    private double foodSize;
+    private String dietMemo; // 추가된 필드
+    private Date timestamp; // 추가된 필드
 
     public DietRecord() {
     }
 
-    public DietRecord(Long id, UserInfo userInfo, Date timestamp, double totalcalori, double totalcarbs,
-            double totalprotein, double totalfat, String dietMemo, String foodName) {
+    public DietRecord(Long id, UserInfo userInfo, String foodNm, String mfrNm, double enerc, double prot, double fatce,
+            double chocdf, double foodSize, String dietMemo, Date timestamp) {
         this.id = id;
         this.userInfo = userInfo;
-        this.timestamp = timestamp;
-        this.totalcalori = totalcalori;
-        this.totalcarbs = totalcarbs;
-        this.totalprotein = totalprotein;
-        this.totalfat = totalfat;
+        this.foodNm = foodNm;
+        this.mfrNm = mfrNm;
+        this.enerc = enerc;
+        this.prot = prot;
+        this.fatce = fatce;
+        this.chocdf = chocdf;
+        this.foodSize = foodSize;
         this.dietMemo = dietMemo;
-        this.foodName = foodName;
+        this.timestamp = timestamp;
     }
 
     public Long getId() {
@@ -70,44 +61,60 @@ public class DietRecord implements HasUserInfo {
         this.userInfo = userInfo;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public String getFoodNm() {
+        return foodNm;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setFoodNm(String foodNm) {
+        this.foodNm = foodNm;
     }
 
-    public double getTotalcalori() {
-        return totalcalori;
+    public String getMfrNm() {
+        return mfrNm;
     }
 
-    public void setTotalcalori(double totalcalori) {
-        this.totalcalori = totalcalori;
+    public void setMfrNm(String mfrNm) {
+        this.mfrNm = mfrNm;
     }
 
-    public double getTotalcarbs() {
-        return totalcarbs;
+    public double getEnerc() {
+        return enerc;
     }
 
-    public void setTotalcarbs(double totalcarbs) {
-        this.totalcarbs = totalcarbs;
+    public void setEnerc(double enerc) {
+        this.enerc = enerc;
     }
 
-    public double getTotalprotein() {
-        return totalprotein;
+    public double getProt() {
+        return prot;
     }
 
-    public void setTotalprotein(double totalprotein) {
-        this.totalprotein = totalprotein;
+    public void setProt(double prot) {
+        this.prot = prot;
     }
 
-    public double getTotalfat() {
-        return totalfat;
+    public double getFatce() {
+        return fatce;
     }
 
-    public void setTotalfat(double totalfat) {
-        this.totalfat = totalfat;
+    public void setFatce(double fatce) {
+        this.fatce = fatce;
+    }
+
+    public double getChocdf() {
+        return chocdf;
+    }
+
+    public void setChocdf(double chocdf) {
+        this.chocdf = chocdf;
+    }
+
+    public double getFoodSize() {
+        return foodSize;
+    }
+
+    public void setFoodSize(double foodSize) {
+        this.foodSize = foodSize;
     }
 
     public String getDietMemo() {
@@ -118,11 +125,12 @@ public class DietRecord implements HasUserInfo {
         this.dietMemo = dietMemo;
     }
 
-    public String getFoodName() {
-        return foodName;
+    public Date getTimestamp() {
+        return timestamp;
     }
 
-    public void setFoodName(String foodName) {
-        this.foodName = foodName;
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
+
 }

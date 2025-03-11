@@ -14,7 +14,7 @@ import com.example.demo.Entity.UserInfo;
 import com.example.demo.Repo.RepoUserBodyInfo;
 import com.example.demo.Repo.RepoUserInfo;
 
-import org.modelmapper.ModelMapper;
+import com.example.demo.Service.Convert.EntityConversionService;
 
 @Service
 public class UserBodyInfoService {
@@ -27,12 +27,11 @@ public class UserBodyInfoService {
 
     @Autowired
     private ScoreRankService ScoreRankService;
-
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    EntityConversionService EntityConversionService;
 
     // 신체기록 서비스
     public UserBodyInfoDTO recordeUserBodyInfo(UserBodyInfoDTO UserBodyInfoDTO) {
-
         // UserInfo 엔티티 먼저 확인 및 저장
         String userid = UserBodyInfoDTO.getUserid(); // DTO에서 userid 가져오기
         UserInfo foundUserInfo = RepoUserInfo.findByUserid(userid);
@@ -64,7 +63,7 @@ public class UserBodyInfoService {
         ScoreRankService.saveToScoreRank(UserBodyInfoDTO);
 
         // 데이터베이스에 저장
-        RepoUserBodyInfo.save(convertToEntity(UserBodyInfoDTO));
+        RepoUserBodyInfo.save(EntityConversionService.convertToEntity(UserBodyInfoDTO, UserBodyInfo.class));
 
         return UserBodyInfoDTO;
     }
@@ -102,12 +101,10 @@ public class UserBodyInfoService {
         return inbodyScore;
     }
 
-    private UserBodyInfo convertToEntity(UserBodyInfoDTO UserBodyInfoDTO) {
-        UserInfo UserInfo = RepoUserInfo.findByUserid(UserBodyInfoDTO.getUserid());
-        UserBodyInfo UserBodyInfo = modelMapper.map(UserBodyInfoDTO, UserBodyInfo.class);
-        UserBodyInfo.setUserInfo(UserInfo);
-        return UserBodyInfo;
-
+    public List<UserBodyInfoDTO> getUserBodyInfoByAge(int age) {
+        List<UserBodyInfo> userBodyInfos = RepoUserBodyInfo.findByAge(age);
+        return userBodyInfos.stream()
+                .map(UserBodyInfoDTO::new)
+                .collect(Collectors.toList());
     }
-
 }

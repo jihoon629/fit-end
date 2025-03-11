@@ -39,7 +39,7 @@ export default function FoodSearchR() {
 
     const foodData = {
       ...item,
-      userid: sessionStorage.getItem("userid") || "default_user", // 유저 ID 기본값 설정
+      userid: userid, // 유저 ID 기본값 설정
       timestamp: selectedDate || new Date().toISOString(), // 선택한 날짜가 없으면 현재 날짜
       dietMemo: dietMemo || "메모 없음", // 메모 기본값 설정
     };

@@ -8,15 +8,16 @@ export default function TodoCalender() {
 
   // sessionStorage에서 JWT 토큰를 가져옵니다.
   const token = sessionStorage.getItem("token");
+  const userid = sessionStorage.getItem("userid");
 
   useEffect(() => {
     if (token) {
-      fetch(`http://${config.SERVER_URL}/request/diet-records`, {
+      fetch(`http://${config.SERVER_URL}/request/diet-records/${userid}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
         .then((response) => {
           if (!response.ok) {
@@ -50,11 +51,13 @@ export default function TodoCalender() {
                 ? new Date(record.timestamp).toLocaleDateString("ko-KR")
                 : "날짜 없음"}
             </p>
-            <p> 음식: {record.foodName || "음식 없음"}</p>
-            <p> 칼로리: {record.totalcalori || 0} kcal</p>
-            <p> 단백질: {record.totalprotein || 0}g</p>
-            <p> 탄수화물: {record.totalcarbs || 0}g</p>
-            <p> 지방: {record.totalfat || 0}g</p>
+            <p> 음식: {record.foodNm || "음식 없음"}</p>
+            <p> 칼로리: {record.enerc || 0} kcal</p>
+            <p> 단백질: {record.prot || 0}g</p>
+            <p> 탄수화물: {record.chocdf || 0}g</p>
+            <p> 지방: {record.fatce || 0}g</p>
+            <p> 제조사: {record.mfrNm || 0}g</p>
+
             <hr />
           </div>
         ))

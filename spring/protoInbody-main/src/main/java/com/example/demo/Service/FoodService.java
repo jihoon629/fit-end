@@ -22,7 +22,6 @@ import com.example.demo.Repo.RepoUserInfo;
 import com.example.demo.Service.Convert.EntityConversionService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.modelmapper.ModelMapper;
 
 @Service
 public class FoodService {
@@ -33,7 +32,6 @@ public class FoodService {
     RepoDietRecord RepoDietRecord;
     @Autowired
     EntityConversionService EntityConversionService;
-    
 
     public boolean saveFood(FoodDto FoodDto) {
         UserInfo userInfo = RepoUserInfo.findByUserid(FoodDto.getUserid());
@@ -46,10 +44,14 @@ public class FoodService {
         System.out.println("변환된 DietRecord: " + dietRecord);
 
         // 저장하기 전에 필드 값이 비어있는지 확인 후 기본값 설정
-        if (dietRecord.getTotalcalori() == 0.0) dietRecord.setTotalcalori(FoodDto.getEnerc());
-        if (dietRecord.getTotalcarbs() == 0.0) dietRecord.setTotalcarbs(FoodDto.getChocdf());
-        if (dietRecord.getTotalprotein() == 0.0) dietRecord.setTotalprotein(FoodDto.getProt());
-        if (dietRecord.getTotalfat() == 0.0) dietRecord.setTotalfat(FoodDto.getFatce());
+        if (dietRecord.getEnerc() == 0.0)
+            dietRecord.setEnerc(FoodDto.getEnerc());
+        if (dietRecord.getChocdf() == 0.0)
+            dietRecord.setChocdf(FoodDto.getChocdf());
+        if (dietRecord.getProt() == 0.0)
+            dietRecord.setProt(FoodDto.getProt());
+        if (dietRecord.getFatce() == 0.0)
+            dietRecord.setFatce(FoodDto.getFatce());
 
         RepoDietRecord.save(dietRecord);
         System.out.println("음식 기록이 성공적으로 저장되었습니다!");
@@ -136,7 +138,7 @@ public class FoodService {
         }
         return foodDetailsList;
     }
-    
+
     // 로그인 사용자의 diet_record 조회
     public List<DietRecord> getDietRecordsByUser(String userid) {
         return RepoDietRecord.findByUserInfoUserid(userid);

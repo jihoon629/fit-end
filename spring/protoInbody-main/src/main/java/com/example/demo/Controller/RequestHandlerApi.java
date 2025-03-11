@@ -2,8 +2,6 @@ package com.example.demo.Controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.DTO.FoodDto;
 import com.example.demo.DTO.UserInfoDTO;
 import com.example.demo.Entity.DietRecord;
-import com.example.demo.Entity.UserInfo;
 import com.example.demo.Jwt.AuthenticationResponse;
 import com.example.demo.Jwt.JwtUtil;
-import com.example.demo.Repo.RepoDietRecord;
-import com.example.demo.Repo.RepoUserInfo;
-import com.example.demo.Service.FoodService;
-import com.example.demo.Service.UserInfoService;
 
+import com.example.demo.Service.FoodService;
+import com.example.demo.Service.UserBodyInfoService;
+import com.example.demo.Service.UserInfoService;
 
 @RestController // 클라이언트에서 서버에서 특정한 행동을 요청 받고 처리하는 컨트롤러 입니다
 @RequestMapping("/request")
@@ -27,6 +23,8 @@ public class RequestHandlerApi {
 
     @Autowired
     UserInfoService UserInfoService;
+    @Autowired
+    UserBodyInfoService UserBodyInfoService;
 
     @Autowired
     FoodService FoodService;
@@ -67,22 +65,13 @@ public class RequestHandlerApi {
     }
 
     // 사용자의 diet_record 조회
-    @GetMapping("/diet-records")
-    public ResponseEntity<List<DietRecord>> getUserDietRecords(
-            @RequestHeader("Authorization") String token) {
+    @GetMapping("/diet-records/{userid}")
+    public ResponseEntity<List<DietRecord>> getUserDietRecords(@PathVariable String userid) {
 
-        try {
-            // JWT 토큰에서 사용자 ID 추출 (Bearer 접두어 제거)
-            String userid = jwtUtil.extractUsername(token.replace("Bearer ", ""));
-            // 사용자 ID로 식단 기록 가져오기
-            List<DietRecord> dietRecords = FoodService.getDietRecordsByUser(userid);
-            return ResponseEntity.ok()
-                    .header("Content-Type", "application/json")
-                    .body(dietRecords);
-        } catch (Exception e) {
-            return ResponseEntity.status(401).build(); // Unauthorized (401)
-        }
+        // 사용자 ID로 식단 기록 가져오기
+        List<DietRecord> dietRecords = FoodService.getDietRecordsByUser(userid);
+        return ResponseEntity.ok(dietRecords);
+
     }
-
 
 }

@@ -9,11 +9,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.example.demo.Service.Convert.HasUserInfo;
+
 import jakarta.persistence.ManyToOne;
 
 @Entity // db랑 연동될떄 필요한 클래스랑 어노테이션이에요 연관되는 레포랑 연결해주세요 세터게터 필수
 @Table(name = "user_body_info")
-public class UserBodyInfo {
+public class UserBodyInfo implements HasUserInfo {
 
     @ManyToOne
     @JoinColumn(name = "userid", referencedColumnName = "userid", nullable = false)
@@ -181,6 +184,13 @@ public class UserBodyInfo {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "UserBodyInfo [userInfo=" + userInfo + ", id=" + id + ", height=" + height + ", weight=" + weight
+                + ", fatpercentage=" + fatpercentage + ", fatmass=" + fatmass + ", leanmass=" + leanmass + ", bmi="
+                + bmi + ", inbodyScore=" + inbodyScore + ", date=" + date + ", sex=" + sex + ", age=" + age + "]";
     }
 
 }
