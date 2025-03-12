@@ -26,7 +26,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/request/login").permitAll()
                         .requestMatchers("/upload/register").permitAll()
-                        .anyRequest().authenticated());
+                        .requestMatchers("/download/**").authenticated()
+                        .anyRequest().authenticated()); // 이 부분은 올바른 위치에 있습니다.
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

@@ -22,22 +22,9 @@ public class SaveRawFood {
     @Autowired
     EntityConversionService EntityConversionService;
 
-    public void RawFood(RawFoodDto RawFoodDto) {
-
-        RepoRawFood.save(EntityConversionService.convertToEntity(RawFoodDto, RawFood.class));
-
-    }
-
-    String[] a = { "식품코드", "식품명", "데이터구분코드", "데이터구분명", "식품기원코드", "식품기원명", "식품대분류코드", "식품대분류명", "대표식품코드", "대표식품명",
-            "식품중분류코드", "식품중분류명", "식품소분류코드", "식품소분류명", "식품세분류코드", "식품세분류명", "영양성분함량기준량", "에너지(kcal)", "수분(g)", "단백질(g)",
-            "지방(g)", "회분(g)", "탄수화물(g)", "당류(g)", "식이섬유(g)", "칼슘(mg)", "철(mg)", "인(mg)", "칼륨(mg)", "나트륨(mg)",
-            "비타민 A(μg RAE)", "레티놀(μg)", "베타카로틴(μg)", "티아민(mg)", "리보플라빈(mg)", "니아신(mg)", "비타민 C(mg)", "비타민 D(μg)",
-            "콜레스테롤(mg)", "포화지방산(g)", "트랜스지방산(g)", "출처코드", "출처명", "1회 섭취참고량", "식품중량", "품목제조보고번호", "제조사명", "수입업체명",
-            "유통업체명", "수입여부", "원산지국코드", "원산지국명", "데이터생성방법코드", "데이터생성방법명", "데이터생성일자", "데이터기준일자", "제공기관코드", "제공기관명" };
-
     public void saveFromCsv() {
         try (CSVReader reader = new CSVReader(new InputStreamReader(
-                getClass().getResourceAsStream("/fooddata.csv"), "EUC-KR"))) {
+                getClass().getResourceAsStream("/processeddata.csv")))) {
             String[] line;
             List<RawFoodDto> rawFoodDtoList = new ArrayList<>();
 
@@ -45,12 +32,66 @@ public class SaveRawFood {
 
             while ((line = reader.readNext()) != null) {
                 RawFoodDto rawFoodDto = new RawFoodDto();
+                // ... existing code ...
+                rawFoodDto.setFoodCd(line[0]);
                 rawFoodDto.setFoodNm(line[1]);
-                rawFoodDto.setChocdf(parseDoubleOrDefault(line[21], 0.0));
-                rawFoodDto.setEnerc(parseDoubleOrDefault(line[17], 0.0));
-                rawFoodDto.setFatce(parseDoubleOrDefault(line[19], 0.0));
-                rawFoodDto.setProt(parseDoubleOrDefault(line[18], 0.0));
+                rawFoodDto.setDataCd(line[2]);
+                rawFoodDto.setTypeNm(line[3]);
+                rawFoodDto.setFoodOriginCd(line[4]);
+                rawFoodDto.setFoodOriginNm(line[5]);
+                rawFoodDto.setFoodLv3Cd(line[6]);
+                rawFoodDto.setFoodLv3Nm(line[7]);
+                rawFoodDto.setFoodLv4Cd(line[8]);
+                rawFoodDto.setFoodLv4Nm(line[9]);
+                rawFoodDto.setFoodLv5Cd(line[10]);
+                rawFoodDto.setFoodLv5Nm(line[11]);
+                rawFoodDto.setFoodLv6Cd(line[12]);
+                rawFoodDto.setFoodLv6Nm(line[13]);
+                rawFoodDto.setFoodLv7Cd(line[14]);
+                rawFoodDto.setFoodLv7Nm(line[15]);
+                rawFoodDto.setNutConSrtrQua(parseDouble(line[16]));
+                rawFoodDto.setEnerc(parseDouble(line[17]));
+                rawFoodDto.setWater(parseDouble(line[18]));
+                rawFoodDto.setProt(parseDouble(line[19]));
+                rawFoodDto.setFatce(parseDouble(line[20]));
+                rawFoodDto.setAsh(parseDouble(line[21]));
+                rawFoodDto.setChocdf(parseDouble(line[22]));
+                rawFoodDto.setSugar(parseDouble(line[23]));
+                rawFoodDto.setFibtg(parseDouble(line[24]));
+                rawFoodDto.setCa(parseDouble(line[25]));
+                rawFoodDto.setFe(parseDouble(line[26]));
+                rawFoodDto.setP(parseDouble(line[27]));
+                rawFoodDto.setK(parseDouble(line[28]));
+                rawFoodDto.setNat(parseDouble(line[29]));
+                rawFoodDto.setVitaRae(parseDouble(line[30]));
+                rawFoodDto.setRetol(parseDouble(line[31]));
+                rawFoodDto.setCartb(parseDouble(line[32]));
+                rawFoodDto.setThia(parseDouble(line[33]));
+                rawFoodDto.setRibf(parseDouble(line[34]));
+                rawFoodDto.setNia(parseDouble(line[35]));
+                rawFoodDto.setVitc(parseDouble(line[36]));
+                rawFoodDto.setVitd(parseDouble(line[37]));
+                rawFoodDto.setChole(parseDouble(line[38]));
+                rawFoodDto.setFasat(parseDouble(line[39]));
+                rawFoodDto.setFatrn(parseDouble(line[40]));
+                rawFoodDto.setSrcCd(line[41]);
+                rawFoodDto.setSrcNm(line[42]);
+                rawFoodDto.setServSize(parseDouble(line[43]));
+                rawFoodDto.setFoodSize(parseDouble(line[44]));
+                rawFoodDto.setItemMnftrRptNo(line[45]);
                 rawFoodDto.setMfrNm(line[46]);
+                rawFoodDto.setImptNm(line[47]);
+                rawFoodDto.setDistNm(line[48]);
+                rawFoodDto.setImptYn(Boolean.parseBoolean(line[49]));
+                rawFoodDto.setCooCd(line[50]);
+                rawFoodDto.setCooNm(line[51]);
+                rawFoodDto.setDataProdCd(line[52]);
+                rawFoodDto.setDataProdNm(line[53]);
+                rawFoodDto.setCrtYmd(line[54]);
+                rawFoodDto.setCrtrYmd(line[55]);
+                rawFoodDto.setInsttCode(line[56]);
+                rawFoodDto.setInsttNm(line[57]);
+                // ... existing code ...
                 // ... 다른 필드 설정 ...
                 rawFoodDtoList.add(rawFoodDto);
             }
@@ -62,14 +103,8 @@ public class SaveRawFood {
         }
     }
 
-    private double parseDoubleOrDefault(String value, double defaultValue) {
-        if (value == null || value.trim().isEmpty()) {
-            return defaultValue;
-        }
-        try {
-            return Double.parseDouble(value);
-        } catch (NumberFormatException e) {
-            return defaultValue;
-        }
+    private double parseDouble(String value) {
+        String numericValue = value.replaceAll("[^\\d.]", "");
+        return numericValue.isEmpty() ? 0.0 : Double.parseDouble(numericValue);
     }
 }
