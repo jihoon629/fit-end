@@ -36,9 +36,16 @@ public class RequestHandlerApi {
     @Autowired
     SaveRawFood SaveRawFood;
 
+    @GetMapping("/up")
+    public String savecvs() {
+
+        SaveRawFood.saveFromCsv();
+
+        return "기다려";
+    }
+
     @PostMapping("/login") // 로그인 관련 컨트롤러
     public ResponseEntity<?> loginUser(@RequestBody UserInfoDTO UserInfoDTO) {
-        SaveRawFood.saveFromCsv();
         boolean isAuthenticated = UserInfoService.authenticateUser(UserInfoDTO);
         if (isAuthenticated) {
             System.out.println("로그인성공");

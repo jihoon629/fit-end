@@ -91,7 +91,6 @@ public class SaveRawFood {
                 rawFoodDto.setCrtrYmd(line[55]);
                 rawFoodDto.setInsttCode(line[56]);
                 rawFoodDto.setInsttNm(line[57]);
-                // ... existing code ...
                 // ... 다른 필드 설정 ...
                 rawFoodDtoList.add(rawFoodDto);
             }

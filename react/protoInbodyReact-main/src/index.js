@@ -10,6 +10,7 @@ import RecordBody from "./Component/RecordBody";
 import RankPage from "./Component/RankPage";
 import FoodSearchR from "./Component/FoodSearchR";
 import TodoCalender from "./Component/TodoCalender";
+import ClickThis from "./Component/ClickThis";
 const App = () => {
   return (
     <Router>
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/rank" element={<RankPage />} />
         <Route path="/food" element={<FoodSearchR />} />
         <Route path="/todo" element={<TodoCalender />} />
+        <Route path="/ClickThis" element={<ClickThis />} />
       </Routes>
     </Router>
   );
