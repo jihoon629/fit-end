@@ -1,23 +1,17 @@
-import React from "react";
-
 import config from "../config";
 
 const ClickThis = () => {
   const handleClick = async () => {
     try {
       const response = await fetch(`http://${config.SERVER_URL}/request/up`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
       });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
 
-      const data = await response.json();
-      console.log("Response:", data);
+      console.log("Request sent successfully");
     } catch (error) {
       console.error("Error:", error);
     }

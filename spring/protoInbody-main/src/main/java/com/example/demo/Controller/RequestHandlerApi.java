@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.DTO.FoodDto;
 import com.example.demo.DTO.UserInfoDTO;
 import com.example.demo.Entity.DietRecord;
-import com.example.demo.Jwt.AuthenticationResponse;
 import com.example.demo.Jwt.JwtUtil;
 
 import com.example.demo.Service.FoodService;
