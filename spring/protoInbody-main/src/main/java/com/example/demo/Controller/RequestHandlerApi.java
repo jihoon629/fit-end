@@ -51,12 +51,6 @@ public class RequestHandlerApi {
 
     @PostMapping("/login") // 로그인 관련 컨트롤러
     public ResponseEntity<?> loginUser(@RequestBody UserInfoDTO UserInfoDTO) {
-<<<<<<< HEAD
-=======
-
-        // SaveRawFood.saveFromCsv();
-
->>>>>>> 940b79bbcc7a7d39ee2e9bb322d899f2e41580db
         boolean isAuthenticated = UserInfoService.authenticateUser(UserInfoDTO);
         if (isAuthenticated) {
             System.out.println("로그인성공");
