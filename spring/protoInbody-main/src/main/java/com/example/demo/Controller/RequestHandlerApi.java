@@ -51,10 +51,6 @@ public class RequestHandlerApi {
 
     @PostMapping("/login") // 로그인 관련 컨트롤러
     public ResponseEntity<?> loginUser(@RequestBody UserInfoDTO UserInfoDTO) {
-<<<<<<< HEAD
-=======
-        // SaveRawFood.saveFromCsv();
->>>>>>> d37943231db071b9c45d2f126f2e653d3112102f
         boolean isAuthenticated = UserInfoService.authenticateUser(UserInfoDTO);
         if (isAuthenticated) {
             System.out.println("로그인성공");
@@ -91,6 +87,8 @@ public class RequestHandlerApi {
 
     @GetMapping("/validate")
     public ResponseEntity<?> validateToken(HttpServletRequest request) {
+
+        System.out.println("유효성");
         Cookie[] cookies = request.getCookies();
         String jwt = null;
         String userid = null;
@@ -111,8 +109,6 @@ public class RequestHandlerApi {
             return ResponseEntity.status(401).body("Unauthorized"); // 유효하지 않으면 401 응답
         }
     }
-
-
 
     @GetMapping("/foodname/{foodNm}") // 음식 이름으로 검색하는 컨트롤러
     public ResponseEntity<List<FoodDto>> FoodName(@PathVariable String foodNm) {
