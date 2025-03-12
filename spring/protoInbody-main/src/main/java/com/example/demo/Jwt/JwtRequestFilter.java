@@ -1,6 +1,5 @@
 package com.example.demo.Jwt;
 
-import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,34 +25,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             @NonNull FilterChain chain)
             throws ServletException, IOException {
 
-        Cookie[] cookies = request.getCookies();
+        final String authorizationHeader = request.getHeader("Authorization");
+
         String username = null;
         String jwt = null;
 
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                System.out.println("쿠키 이름: " + cookie.getName() + ", 값: " + cookie.getValue());
-                if ("jwt".equals(cookie.getName())) {
-                    jwt = cookie.getValue();
-                    username = jwtUtil.extractUsername(jwt);
-                    System.out.println("추출된 username: " + username);
-                    break;
-                }
-            }
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwt = authorizationHeader.substring(7);
+            username = jwtUtil.extractUsername(jwt);
         }
 
-        if (jwt != null && username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            System.out.println("검증할 유저명: " + username);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             if (jwtUtil.validateToken(jwt, username)) {
-                System.out.println("JWT 유효성 검사 통과!");
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         username, null, new ArrayList<>());
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            } else {
-                System.out.println("JWT 유효성 검사 실패!");
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
-
         chain.doFilter(request, response);
     }
 }

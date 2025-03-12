@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import config from "../config";
 
@@ -7,48 +7,22 @@ export default function FoodSearchR() {
   const [foodNm, setFoodNm] = useState("");
   const [selectedDate, setSelectedDate] = useState(""); // 날짜 선택
   const [dietMemo, setDietMemo] = useState(""); // 메모 입력
-  const [userid, setUserid] = useState("");
+  const userid = sessionStorage.getItem("userid");
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("token");
 
-  // 쿠키에 JWT 존재 여부만 확인함
-  const getCookie = (name) => {
-    const cookieArr = document.cookie.split("; ");
-    for (let i = 0; i < cookieArr.length; i++) {
-      const cookiePair = cookieArr[i].split("=");
-      if (cookiePair[0] === name) {
-        return cookiePair[1];
-      }
-    }
-    return null;
+  // 뒤로가기 버튼 (임시)
+  const navigateToFood = () => {
+    navigate("/todo");
   };
-
-
-  useEffect(() => {
-    // 서버에서 현재 로그인한 사용자 확인
-    fetch(`http://${config.SERVER_URL}/request/validate`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error("Unauthorized");
-        return response.json();
-      })
-      .then((data) => {
-        console.log("로그인 상태 확인 성공:", data);
-        setUserid(data.userid);
-      })
-      .catch(() => {
-        console.warn("인증 실패. 로그인 페이지로 이동");
-        navigate("/login");
-      });
-  }, [navigate]);
 
   // 음식 검색 API 호출
   const fetchData = () => {
     if (foodNm) {
       fetch(`http://${config.SERVER_URL}/request/foodname/${foodNm}`, {
-        method: "GET",
-        credentials: "include", // 쿠키 포함 요청
+        headers: {
+          Authorization: `Bearer ${token}`, // JWT 토큰 추가
+        },
       })
         .then((response) => response.json())
         .then((data) => setData(data))
@@ -65,7 +39,7 @@ export default function FoodSearchR() {
 
     const foodData = {
       ...item,
-      userid,
+      userid: userid, // 유저 ID 기본값 설정
       timestamp: selectedDate || new Date().toISOString(), // 선택한 날짜가 없으면 현재 날짜
       dietMemo: dietMemo || "메모 없음", // 메모 기본값 설정
     };
@@ -74,9 +48,9 @@ export default function FoodSearchR() {
 
     fetch(`http://${config.SERVER_URL}/request/saveFoodRecord`, {
       method: "POST",
-      credentials: "include", // 쿠키 포함 요청
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // JWT 토큰 추가
       },
       body: JSON.stringify(foodData),
     })
@@ -124,8 +98,7 @@ export default function FoodSearchR() {
       ) : (
         <p>Loading...</p>
       )}
-
-      <button onClick={() => navigate("/todo")}>뒤로가기</button>
+      <button onClick={navigateToFood}> 뒤로가기 (임시)</button>
     </div> //
   );
 }
