@@ -26,6 +26,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/request/login").permitAll()
                         .requestMatchers("/upload/register").permitAll()
+                        .requestMatchers("/download/**").authenticated()  //
+                        .anyRequest().authenticated())
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+=======
                         .anyRequest().authenticated());
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
