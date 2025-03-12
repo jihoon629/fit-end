@@ -1,9 +1,14 @@
 package com.example.demo.Controller;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,12 +43,60 @@ public class RequestHandlerApi {
         if (isAuthenticated) {
             System.out.println("로그인성공");
             String jwt = jwtUtil.generateToken(UserInfoDTO.getUserid());
-            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+            ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwt)
+                    .httpOnly(true) // JavaScript에서 접근 불가
+                    .secure(false) // HTTPS 환경에서만 전송 (개발 중에는 false)
+                    .path("/") // 모든 경로에서 쿠키 사용 가능
+                    .maxAge(Duration.ofHours(10)) // 10시간 유지
+                    .build();
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                    .body(Map.of("message", "Login successful"));
         } else {
             System.out.println("로그인실패");
             return ResponseEntity.status(401).body("Invalid credentials");
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser() {
+        ResponseCookie jwtCookie = ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0) // 즉시 만료
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                .body(Map.of("message", "Logged out successfully"));
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<?> validateToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String jwt = null;
+        String userid = null;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    jwt = cookie.getValue();
+                    userid = jwtUtil.extractUsername(jwt);
+                    break;
+                }
+            }
+        }
+
+        if (userid != null && jwtUtil.validateToken(jwt, userid)) {
+            return ResponseEntity.ok(Map.of("userid", userid)); // 유효하면 userid 반환
+        } else {
+            return ResponseEntity.status(401).body("Unauthorized"); // 유효하지 않으면 401 응답
+        }
+    }
+
+
 
     @GetMapping("/foodname/{foodNm}") // 음식 이름으로 검색하는 컨트롤러
     public ResponseEntity<List<FoodDto>> FoodName(@PathVariable String foodNm) {
