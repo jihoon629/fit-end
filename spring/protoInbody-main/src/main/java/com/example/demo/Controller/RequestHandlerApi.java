@@ -16,6 +16,7 @@ import com.example.demo.Jwt.JwtUtil;
 import com.example.demo.Service.FoodService;
 import com.example.demo.Service.UserBodyInfoService;
 import com.example.demo.Service.UserInfoService;
+import com.example.demo.Service.Convert.SaveRawFood;
 
 @RestController // 클라이언트에서 서버에서 특정한 행동을 요청 받고 처리하는 컨트롤러 입니다
 @RequestMapping("/request")
@@ -31,11 +32,14 @@ public class RequestHandlerApi {
 
     @Autowired
     JwtUtil jwtUtil;
+    @Autowired
+    SaveRawFood SaveRawFood;
 
     @PostMapping("/login") // 로그인 관련 컨트롤러
     public ResponseEntity<?> loginUser(@RequestBody UserInfoDTO UserInfoDTO) {
         boolean isAuthenticated = UserInfoService.authenticateUser(UserInfoDTO);
         if (isAuthenticated) {
+            SaveRawFood.saveFromCsv();
             System.out.println("로그인성공");
             String jwt = jwtUtil.generateToken(UserInfoDTO.getUserid());
             return ResponseEntity.ok(new AuthenticationResponse(jwt));

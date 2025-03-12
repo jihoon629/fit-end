@@ -17,6 +17,7 @@ public class JwtUtil {
     private Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256); // 적절한 크기의 키 생성
 
     public String generateToken(String username) {
+
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
