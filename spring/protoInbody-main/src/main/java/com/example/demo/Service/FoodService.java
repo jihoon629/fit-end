@@ -89,7 +89,6 @@ public class FoodService {
         urlBuilder.append("&" + URLEncoder.encode("foodNm", "UTF-8") + "=" + encodedFoodName);
 
         URL url = new URL(urlBuilder.toString());
-        System.out.println(url);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
@@ -144,5 +143,4 @@ public class FoodService {
     public List<DietRecord> getDietRecordsByUser(String userid) {
         return RepoDietRecord.findByUserInfoUserid(userid);
     }
-
 }
