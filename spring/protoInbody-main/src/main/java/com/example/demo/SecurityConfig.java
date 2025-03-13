@@ -23,16 +23,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorize -> authorize
+                .authorizeHttpRequests(auth -> auth
+                        // React 정적 파일 서빙 허용 (React build 파일을 Spring Boot가 제공)
+                        .requestMatchers("/", "/index.html", "/static/**").permitAll()
+
+                        // API 관련 URL 설정
                         .requestMatchers("/request/login").permitAll()
                         .requestMatchers("/upload/register").permitAll()
                         .requestMatchers("/request/up").authenticated()
-                        .anyRequest().authenticated()); // 이 부분은 올바른 위치에 있습니다.
+
+                        // 나머지 모든 요청은 인증 필요
+                        .anyRequest().authenticated()
+                );
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
+        // JWT 필터 적용 (인증 필요 경로에서 실행됨)
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
