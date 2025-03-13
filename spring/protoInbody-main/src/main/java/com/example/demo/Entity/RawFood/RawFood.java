@@ -215,4 +215,14 @@ public class RawFood {
         MetaData = metaData;
     }
 
+    @Override
+    public String toString() {
+        return "RawFood [id=" + id + ", foodCd=" + foodCd + ", foodNm=" + foodNm + ", dataCd=" + dataCd + ", typeNm="
+                + typeNm + ", foodOriginCd=" + foodOriginCd + ", foodOriginNm=" + foodOriginNm + ", foodLv3Cd="
+                + foodLv3Cd + ", foodLv3Nm=" + foodLv3Nm + ", foodLv4Cd=" + foodLv4Cd + ", foodLv4Nm=" + foodLv4Nm
+                + ", foodLv5Cd=" + foodLv5Cd + ", foodLv5Nm=" + foodLv5Nm + ", foodLv6Cd=" + foodLv6Cd + ", foodLv6Nm="
+                + foodLv6Nm + ", foodLv7Cd=" + foodLv7Cd + ", foodLv7Nm=" + foodLv7Nm + ", nutrient=" + nutrient
+                + ", MetaData=" + MetaData + "]";
+    }
+
 }

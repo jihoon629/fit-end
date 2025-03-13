@@ -22,7 +22,6 @@ export default function FoodSearchR() {
     return null;
   };
 
-
   useEffect(() => {
     // 서버에서 현재 로그인한 사용자 확인
     fetch(`http://${config.SERVER_URL}/request/validate`, {
@@ -54,6 +53,7 @@ export default function FoodSearchR() {
         .then((data) => setData(data))
         .catch((error) => console.error("Error fetching data:", error));
     }
+    console.log(data);
   };
 
   // 음식 선택 후 저장 API 호출

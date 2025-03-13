@@ -279,4 +279,14 @@ public class Nutrient {
         this.fatrn = fatrn;
     }
 
+    @Override
+    public String toString() {
+        return "Nutrient [id=" + id + ", nutConSrtrQua=" + nutConSrtrQua + ", enerc=" + enerc + ", water=" + water
+                + ", prot=" + prot + ", fatce=" + fatce + ", ash=" + ash + ", chocdf=" + chocdf + ", sugar=" + sugar
+                + ", fibtg=" + fibtg + ", ca=" + ca + ", fe=" + fe + ", p=" + p + ", k=" + k + ", nat=" + nat
+                + ", vitaRae=" + vitaRae + ", retol=" + retol + ", cartb=" + cartb + ", thia=" + thia + ", ribf=" + ribf
+                + ", nia=" + nia + ", vitc=" + vitc + ", vitd=" + vitd + ", chole=" + chole + ", fasat=" + fasat
+                + ", fatrn=" + fatrn + "]";
+    }
+
 }
