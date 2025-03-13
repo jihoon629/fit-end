@@ -1,31 +1,18 @@
 package com.example.demo.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.DTO.FoodDto;
-import com.example.demo.DTO.RawFoodDto.RawFoodDto;
 import com.example.demo.Entity.DietRecord;
 import com.example.demo.Entity.UserInfo;
 import com.example.demo.Entity.RawFood.RawFood;
 import com.example.demo.Repo.RepoDietRecord;
-import com.example.demo.Repo.RepoMetaData;
 import com.example.demo.Repo.RepoRawFood;
 import com.example.demo.Repo.RepoUserInfo;
 import com.example.demo.Service.Convert.EntityConversionService;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class FoodService {

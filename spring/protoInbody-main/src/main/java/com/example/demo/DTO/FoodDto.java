@@ -1,7 +1,5 @@
 package com.example.demo.DTO;
 
-import com.example.demo.Entity.RawFood.MetaData;
-import com.example.demo.Entity.RawFood.Nutrient;
 import com.example.demo.Service.Convert.HasUserId;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
