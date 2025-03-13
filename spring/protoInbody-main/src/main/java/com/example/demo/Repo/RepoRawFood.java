@@ -8,4 +8,6 @@ import com.example.demo.Entity.RawFood.RawFood;
 
 public interface RepoRawFood extends JpaRepository<RawFood, Long> {
     List<RawFood> findByFoodNmContaining(String foodNm);
+
+    List<RawFood> findByfoodNm(String foodNm);
 }

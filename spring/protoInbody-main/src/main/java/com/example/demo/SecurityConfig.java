@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/request/login").permitAll()
                         .requestMatchers("/upload/register").permitAll()
+                        .requestMatchers("/api/data").permitAll()
                         .requestMatchers("/request/up").authenticated()
                         .anyRequest().authenticated()); // 이 부분은 올바른 위치에 있습니다.
 

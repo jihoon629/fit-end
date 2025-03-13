@@ -45,7 +45,7 @@ public class RequestHandlerApi {
 
         SaveRawFood.saveFromCsv();
 
-        return "기다려";
+        return "절대 2번 누르지 마시오";
     }
 
     @PostMapping("/login") // 로그인 관련 컨트롤러
@@ -56,9 +56,10 @@ public class RequestHandlerApi {
             String jwt = jwtUtil.generateToken(UserInfoDTO.getUserid());
             ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwt)
                     .httpOnly(true) // JavaScript에서 접근 불가
-                    .secure(false) // HTTPS 환경에서만 전송 (개발 중에는 false)
+                    .secure(true) // HTTPS 환경에서만 전송 (개발 중에는 false)
                     .path("/") // 모든 경로에서 쿠키 사용 가능
                     .maxAge(Duration.ofHours(10)) // 10시간 유지
+                    .sameSite("Lax")
                     .build();
 
             return ResponseEntity.ok()
