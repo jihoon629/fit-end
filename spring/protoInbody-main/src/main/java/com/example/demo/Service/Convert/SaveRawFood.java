@@ -3,9 +3,15 @@ package com.example.demo.Service.Convert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.DTO.RawFoodDto;
+import com.example.demo.DTO.RawFoodDto.MetaDataDto;
+import com.example.demo.DTO.RawFoodDto.NutrientDto;
+import com.example.demo.DTO.RawFoodDto.RawFoodDto;
+import com.example.demo.Entity.RawFood.MetaData;
+import com.example.demo.Entity.RawFood.Nutrient;
+import com.example.demo.Entity.RawFood.RawFood;
+import com.example.demo.Repo.RepoMetaData;
+import com.example.demo.Repo.RepoNutrient;
 import com.example.demo.Repo.RepoRawFood;
-import com.example.demo.Entity.RawFood;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -21,6 +27,10 @@ public class SaveRawFood {
     RepoRawFood RepoRawFood;
     @Autowired
     EntityConversionService EntityConversionService;
+    @Autowired
+    RepoMetaData RepoMetaData;
+    @Autowired
+    RepoNutrient RepoNutrient;
 
     public void saveFromCsv() {
         try (CSVReader reader = new CSVReader(new InputStreamReader(
@@ -49,53 +59,42 @@ public class SaveRawFood {
                 rawFoodDto.setFoodLv6Nm(line[13]);
                 rawFoodDto.setFoodLv7Cd(line[14]);
                 rawFoodDto.setFoodLv7Nm(line[15]);
-                rawFoodDto.setNutConSrtrQua(parseDouble(line[16]));
-                rawFoodDto.setEnerc(parseDouble(line[17]));
-                rawFoodDto.setWater(parseDouble(line[18]));
-                rawFoodDto.setProt(parseDouble(line[19]));
-                rawFoodDto.setFatce(parseDouble(line[20]));
-                rawFoodDto.setAsh(parseDouble(line[21]));
-                rawFoodDto.setChocdf(parseDouble(line[22]));
-                rawFoodDto.setSugar(parseDouble(line[23]));
-                rawFoodDto.setFibtg(parseDouble(line[24]));
-                rawFoodDto.setCa(parseDouble(line[25]));
-                rawFoodDto.setFe(parseDouble(line[26]));
-                rawFoodDto.setP(parseDouble(line[27]));
-                rawFoodDto.setK(parseDouble(line[28]));
-                rawFoodDto.setNat(parseDouble(line[29]));
-                rawFoodDto.setVitaRae(parseDouble(line[30]));
-                rawFoodDto.setRetol(parseDouble(line[31]));
-                rawFoodDto.setCartb(parseDouble(line[32]));
-                rawFoodDto.setThia(parseDouble(line[33]));
-                rawFoodDto.setRibf(parseDouble(line[34]));
-                rawFoodDto.setNia(parseDouble(line[35]));
-                rawFoodDto.setVitc(parseDouble(line[36]));
-                rawFoodDto.setVitd(parseDouble(line[37]));
-                rawFoodDto.setChole(parseDouble(line[38]));
-                rawFoodDto.setFasat(parseDouble(line[39]));
-                rawFoodDto.setFatrn(parseDouble(line[40]));
-                rawFoodDto.setSrcCd(line[41]);
-                rawFoodDto.setSrcNm(line[42]);
-                rawFoodDto.setServSize(parseDouble(line[43]));
-                rawFoodDto.setFoodSize(parseDouble(line[44]));
-                rawFoodDto.setItemMnftrRptNo(line[45]);
-                rawFoodDto.setMfrNm(line[46]);
-                rawFoodDto.setImptNm(line[47]);
-                rawFoodDto.setDistNm(line[48]);
-                rawFoodDto.setImptYn(Boolean.parseBoolean(line[49]));
-                rawFoodDto.setCooCd(line[50]);
-                rawFoodDto.setCooNm(line[51]);
-                rawFoodDto.setDataProdCd(line[52]);
-                rawFoodDto.setDataProdNm(line[53]);
-                rawFoodDto.setCrtYmd(line[54]);
-                rawFoodDto.setCrtrYmd(line[55]);
-                rawFoodDto.setInsttCode(line[56]);
-                rawFoodDto.setInsttNm(line[57]);
-                // ... 다른 필드 설정 ...
+
+                // NutrientDto 생성 및 설정
+                NutrientDto nutrientDto = new NutrientDto(
+                        parseDouble(line[16]), parseDouble(line[17]), parseDouble(line[18]), parseDouble(line[19]),
+                        parseDouble(line[20]), parseDouble(line[21]), parseDouble(line[22]), parseDouble(line[23]),
+                        parseDouble(line[24]), parseDouble(line[25]), parseDouble(line[26]), parseDouble(line[27]),
+                        parseDouble(line[28]), parseDouble(line[29]), parseDouble(line[30]), parseDouble(line[31]),
+                        parseDouble(line[32]), parseDouble(line[33]), parseDouble(line[34]), parseDouble(line[35]),
+                        parseDouble(line[36]), parseDouble(line[37]), parseDouble(line[38]), parseDouble(line[39]),
+                        parseDouble(line[40]));
+
+                MetaDataDto metaDataDto = new MetaDataDto(
+                        line[41], line[42], parseDouble(line[43]), parseDouble(line[44]), line[45], line[46], line[47],
+                        line[48], Boolean.parseBoolean(line[49]), line[50], line[51], line[52], line[53], line[54],
+                        line[55], line[56], line[57]);
+
+                rawFoodDto.setNutrient(nutrientDto);
+                rawFoodDto.setMetaData(metaDataDto);
+
                 rawFoodDtoList.add(rawFoodDto);
             }
             for (RawFoodDto rawFoodDto : rawFoodDtoList) {
-                RepoRawFood.save(EntityConversionService.convertToEntity(rawFoodDto, RawFood.class));
+                Nutrient nutrient = EntityConversionService.convertToEntity(rawFoodDto.getNutrient(), Nutrient.class);
+                MetaData metaData = EntityConversionService.convertToEntity(rawFoodDto.getMetaData(), MetaData.class);
+
+                // Save Nutrient and MetaData first
+                RepoNutrient.save(nutrient);
+                RepoMetaData.save(metaData);
+
+                // Convert RawFoodDto to RawFood entity
+                RawFood rawFood = EntityConversionService.convertToEntity(rawFoodDto, RawFood.class);
+                rawFood.setNutrient(nutrient);
+                rawFood.setMetaData(metaData);
+
+                // Save RawFood entity
+                RepoRawFood.save(rawFood);
             }
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
