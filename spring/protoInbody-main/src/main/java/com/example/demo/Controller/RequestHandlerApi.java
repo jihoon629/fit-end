@@ -1,9 +1,12 @@
 package com.example.demo.Controller;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
+import com.example.demo.Service.LoginAttemptService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +19,6 @@ import com.example.demo.DTO.FoodDto;
 import com.example.demo.DTO.UserInfoDTO;
 import com.example.demo.Entity.DietRecord;
 import com.example.demo.Jwt.JwtUtil;
-
 import com.example.demo.Service.FoodService;
 import com.example.demo.Service.UserBodyInfoService;
 import com.example.demo.Service.UserInfoService;
@@ -28,6 +30,7 @@ public class RequestHandlerApi {
 
     @Autowired
     UserInfoService UserInfoService;
+
     @Autowired
     UserBodyInfoService UserBodyInfoService;
 
@@ -40,20 +43,47 @@ public class RequestHandlerApi {
     @Autowired
     SaveRawFood SaveRawFood;
 
+    @Autowired
+    LoginAttemptService loginAttemptService;
+
+    // 클라이언트 IP 가져오기 (리버스 프록시 고려)
+    private String getClientIP(HttpServletRequest request) {
+        String xfHeader = request.getHeader("X-Forwarded-For");
+        return (xfHeader == null) ? request.getRemoteAddr() : xfHeader.split(",")[0];
+    }
+
     @GetMapping("/up")
-    public String savecvs() {
-
+    public String saveCsv() {
         SaveRawFood.saveFromCsv();
-
         return "절대 2번 누르지 마시오";
     }
 
     @PostMapping("/login") // 로그인 관련 컨트롤러
-    public ResponseEntity<?> loginUser(@RequestBody UserInfoDTO UserInfoDTO) {
-        boolean isAuthenticated = UserInfoService.authenticateUser(UserInfoDTO);
+    public ResponseEntity<?> loginUser(@RequestBody UserInfoDTO userInfoDTO, HttpServletRequest request) {
+        String clientIp = getClientIP(request);
+        String loginKey = userInfoDTO.getUserid() + "|" + clientIp; // 사용자 ID + IP 기준
+
+        // 로그인 차단 여부 확인
+        if (loginAttemptService.isBlocked(loginKey)) {
+            LocalDateTime blockedUntil = loginAttemptService.getBlockedUntil(loginKey);
+            long remainingSeconds = ChronoUnit.SECONDS.between(LocalDateTime.now(), blockedUntil);
+            long remainingMinutes = remainingSeconds / 60;
+
+            System.out.println("[로그] " + loginKey + " 로그인 차단됨! " + remainingMinutes + "분 후 로그인 가능");
+
+            return ResponseEntity.status(403).body(Map.of(
+                    "error", "로그인 시도 횟수 초과! " + remainingMinutes + "분 후 다시 시도하세요."
+            ));
+        }
+
+        boolean isAuthenticated = UserInfoService.authenticateUser(userInfoDTO);
         if (isAuthenticated) {
-            System.out.println("로그인성공");
-            String jwt = jwtUtil.generateToken(UserInfoDTO.getUserid());
+            System.out.println("[로그] 로그인 성공: " + userInfoDTO.getUserid());
+
+            // 로그인 성공 → 시도 횟수 초기화
+            loginAttemptService.resetAttempts(loginKey);
+
+            String jwt = jwtUtil.generateToken(userInfoDTO.getUserid());
             ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwt)
                     .httpOnly(true) // JavaScript에서 접근 불가
                     .secure(false) // HTTPS 환경에서만 전송 (개발 중에는 false)
@@ -66,8 +96,14 @@ public class RequestHandlerApi {
                     .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                     .body(Map.of("message", "Login successful"));
         } else {
-            System.out.println("로그인실패");
-            return ResponseEntity.status(401).body("Invalid credentials");
+            System.out.println("[로그] 로그인 실패: " + userInfoDTO.getUserid());
+
+            // 로그인 실패 → 시도 횟수 증가
+            loginAttemptService.loginFailed(loginKey);
+
+            return ResponseEntity.status(401).body(Map.of(
+                    "error", "Invalid credentials"
+            ));
         }
     }
 
@@ -139,5 +175,4 @@ public class RequestHandlerApi {
         return ResponseEntity.ok(dietRecords);
 
     }
-
 }
