@@ -28,10 +28,11 @@ public class TestApi {
 
     @GetMapping("/api/data")
     public ResponseEntity<Map<String, Object>> getData(@RequestParam("jwt") String jwt,
+            @RequestParam("pageNo") int pageNo,
+            @RequestParam("numOfRows") int numOfRows,
             @ModelAttribute RawFoodDto RawFoodDto,
             @ModelAttribute NutrientDto NutrientDto,
             @ModelAttribute MetaDataDto MetaDataDto) {
-        // JWT 검증 로직
 
         String username = jwtUtil.extractUsername(jwt);
         if (username != null && jwtUtil.validateToken(jwt, username)) {
@@ -45,12 +46,15 @@ public class TestApi {
                 return ResponseEntity.ok(noData);
             }
 
+            // 페이지네이션 적용
+            int start = (pageNo - 1) * numOfRows;
+            int end = Math.min(start + numOfRows, rawFoods.size());
+            List<RawFood> paginatedRawFoods = rawFoods.subList(start, end);
+
             // JSON 데이터 생성
             Map<String, Object> data = new HashMap<>();
-            data.put("message", "JWT가 성공적으로 검증되었습니다.");
-            data.put("jwt", jwt);
             data.put("username", username);
-            data.put("rawFoods", rawFoods); // 데이터베이스에서 가져온 RawFood 데이터 추가
+            data.put("rawFoods", paginatedRawFoods); // 페이징된 RawFood 데이터 추가
 
             return ResponseEntity.ok(data);
         } else {
