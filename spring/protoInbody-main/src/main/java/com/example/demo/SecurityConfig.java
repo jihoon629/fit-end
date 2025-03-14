@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/upload/register").permitAll()
                         .requestMatchers("/api/data").permitAll()
                         .requestMatchers("/api/body").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/request/up").authenticated()
 
                         // 나머지 모든 요청은 인증 필요
