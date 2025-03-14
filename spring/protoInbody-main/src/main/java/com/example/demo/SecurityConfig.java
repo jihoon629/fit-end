@@ -36,8 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/request/up").authenticated()
 
                         // 나머지 모든 요청은 인증 필요
-                        .anyRequest().authenticated()
-                );
+                        .anyRequest().authenticated());
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

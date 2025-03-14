@@ -181,4 +181,13 @@ public class MetaDataDto {
         this.insttNm = insttNm;
     }
 
+    @Override
+    public String toString() {
+        return "MetaDataDto [srcCd=" + srcCd + ", srcNm=" + srcNm + ", servSize=" + servSize + ", foodSize=" + foodSize
+                + ", itemMnftrRptNo=" + itemMnftrRptNo + ", mfrNm=" + mfrNm + ", imptNm=" + imptNm + ", distNm="
+                + distNm + ", imptYn=" + imptYn + ", cooCd=" + cooCd + ", cooNm=" + cooNm + ", dataProdCd=" + dataProdCd
+                + ", dataProdNm=" + dataProdNm + ", crtYmd=" + crtYmd + ", crtrYmd=" + crtrYmd + ", insttCode="
+                + insttCode + ", insttNm=" + insttNm + "]";
+    }
+
 }

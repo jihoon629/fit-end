@@ -33,7 +33,7 @@ public class RawFood {
     private Nutrient nutrient;
 
     @OneToOne
-    private MetaData MetaData;
+    private MetaData metaData;
 
     public RawFood() {
     }
@@ -60,7 +60,7 @@ public class RawFood {
         this.foodLv7Cd = foodLv7Cd;
         this.foodLv7Nm = foodLv7Nm;
         this.nutrient = nutrient;
-        this.MetaData = metaData;
+        this.metaData = metaData;
     }
 
     public Long getId() {
@@ -208,11 +208,11 @@ public class RawFood {
     }
 
     public MetaData getMetaData() {
-        return MetaData;
+        return metaData;
     }
 
     public void setMetaData(MetaData metaData) {
-        MetaData = metaData;
+        this.metaData = metaData;
     }
 
     @Override
@@ -222,7 +222,7 @@ public class RawFood {
                 + foodLv3Cd + ", foodLv3Nm=" + foodLv3Nm + ", foodLv4Cd=" + foodLv4Cd + ", foodLv4Nm=" + foodLv4Nm
                 + ", foodLv5Cd=" + foodLv5Cd + ", foodLv5Nm=" + foodLv5Nm + ", foodLv6Cd=" + foodLv6Cd + ", foodLv6Nm="
                 + foodLv6Nm + ", foodLv7Cd=" + foodLv7Cd + ", foodLv7Nm=" + foodLv7Nm + ", nutrient=" + nutrient
-                + ", MetaData=" + MetaData + "]";
+                + ", MetaData=" + metaData + "]";
     }
 
 }
