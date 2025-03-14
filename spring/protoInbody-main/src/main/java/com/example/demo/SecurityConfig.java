@@ -29,6 +29,8 @@ public class SecurityConfig {
 
                         // API 관련 URL 설정
                         .requestMatchers("/request/login").permitAll()
+                        .requestMatchers("/request/logout").permitAll()
+                        .requestMatchers("/request/validate").authenticated()
                         .requestMatchers("/upload/register").permitAll()
                         .requestMatchers("/api/data").permitAll()
                         .requestMatchers("/request/up").authenticated()

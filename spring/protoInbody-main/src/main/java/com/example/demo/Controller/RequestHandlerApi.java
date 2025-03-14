@@ -56,10 +56,10 @@ public class RequestHandlerApi {
             String jwt = jwtUtil.generateToken(UserInfoDTO.getUserid());
             ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwt)
                     .httpOnly(true) // JavaScript에서 접근 불가
-                    .secure(true) // HTTPS 환경에서만 전송 (개발 중에는 false)
+                    .secure(false) // HTTPS 환경에서만 전송 (개발 중에는 false)
+                    .sameSite("Lax") // HTTP에서는 Lax가 기본값
                     .path("/") // 모든 경로에서 쿠키 사용 가능
                     .maxAge(Duration.ofHours(10)) // 10시간 유지
-                    .sameSite("Lax")
                     .build();
 
             return ResponseEntity.ok()
@@ -75,7 +75,8 @@ public class RequestHandlerApi {
     public ResponseEntity<?> logoutUser() {
         ResponseCookie jwtCookie = ResponseCookie.from("jwt", "")
                 .httpOnly(true)
-                .secure(true)
+                .secure(false) // HTTPS 환경에서만 전송 (개발 중에는 false)
+                .sameSite("Lax") // HTTP에서는 Lax가 기본값
                 .path("/")
                 .maxAge(0) // 즉시 만료
                 .build();
