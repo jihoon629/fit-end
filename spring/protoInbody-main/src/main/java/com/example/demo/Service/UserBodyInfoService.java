@@ -104,4 +104,10 @@ public class UserBodyInfoService {
                 .map(UserBodyInfoDTO::new)
                 .collect(Collectors.toList());
     }
+
+    public int findsex(String userid) {
+        UserInfo UserInfo = RepoUserInfo.findSexByUserid(userid);
+        return UserInfo.getSex();
+
+    }
 }

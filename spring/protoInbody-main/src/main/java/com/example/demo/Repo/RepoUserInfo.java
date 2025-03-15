@@ -18,4 +18,6 @@ public interface RepoUserInfo extends JpaRepository<UserInfo, Long> {
     @Query("SELECT u.sex FROM UserInfo u WHERE u.userid = :userid")
     Integer getUserSexById(@Param("userid") String userid);
 
+    UserInfo findSexByUserid(String userid);
+
 }
