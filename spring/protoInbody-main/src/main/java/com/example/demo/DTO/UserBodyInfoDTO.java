@@ -37,6 +37,19 @@ public class UserBodyInfoDTO implements HasUserId {
         this.age = UserBodyInfo.getAge();
     }
 
+    public UserBodyInfoDTO(double height, double weight, double fatpercentage, double leanmass, double bmi,
+            double inbodyScore, int sex, int age, double fatMass) {
+        this.height = height;
+        this.weight = weight;
+        this.fatpercentage = fatpercentage;
+        this.leanmass = leanmass;
+        this.bmi = bmi;
+        this.inbodyScore = inbodyScore;
+        this.sex = sex;
+        this.age = age;
+        this.fatmass = fatMass;
+    }
+
     public UserBodyInfoDTO(Long id, String userid, double height, double weight, double fatpercentage,
             double fatmass, double leanmass, double bmi, double inbodyScore, Date date, int sex, int age) {
         this.id = id;
