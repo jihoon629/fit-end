@@ -2,17 +2,39 @@ package com.example.demo.DTO;
 
 import com.example.demo.Entity.ScoreRankFemale;
 import com.example.demo.Service.Convert.HasUserId;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "여성 점수 랭킹 정보를 담고 있는 DTO")
 public class ScoreRankFemaleDTO implements HasUserId {
+
+    @Schema(description = "ID", example = "1")
     private Long id;
+
+    @Schema(description = "성별 (0: 남성, 1: 여성)", example = "1")
     private int sex;
+
+    @Schema(description = "나이", example = "25")
     private int age;
+
+    @Schema(description = "키 (cm)", example = "165.5")
     private double height;
+
+    @Schema(description = "몸무게 (kg)", example = "55.0")
     private double weight;
+
+    @Schema(description = "제지방량 (kg)", example = "45.0")
     private double leanmass;
+
+    @Schema(description = "체지방량 (kg)", example = "10.0")
     private double fatmass;
+
+    @Schema(description = "체지방률 (%)", example = "18.2")
     private double fatpercentage;
+
+    @Schema(description = "점수", example = "85")
     private int score;
+
+    @Schema(description = "사용자 ID", example = "user123")
     private String userid;
 
     public ScoreRankFemaleDTO() {

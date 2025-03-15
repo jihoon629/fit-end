@@ -3,15 +3,33 @@ package com.example.demo.DTO;
 import java.time.LocalDate;
 
 import com.example.demo.Service.Convert.HasUserId;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "사용자 정보를 담고 있는 DTO")
 public class UserInfoDTO implements HasUserId {
+
+    @Schema(description = "사용자 ID", example = "1")
     private Long id;
+
+    @Schema(description = "사용자 계정 ID", example = "user123")
     private String userid;
+
+    @Schema(description = "사용자 비밀번호 (블로피시 단방향 해시 암호화)", example = "hashed_password")
     private String password;
+
+    @Schema(description = "사용자 이메일", example = "user123@example.com")
     private String email;
+
+    @Schema(description = "성별 (0: 남성, 1: 여성)", example = "1")
     private int sex;
+
+    @Schema(description = "사용자 거주 지역 (대분류)", example = "서울특별시")
     private String region1;
+
+    @Schema(description = "사용자 거주 지역 (소분류)", example = "강남구")
     private String region2;
+
+    @Schema(description = "사용자 생년월일 (YYYY-MM-DD)", example = "1995-08-15")
     private LocalDate birth;
 
     public UserInfoDTO() {

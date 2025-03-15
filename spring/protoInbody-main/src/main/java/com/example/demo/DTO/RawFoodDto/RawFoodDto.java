@@ -1,24 +1,62 @@
 package com.example.demo.DTO.RawFoodDto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "원재료 식품 정보를 담고 있는 DTO")
 public class RawFoodDto {
 
+    @Schema(description = "식품 코드", example = "F001")
     private String foodCd;
+
+    @Schema(description = "식품명", example = "사과")
     private String foodNm;
+
+    @Schema(description = "데이터 코드", example = "D001")
     private String dataCd;
+
+    @Schema(description = "식품 유형명", example = "과일")
     private String typeNm;
+
+    @Schema(description = "원산지 코드", example = "KR")
     private String foodOriginCd;
+
+    @Schema(description = "원산지명", example = "대한민국")
     private String foodOriginNm;
+
+    @Schema(description = "식품 분류 3단계 코드", example = "FRUIT3")
     private String foodLv3Cd;
+
+    @Schema(description = "식품 분류 3단계명", example = "과일류")
     private String foodLv3Nm;
+
+    @Schema(description = "식품 분류 4단계 코드", example = "APPLE4")
     private String foodLv4Cd;
+
+    @Schema(description = "식품 분류 4단계명", example = "사과류")
     private String foodLv4Nm;
+
+    @Schema(description = "식품 분류 5단계 코드", example = "RED_APPLE5")
     private String foodLv5Cd;
+
+    @Schema(description = "식품 분류 5단계명", example = "홍옥")
     private String foodLv5Nm;
+
+    @Schema(description = "식품 분류 6단계 코드", example = "FUJI_APPLE6")
     private String foodLv6Cd;
+
+    @Schema(description = "식품 분류 6단계명", example = "후지사과")
     private String foodLv6Nm;
+
+    @Schema(description = "식품 분류 7단계 코드", example = "GOLDEN_APPLE7")
     private String foodLv7Cd;
+
+    @Schema(description = "식품 분류 7단계명", example = "골든사과")
     private String foodLv7Nm;
+
+    @Schema(description = "영양소 정보", example = "NutrientDto 객체 포함")
     private NutrientDto nutrient;
+
+    @Schema(description = "메타데이터 정보", example = "MetaDataDto 객체 포함")
     private MetaDataDto metaData;
 
     public RawFoodDto() {

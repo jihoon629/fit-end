@@ -25,7 +25,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Parameter;
+
 @RestController
+@Tag(name = "테스트 API", description = "API용 JWT 기반 데이터 조회 API")
 public class TestApi {
     @Autowired
     private JwtUtil jwtUtil;
@@ -35,9 +40,17 @@ public class TestApi {
     private RepoUserBodyInfo RepoUserBodyInfo;
 
     @GetMapping("/api/data")
-    public ResponseEntity<Map<String, Object>> getData(@RequestParam("jwt") String jwt,
+    @Operation(summary = "음식 데이터 조회", description = "API용 JWT 검증 후 필터링된 음식 데이터를 페이지네이션하여 반환합니다.")
+    public ResponseEntity<Map<String, Object>> getData(
+            @Parameter(description = "JWT 인증 토큰", example = "your-jwt-token")
+            @RequestParam("jwt") String jwt,
+
+            @Parameter(description = "페이지 번호", example = "1")
             @RequestParam("pageNo") int pageNo,
+
+            @Parameter(description = "한 페이지당 개수", example = "10")
             @RequestParam("numOfRows") int numOfRows,
+
             @ModelAttribute RawFoodDto RawFoodDto,
             @ModelAttribute NutrientDto NutrientDto,
             @ModelAttribute MetaDataDto MetaDataDto) {
@@ -74,9 +87,17 @@ public class TestApi {
     }
 
     @GetMapping("/api/body")
-    public ResponseEntity<Map<String, Object>> getBodyData(@RequestParam("jwt") String jwt,
+    @Operation(summary = "사용자 신체 데이터 조회", description = "API용 JWT 검증 후 특정 조건을 기반으로 신체 정보를 필터링하고 페이지네이션하여 반환합니다.")
+    public ResponseEntity<Map<String, Object>> getBodyData(
+            @Parameter(description = "JWT 인증 토큰", example = "your-jwt-token")
+            @RequestParam("jwt") String jwt,
+
+            @Parameter(description = "페이지 번호", example = "1")
             @RequestParam("pageNo") int pageNo,
+
+            @Parameter(description = "한 페이지당 개수", example = "10")
             @RequestParam("numOfRows") int numOfRows,
+
             @ModelAttribute UserBodyInfoDTO UserBodyInfoDTO) {
         String username = jwtUtil.extractUsername(jwt);
         if (username != null && jwtUtil.validateToken(jwt, username)) {
