@@ -120,7 +120,7 @@ export default function Main() {
           <p>Logged in as: {useridRef.current}</p>
           <p>you are key </p>
           <p>
-            http://127.0.0.1:8080/api/data?jwt={jwtString}
+            http://{config.SERVER_URL}/api/data?jwt={jwtString}
             &pageNo=1&numOfRows=10&foodNm=
           </p>
 
