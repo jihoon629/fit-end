@@ -28,14 +28,11 @@ public class SecurityConfig {
                         .requestMatchers("/", "/index.html", "/static/**").permitAll()
 
                         // API 관련 URL 설정
-                        .requestMatchers("/request/login").permitAll()
-                        .requestMatchers("/request/logout").permitAll()
-                        .requestMatchers("/request/validate").authenticated()
-                        .requestMatchers("/upload/register").permitAll()
+                        .requestMatchers("/login/login").permitAll()
+                        .requestMatchers("/userinfo/register").permitAll()
                         .requestMatchers("/api/data").permitAll()
                         .requestMatchers("/api/body").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/request/up").authenticated()
 
                         // 나머지 모든 요청은 인증 필요
                         .anyRequest().authenticated());
