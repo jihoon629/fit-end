@@ -9,7 +9,7 @@ export default function RankPage() {
 
   useEffect(() => {
     // 남성 랭킹 조회
-    fetch(`http://${config.SERVER_URL}/download/scorerankmale`, {
+    fetch(`http://${config.SERVER_URL}/userinfobody/scorerankmale`, {
       method: "GET",
       credentials: "include", // 쿠키 포함 요청
       headers: {
@@ -29,7 +29,7 @@ export default function RankPage() {
       });
 
     // 여성 랭킹 조회
-    fetch(`http://${config.SERVER_URL}/download/scorerankfemale`, {
+    fetch(`http://${config.SERVER_URL}/userinfobody/scorerankfemale`, {
       method: "GET",
       credentials: "include", // 쿠키 포함 요청
       headers: {
@@ -65,7 +65,7 @@ export default function RankPage() {
         <ul>
           {maleRank.map((item, index) => (
             <li key={index}>
-              {index + 1}위 - {item.userid} (점수: {item.score})
+              {index + 1}위 - {item.userid} (점수: {item.inbodyScore})
             </li>
           ))}
         </ul>
@@ -78,7 +78,7 @@ export default function RankPage() {
         <ul>
           {femaleRank.map((item, index) => (
             <li key={index}>
-              {index + 1}위 - {item.userid} (점수: {item.score})
+              {index + 1}위 - {item.userid} (점수: {item.inbodyScore})
             </li>
           ))}
         </ul>

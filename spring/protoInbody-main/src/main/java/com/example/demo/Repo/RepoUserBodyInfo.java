@@ -26,4 +26,10 @@ public interface RepoUserBodyInfo extends JpaRepository<UserBodyInfo, Long> {
     @Query("SELECT u FROM UserBodyInfo u WHERE u.sex = :sex AND u.date = (SELECT MAX(u2.date) FROM UserBodyInfo u2 WHERE u2.userInfo.userid = u.userInfo.userid AND u2.sex = :sex)")
     List<UserBodyInfo> findLatestUserBodyInfoBySex(int sex);
 
+    @Query("SELECT ubi FROM UserBodyInfo ubi WHERE ubi.sex = 1 AND ubi.userInfo.userid NOT IN (SELECT ubi2.userInfo.userid FROM UserBodyInfo ubi2 WHERE ubi2.sex = 1 AND ubi2.date > ubi.date) ORDER BY ubi.inbodyScore DESC")
+    List<UserBodyInfo> findLatestMaleScores();
+
+    @Query("SELECT ubi FROM UserBodyInfo ubi WHERE ubi.sex = 2 AND ubi.userInfo.userid NOT IN (SELECT ubi2.userInfo.userid FROM UserBodyInfo ubi2 WHERE ubi2.sex = 2 AND ubi2.date > ubi.date) ORDER BY ubi.inbodyScore DESC")
+    List<UserBodyInfo> findLatestFemaleScores();
+
 }

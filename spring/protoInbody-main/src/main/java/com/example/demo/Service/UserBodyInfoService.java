@@ -25,8 +25,6 @@ public class UserBodyInfoService {
     private RepoUserInfo RepoUserInfo;
 
     @Autowired
-    private ScoreRankService ScoreRankService;
-    @Autowired
     EntityConversionService EntityConversionService;
 
     // 신체기록 서비스
@@ -57,9 +55,6 @@ public class UserBodyInfoService {
         // 성별에 따른 inbodyScore 계산
         // DTO에 인바디 점수 저장
         UserBodyInfoDTO.setInbodyScore(calInbodyScore(UserBodyInfoDTO, heightInMeters));
-
-        // 점수 랭킹에 반영
-        ScoreRankService.saveToScoreRank(UserBodyInfoDTO);
 
         // 데이터베이스에 저장
         RepoUserBodyInfo.save(EntityConversionService.convertToEntity(UserBodyInfoDTO, UserBodyInfo.class));

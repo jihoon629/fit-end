@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RestController
+@RestController // 공공 api 보내는 컨트롤러
 public class TestApi {
     @Autowired
     private JwtUtil jwtUtil;

@@ -16,7 +16,7 @@ import com.example.demo.Entity.DietRecord;
 import com.example.demo.Service.FoodService;
 import com.example.demo.Service.Utile.SaveRawFood;
 
-@RestController // 클라이언트에서 서버에서 특정한 행동을 요청 받고 처리하는 컨트롤러 입니다
+@RestController // food에 관련된 컨트롤러
 @RequestMapping("/food")
 public class FoodApi {
     @Autowired

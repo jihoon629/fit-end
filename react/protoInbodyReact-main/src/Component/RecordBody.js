@@ -44,7 +44,7 @@ export default function RecordBody() {
 
     try {
       const response = await fetch(
-        `http://${config.SERVER_URL}/userinfo/recorduserbody`,
+        `http://${config.SERVER_URL}/userinfobody/recorduserbody`,
         {
           method: "POST",
           credentials: "include", // 쿠키 포함 요청

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.DTO.UserInfoDTO;
 import com.example.demo.Jwt.JwtUtil;
 
-@RestController // 클라이언트에서 서버에서 특정한 행동을 요청 받고 처리하는 컨트롤러 입니다
+@RestController // 로그인 및 보안 관련 컨트롤러
 @RequestMapping("/login")
 public class LoginSecurity {
 
