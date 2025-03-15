@@ -25,6 +25,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @RestController // 공공 api 보내는 컨트롤러
 public class TestApi {
     @Autowired
@@ -35,9 +42,20 @@ public class TestApi {
     private RepoUserBodyInfo RepoUserBodyInfo;
 
     @GetMapping("/api/data")
-    public ResponseEntity<Map<String, Object>> getData(@RequestParam("jwt") String jwt,
-            @RequestParam("pageNo") int pageNo,
-            @RequestParam("numOfRows") int numOfRows,
+    @Operation(
+            summary = "RawFood 데이터 조회",
+            description = "JWT를 검증한 후 조건에 맞는 RawFood 데이터를 검색 및 페이징 처리하여 반환합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "데이터 조회 성공",
+                            content = @Content(schema = @Schema(implementation = RawFood.class))),
+                    @ApiResponse(responseCode = "401", description = "JWT 검증 실패", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "검색 결과가 없음", content = @Content)
+            }
+    )
+    public ResponseEntity<Map<String, Object>> getData(
+            @Parameter(description = "JWT 토큰", example = "your.jwt.token") @RequestParam("jwt") String jwt,
+            @Parameter(description = "페이지 번호", example = "1") @RequestParam("pageNo") int pageNo,
+            @Parameter(description = "한 페이지당 행 수", example = "10") @RequestParam("numOfRows") int numOfRows,
             @ModelAttribute RawFoodDto RawFoodDto,
             @ModelAttribute NutrientDto NutrientDto,
             @ModelAttribute MetaDataDto MetaDataDto) {
@@ -74,9 +92,19 @@ public class TestApi {
     }
 
     @GetMapping("/api/body")
-    public ResponseEntity<Map<String, Object>> getBodyData(@RequestParam("jwt") String jwt,
-            @RequestParam("pageNo") int pageNo,
-            @RequestParam("numOfRows") int numOfRows,
+    @Operation(
+            summary = "User Body Info 데이터 조회",
+            description = "JWT를 검증한 후 조건에 맞는 사용자 신체 정보 데이터를 검색 및 페이징 처리하여 반환합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "데이터 조회 성공",
+                            content = @Content(schema = @Schema(implementation = UserBodyInfoDTO.class))),
+                    @ApiResponse(responseCode = "401", description = "JWT 검증 실패", content = @Content)
+            }
+    )
+    public ResponseEntity<Map<String, Object>> getBodyData(
+            @Parameter(description = "JWT 토큰", example = "your.jwt.token") @RequestParam("jwt") String jwt,
+            @Parameter(description = "페이지 번호", example = "1") @RequestParam("pageNo") int pageNo,
+            @Parameter(description = "한 페이지당 행 수", example = "10") @RequestParam("numOfRows") int numOfRows,
             @ModelAttribute UserBodyInfoDTO UserBodyInfoDTO) {
         String username = jwtUtil.extractUsername(jwt);
         if (username != null && jwtUtil.validateToken(jwt, username)) {

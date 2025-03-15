@@ -4,20 +4,46 @@ import java.util.Date;
 
 import com.example.demo.Entity.UserBodyInfo;
 import com.example.demo.Service.Utile.HasUserId;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "사용자 신체 정보 DTO")
 public class UserBodyInfoDTO implements HasUserId {
+    @Schema(description = "고유 식별자", example = "1")
     private Long id;
-    private String userid; // 추가된 필드
+
+    @Schema(description = "사용자 ID", example = "user123")
+    private String userid;
+
+    @Schema(description = "신장(cm)", example = "175.0")
     private double height;
+
+    @Schema(description = "체중(kg)", example = "70.0")
     private double weight;
+
+    @Schema(description = "체지방률(%)", example = "20.0")
     private double fatpercentage;
+
+    @Schema(description = "지방량(kg)", example = "14.0")
     private double fatmass;
+
+    @Schema(description = "근육량(kg)", example = "55.0")
     private double leanmass;
+
+    @Schema(description = "BMI", example = "22.9")
     private double bmi;
+
+    @Schema(description = "인바디 스코어", example = "75.0")
     private double inbodyScore;
+
+    @Schema(description = "측정 날짜", example = "2023-03-15T12:00:00Z")
     private Date date;
+
+    @Schema(description = "성별 (2: 여성, 1: 남성)", example = "1")
     private int sex;
+
+    @Schema(description = "나이", example = "30")
     private int age;
+
 
     public UserBodyInfoDTO() {
     }

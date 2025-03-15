@@ -115,6 +115,12 @@
 			<artifactId>opencsv</artifactId>
 			<version>5.5.2</version> <!-- 버전을 확인하세요 -->
 		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.15</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
