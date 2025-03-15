@@ -10,18 +10,6 @@ export default function FoodSearchR() {
   const [userid, setUserid] = useState("");
   const navigate = useNavigate();
 
-  // 쿠키에 JWT 존재 여부만 확인함
-  const getCookie = (name) => {
-    const cookieArr = document.cookie.split("; ");
-    for (let i = 0; i < cookieArr.length; i++) {
-      const cookiePair = cookieArr[i].split("=");
-      if (cookiePair[0] === name) {
-        return cookiePair[1];
-      }
-    }
-    return null;
-  };
-
   useEffect(() => {
     // 서버에서 현재 로그인한 사용자 확인
     fetch(`http://${config.SERVER_URL}/login/validate`, {

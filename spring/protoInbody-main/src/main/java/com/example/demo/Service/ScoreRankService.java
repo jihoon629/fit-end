@@ -2,8 +2,6 @@ package com.example.demo.Service;
 
 import com.example.demo.Repo.RepoUserBodyInfo;
 
-import com.example.demo.Service.Utile.EntityConversionService;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,9 +16,6 @@ public class ScoreRankService {
 
     @Autowired
     private RepoUserBodyInfo RepoUserBodyInfo;
-
-    @Autowired
-    EntityConversionService EntityConversionService;
 
     // 남성쪽 점수랭킹
     public List<UserBodyInfoDTO> showRankMale1() {

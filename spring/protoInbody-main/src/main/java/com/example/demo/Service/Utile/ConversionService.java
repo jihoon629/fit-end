@@ -5,14 +5,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Entity.UserInfo;
+import com.example.demo.Entity.RawFood.RawFood;
 import com.example.demo.Repo.RepoUserInfo;
 
 @Service
-public class EntityConversionService {
+public class ConversionService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     private RepoUserInfo repoUserInfo;
+
+    public <E, D> D convertToDto(E entity, Class<D> dtoClass) {
+        D dto = modelMapper.map(entity, dtoClass);
+        if (entity instanceof RawFood) {
+            RawFood rawFood = (RawFood) entity;
+            modelMapper.map(rawFood.getNutrient(), dto);
+            modelMapper.map(rawFood.getMetaData(), dto);
+        }
+        return dto;
+    }
 
     public <D, E> E convertToEntity(D dto, Class<E> entityClass) {
         // DTO를 엔티티로 변환합니다.

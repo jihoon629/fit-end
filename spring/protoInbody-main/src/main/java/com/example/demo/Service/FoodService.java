@@ -12,19 +12,19 @@ import com.example.demo.Entity.RawFood.RawFood;
 import com.example.demo.Repo.RepoDietRecord;
 import com.example.demo.Repo.RepoRawFood;
 import com.example.demo.Repo.RepoUserInfo;
-import com.example.demo.Service.Utile.EntityConversionService;
+import com.example.demo.Service.Utile.ConversionService;
 
 @Service
 public class FoodService {
 
     @Autowired
-    RepoUserInfo RepoUserInfo;
+    private RepoUserInfo RepoUserInfo;
     @Autowired
-    RepoDietRecord RepoDietRecord;
+    private RepoDietRecord RepoDietRecord;
     @Autowired
-    EntityConversionService EntityConversionService;
+    private ConversionService ConversionService;
     @Autowired
-    RepoRawFood RepoRawFood;
+    private RepoRawFood RepoRawFood;
 
     public boolean saveFood(FoodDto FoodDto) {
         UserInfo userInfo = RepoUserInfo.findByUserid(FoodDto.getUserid());
@@ -33,7 +33,7 @@ public class FoodService {
         }
 
         // 변환된 DietRecord 확인용 로그 추가
-        DietRecord dietRecord = EntityConversionService.convertToEntity(FoodDto, DietRecord.class);
+        DietRecord dietRecord = ConversionService.convertToEntity(FoodDto, DietRecord.class);
         System.out.println("변환된 DietRecord: " + dietRecord);
 
         // 저장하기 전에 필드 값이 비어있는지 확인 후 기본값 설정
@@ -60,14 +60,9 @@ public class FoodService {
         List<RawFood> rawFoods = RepoRawFood.findByFoodNmContaining(foodNm);
         System.out.println("시발: " + rawFoods);
         for (RawFood rawFood : rawFoods) {
-            FoodDto foodDto = new FoodDto();
-            // rawFood 객체의 필드를 foodDto에 수동으로 매핑합니다.
-            foodDto.setFoodNm(rawFood.getFoodNm());
-            foodDto.setMfrNm(rawFood.getMetaData().getMfrNm());
-            foodDto.setEnerc(rawFood.getNutrient().getEnerc());
-            foodDto.setProt(rawFood.getNutrient().getProt()); // 단백질 설정
-            foodDto.setFatce(rawFood.getNutrient().getFatce()); // 지방 설정
-            foodDto.setChocdf(rawFood.getNutrient().getChocdf());
+
+            FoodDto foodDto = ConversionService.convertToDto(rawFood, FoodDto.class);
+
             foodDetailsList.add(foodDto);
         }
         System.out.println("tlqkf :" + foodDetailsList);

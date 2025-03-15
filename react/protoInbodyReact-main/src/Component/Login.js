@@ -30,7 +30,7 @@ export default function Login() {
       if (response.ok) {
         const data = await response.json();
 
-        console.log("Login successful");
+        console.log(data);
 
         alert("로그인 성공!");
         sessionStorage.setItem("userid", userid);

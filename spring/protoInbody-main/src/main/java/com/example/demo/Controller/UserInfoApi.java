@@ -22,4 +22,11 @@ public class UserInfoApi {
         return UserInfoService.registerUser(UserInfoDTO);
     }
 
+    @PostMapping("/generation")
+    public String generationJwt(@RequestBody UserInfoDTO UserInfoDTO) {
+
+        return UserInfoService.generateAPiToken(UserInfoDTO);
+
+    }
+
 }

@@ -24,13 +24,13 @@ import java.util.ArrayList;
 public class SaveRawFood {
 
     @Autowired
-    RepoRawFood RepoRawFood;
+    private RepoRawFood RepoRawFood;
     @Autowired
-    EntityConversionService EntityConversionService;
+    private ConversionService EntityConversionService;
     @Autowired
-    RepoMetaData RepoMetaData;
+    private RepoMetaData RepoMetaData;
     @Autowired
-    RepoNutrient RepoNutrient;
+    private RepoNutrient RepoNutrient;
 
     public void saveFromCsv() {
         try (CSVReader reader = new CSVReader(new InputStreamReader(

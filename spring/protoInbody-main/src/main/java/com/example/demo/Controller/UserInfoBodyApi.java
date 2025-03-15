@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.Service.UserBodyInfoService;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import com.example.demo.Service.ScoreRankService;
 
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController // userinfobody 관련 컨트롤러입니다
 @RequestMapping("/userinfobody")
-public class DownLoadApi {
+public class UserInfoBodyApi {
     @Autowired
     private UserBodyInfoService UserBodyInfoService;
 
@@ -28,9 +27,12 @@ public class DownLoadApi {
     private ScoreRankService ScoreRankService;
 
     @PostMapping("/recorduserbody") // 신체정보 기록 컨트롤러
-    public ResponseEntity<UserBodyInfoDTO> recordUserBody(@RequestBody UserBodyInfoDTO UserBodyInfoDTO) {
-        System.out.println("[LOG] 데이터 수신: " + UserBodyInfoDTO);
-        UserBodyInfoDTO savedRecord = UserBodyInfoService.recordeUserBodyInfo(UserBodyInfoDTO);
+    public ResponseEntity<UserBodyInfoDTO> recordUserBody(@RequestBody UserBodyInfoDTO userBodyInfoDTO) {
+
+        System.out.println(userBodyInfoDTO);
+
+        UserBodyInfoDTO savedRecord = UserBodyInfoService.recordeUserBodyInfo(userBodyInfoDTO);
+
         return ResponseEntity.ok(savedRecord);
     }
 

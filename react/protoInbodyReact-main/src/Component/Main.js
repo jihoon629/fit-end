@@ -7,6 +7,7 @@ export default function Main() {
   const [bodyrecod, setBodyRecod] = useState([]);
   const [loading, setLoading] = useState(true);
   const useridRef = useRef(sessionStorage.getItem("userid"));
+  const [jwtString, setJwtString] = useState(""); // JWT 문자열을 위한 상태 추가
 
   const navigateToRecordBody = () => navigate("/recordbody");
   const navigateToRank = () => navigate("/rank");
@@ -21,6 +22,35 @@ export default function Main() {
 
     sessionStorage.removeItem("userid");
     navigate("/login");
+  };
+
+  const generationJwt = async () => {
+    try {
+      const response = await fetch(
+        `http://${config.SERVER_URL}/userinfo/generation`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userid: useridRef.current }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      // JWT 문자열을 받습니다. 서버가 Content-Type을 'text/plain'으로 설정했다고 가정합니다.
+      const jwtString = await response.text();
+      setJwtString(jwtString); // 상태 업데이트
+
+      console.log("받은 JWT:", jwtString);
+      // 이제 jwtString 변수를 사용하여 필요한 작업을 수행할 수 있습니다.
+    } catch (error) {
+      console.error("JWT 생성 중 에러 발생:", error);
+    }
   };
 
   // 로그인 상태 확인 후 `userid` 가져오기
@@ -38,9 +68,13 @@ export default function Main() {
         useridRef.current = data.userid;
         sessionStorage.setItem("userid", data.userid);
 
+        const init = async () => {
+          await generationJwt();
+        };
+        init();
         // 사용자 신체 기록 가져오기
         return fetch(
-          `http://${config.SERVER_URL}/download/recentuserbody/${data.userid}`,
+          `http://${config.SERVER_URL}/userinfobody/recentuserbody/${data.userid}`,
           {
             method: "GET",
             credentials: "include",
@@ -84,6 +118,8 @@ export default function Main() {
           <h2>Main Screen</h2>
           <p>Welcome to the main screen!</p>
           <p>Logged in as: {useridRef.current}</p>
+          <p>you are key </p>
+          <p>{jwtString} </p>
 
           <div>
             <h2>📊 InBody 결과</h2>
@@ -109,6 +145,8 @@ export default function Main() {
           </button>
           <button onClick={navigateToRecordBody}>신체 정보 입력</button>
           <button onClick={navigateToTodo}>음식 다이어리</button>
+          <button onClick={generationJwt}>인증키 생성</button>
+
           <button onClick={handleLogout} style={{ marginLeft: "10px" }}>
             로그아웃
           </button>

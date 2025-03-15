@@ -33,14 +33,12 @@ export default function RecordBody() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const userBodyInfo = {
-      userid,
+    const userBodyInfoDTO = {
+      userid: userid,
       height: parseFloat(height),
       weight: parseFloat(weight),
       fatpercentage: parseFloat(fatpercentage),
     };
-
-    console.log("📌 보내는 데이터:", userBodyInfo);
 
     try {
       const response = await fetch(
@@ -51,9 +49,10 @@ export default function RecordBody() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(userBodyInfo),
+          body: JSON.stringify(userBodyInfoDTO),
         }
       );
+      console.log("📌 보내는 데이터:", userBodyInfoDTO);
 
       if (response.ok) {
         alert("신체 정보가 저장되었습니다! 메인 페이지로 이동합니다.");

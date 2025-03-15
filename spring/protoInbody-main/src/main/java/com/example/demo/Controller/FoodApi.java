@@ -20,9 +20,9 @@ import com.example.demo.Service.Utile.SaveRawFood;
 @RequestMapping("/food")
 public class FoodApi {
     @Autowired
-    FoodService FoodService;
+    private FoodService FoodService;
     @Autowired
-    SaveRawFood SaveRawFood;
+    private SaveRawFood SaveRawFood;
 
     @GetMapping("/up")
     public String saveCsv() {

@@ -13,7 +13,7 @@ import com.example.demo.Entity.UserBodyInfo;
 import com.example.demo.Entity.UserInfo;
 import com.example.demo.Repo.RepoUserBodyInfo;
 import com.example.demo.Repo.RepoUserInfo;
-import com.example.demo.Service.Utile.EntityConversionService;
+import com.example.demo.Service.Utile.ConversionService;
 
 @Service
 public class UserBodyInfoService {
@@ -25,14 +25,17 @@ public class UserBodyInfoService {
     private RepoUserInfo RepoUserInfo;
 
     @Autowired
-    EntityConversionService EntityConversionService;
+    ConversionService EntityConversionService;
 
     // 신체기록 서비스
     public UserBodyInfoDTO recordeUserBodyInfo(UserBodyInfoDTO UserBodyInfoDTO) {
         // UserInfo 엔티티 먼저 확인 및 저장
         String userid = UserBodyInfoDTO.getUserid(); // DTO에서 userid 가져오기
+        System.out.println("asdasdadas" + userid);
         UserInfo foundUserInfo = RepoUserInfo.findByUserid(userid);
         if (foundUserInfo == null) {
+            foundUserInfo = new UserInfo();
+
             throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다.");
         }
 

@@ -18,10 +18,10 @@ import com.example.demo.Jwt.JwtUtil;
 public class LoginSecurity {
 
     @Autowired
-    JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
     @Autowired
-    LoginAttemptService loginAttemptService;
+    private LoginAttemptService loginAttemptService;
 
     @PostMapping("/login") // 로그인 관련 컨트롤러
     public ResponseEntity<?> loginUser(@RequestBody UserInfoDTO userInfoDTO, HttpServletRequest request) {
