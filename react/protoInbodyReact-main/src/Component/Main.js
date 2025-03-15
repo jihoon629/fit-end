@@ -119,7 +119,10 @@ export default function Main() {
           <p>Welcome to the main screen!</p>
           <p>Logged in as: {useridRef.current}</p>
           <p>you are key </p>
-          <p>{jwtString} </p>
+          <p>
+            http://127.0.0.1:8080/api/data?jwt={jwtString}
+            &pageNo=1&numOfRows=10&foodNm=
+          </p>
 
           <div>
             <h2>📊 InBody 결과</h2>
