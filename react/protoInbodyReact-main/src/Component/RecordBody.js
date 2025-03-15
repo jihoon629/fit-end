@@ -12,7 +12,7 @@ export default function RecordBody() {
 
   useEffect(() => {
     // 현재 로그인된 유저 확인
-    fetch(`http://${config.SERVER_URL}/request/validate`, {
+    fetch(`http://${config.SERVER_URL}/login/validate`, {
       method: "GET",
       credentials: "include",
     })
@@ -43,14 +43,17 @@ export default function RecordBody() {
     console.log("📌 보내는 데이터:", userBodyInfo);
 
     try {
-      const response = await fetch(`http://${config.SERVER_URL}/upload/recorduserbody`, {
-        method: "POST",
-        credentials: "include", // 쿠키 포함 요청
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userBodyInfo),
-      });
+      const response = await fetch(
+        `http://${config.SERVER_URL}/userinfo/recorduserbody`,
+        {
+          method: "POST",
+          credentials: "include", // 쿠키 포함 요청
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userBodyInfo),
+        }
+      );
 
       if (response.ok) {
         alert("신체 정보가 저장되었습니다! 메인 페이지로 이동합니다.");
@@ -70,15 +73,33 @@ export default function RecordBody() {
       <form onSubmit={handleSubmit}>
         <div>
           <label>📏 Height (cm):</label>
-          <input type="number" step="0.1" value={height} onChange={(e) => setHeight(e.target.value)} required />
+          <input
+            type="number"
+            step="0.1"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label>⚖️ Weight (kg):</label>
-          <input type="number" step="0.1" value={weight} onChange={(e) => setWeight(e.target.value)} required />
+          <input
+            type="number"
+            step="0.1"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label>📉 Fat Percentage (%):</label>
-          <input type="number" step="0.1" value={fatpercentage} onChange={(e) => setFatPercentage(e.target.value)} required />
+          <input
+            type="number"
+            step="0.1"
+            value={fatpercentage}
+            onChange={(e) => setFatPercentage(e.target.value)}
+            required
+          />
         </div>
         <button type="submit">✅ Submit</button>
       </form>

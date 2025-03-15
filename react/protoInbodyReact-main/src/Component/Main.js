@@ -14,7 +14,7 @@ export default function Main() {
 
   // 로그아웃 처리
   const handleLogout = async () => {
-    await fetch(`http://${config.SERVER_URL}/request/logout`, {
+    await fetch(`http://${config.SERVER_URL}/login/logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -25,7 +25,7 @@ export default function Main() {
 
   // 로그인 상태 확인 후 `userid` 가져오기
   useEffect(() => {
-    fetch(`http://${config.SERVER_URL}/request/validate`, {
+    fetch(`http://${config.SERVER_URL}/login/validate`, {
       method: "GET",
       credentials: "include", // 쿠키 자동 포함
     })
@@ -39,11 +39,14 @@ export default function Main() {
         sessionStorage.setItem("userid", data.userid);
 
         // 사용자 신체 기록 가져오기
-        return fetch(`http://${config.SERVER_URL}/download/recentuserbody/${data.userid}`, {
-          method: "GET",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-        });
+        return fetch(
+          `http://${config.SERVER_URL}/download/recentuserbody/${data.userid}`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
       })
       .then((response) => response.json())
       .then((bodyData) => {
@@ -84,17 +87,31 @@ export default function Main() {
 
           <div>
             <h2>📊 InBody 결과</h2>
-            <p><strong>📏 키:</strong> {bodyrecod[0].height} cm</p>
-            <p><strong>⚖️ 몸무게:</strong> {bodyrecod[0].weight} kg</p>
-            <p><strong>📉 체지방률:</strong> {bodyrecod[0].fatpercentage} %</p>
-            <p><strong>💪 BMI:</strong> {bodyrecod[0].bmi}</p>
-            <p><strong>🔥 InBody Score:</strong> {bodyrecod[0].inbodyScore}</p>
+            <p>
+              <strong>📏 키:</strong> {bodyrecod[0].height} cm
+            </p>
+            <p>
+              <strong>⚖️ 몸무게:</strong> {bodyrecod[0].weight} kg
+            </p>
+            <p>
+              <strong>📉 체지방률:</strong> {bodyrecod[0].fatpercentage} %
+            </p>
+            <p>
+              <strong>💪 BMI:</strong> {bodyrecod[0].bmi}
+            </p>
+            <p>
+              <strong>🔥 InBody Score:</strong> {bodyrecod[0].inbodyScore}
+            </p>
           </div>
 
-          <button onClick={navigateToRank} style={{ marginLeft: "10px" }}>점수 랭킹 보기</button>
+          <button onClick={navigateToRank} style={{ marginLeft: "10px" }}>
+            점수 랭킹 보기
+          </button>
           <button onClick={navigateToRecordBody}>신체 정보 입력</button>
           <button onClick={navigateToTodo}>음식 다이어리</button>
-          <button onClick={handleLogout} style={{ marginLeft: "10px" }}>로그아웃</button>
+          <button onClick={handleLogout} style={{ marginLeft: "10px" }}>
+            로그아웃
+          </button>
         </>
       ) : (
         <p>잘못된 접근</p>

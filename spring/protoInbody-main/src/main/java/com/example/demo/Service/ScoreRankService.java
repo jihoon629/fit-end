@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.Repo.RepoScoreRankFemale;
 import com.example.demo.Repo.RepoScoreRankMale;
 import com.example.demo.Repo.RepoUserInfo;
+import com.example.demo.Service.Utile.EntityConversionService;
 import com.example.demo.Entity.ScoreRankMale;
 
 import java.util.List;
@@ -15,7 +16,6 @@ import com.example.demo.DTO.ScoreRankFemaleDTO;
 import com.example.demo.DTO.ScoreRankMaleDTO;
 import com.example.demo.DTO.UserBodyInfoDTO;
 import com.example.demo.Entity.ScoreRankFemale;
-import com.example.demo.Service.Convert.EntityConversionService;
 
 @Service
 public class ScoreRankService {

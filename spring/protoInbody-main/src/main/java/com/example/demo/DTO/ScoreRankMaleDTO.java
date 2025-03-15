@@ -3,7 +3,7 @@ package com.example.demo.DTO;
 import javax.validation.constraints.*;
 
 import com.example.demo.Entity.ScoreRankMale;
-import com.example.demo.Service.Convert.HasUserId;
+import com.example.demo.Service.Utile.HasUserId;
 
 public class ScoreRankMaleDTO implements HasUserId {
     private Long id;

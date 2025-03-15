@@ -12,7 +12,7 @@ import com.example.demo.Entity.RawFood.RawFood;
 import com.example.demo.Repo.RepoDietRecord;
 import com.example.demo.Repo.RepoRawFood;
 import com.example.demo.Repo.RepoUserInfo;
-import com.example.demo.Service.Convert.EntityConversionService;
+import com.example.demo.Service.Utile.EntityConversionService;
 
 @Service
 public class FoodService {

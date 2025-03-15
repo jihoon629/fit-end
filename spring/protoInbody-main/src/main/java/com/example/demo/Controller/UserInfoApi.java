@@ -14,8 +14,8 @@ import com.example.demo.DTO.UserBodyInfoDTO;
 import com.example.demo.DTO.UserInfoDTO;
 
 @RestController // 업로드 관련 컨트롤러 입니다
-@RequestMapping("/upload")
-public class UpLoadApi {
+@RequestMapping("/userinfo")
+public class UserInfoApi {
 
     @Autowired
     private UserInfoService UserInfoService;

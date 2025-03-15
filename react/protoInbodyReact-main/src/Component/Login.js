@@ -18,17 +18,14 @@ export default function Login() {
     };
 
     try {
-      const response = await fetch(
-        `http://${config.SERVER_URL}/request/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(userInfo),
-        }
-      );
+      const response = await fetch(`http://${config.SERVER_URL}/login/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(userInfo),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -36,12 +33,14 @@ export default function Login() {
         console.log("Login successful");
 
         alert("로그인 성공!");
-        sessionStorage.setItem("userid", userid); 
+        sessionStorage.setItem("userid", userid);
         navigate("/main"); //메인 페이지 이동
       } else if (response.status === 403) {
         // 로그인 차단 (5회 이상 실패)
         const data = await response.json();
-        setErrorMessage(data.error || "여러 번 시도하셨습니다. 잠시 후 다시 시도하세요.");
+        setErrorMessage(
+          data.error || "여러 번 시도하셨습니다. 잠시 후 다시 시도하세요."
+        );
       } else {
         setErrorMessage("로그인 실패! 아이디 또는 비밀번호를 확인하세요.");
       }
@@ -54,7 +53,8 @@ export default function Login() {
   return (
     <div>
       <h2>Login</h2>
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>} {/* 로그인 5회 실패시 에러메세지 p태그로 반환 */}
+      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}{" "}
+      {/* 로그인 5회 실패시 에러메세지 p태그로 반환 */}
       <form onSubmit={handleSubmit}>
         <div>
           <label>User ID:</label>

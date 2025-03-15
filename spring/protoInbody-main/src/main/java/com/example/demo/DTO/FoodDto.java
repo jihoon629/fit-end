@@ -1,6 +1,6 @@
 package com.example.demo.DTO;
 
-import com.example.demo.Service.Convert.HasUserId;
+import com.example.demo.Service.Utile.HasUserId;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 

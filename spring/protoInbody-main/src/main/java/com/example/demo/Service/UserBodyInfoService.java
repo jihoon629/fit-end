@@ -13,8 +13,7 @@ import com.example.demo.Entity.UserBodyInfo;
 import com.example.demo.Entity.UserInfo;
 import com.example.demo.Repo.RepoUserBodyInfo;
 import com.example.demo.Repo.RepoUserInfo;
-
-import com.example.demo.Service.Convert.EntityConversionService;
+import com.example.demo.Service.Utile.EntityConversionService;
 
 @Service
 public class UserBodyInfoService {

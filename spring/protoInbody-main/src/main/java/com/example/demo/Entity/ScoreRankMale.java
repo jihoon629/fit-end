@@ -1,6 +1,6 @@
 package com.example.demo.Entity;
 
-import com.example.demo.Service.Convert.HasUserInfo;
+import com.example.demo.Service.Utile.HasUserInfo;
 
 import jakarta.persistence.*;
 

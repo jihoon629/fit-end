@@ -43,11 +43,14 @@ public class UserInfo {
     @Column(nullable = false)
     private LocalDate birth; // 생년 월일
 
+    private String jwt;
+
     public UserInfo() {
     }
 
     public UserInfo(Long id, @NotBlank String userid, @NotBlank String password, @NotBlank String email,
-            @NotBlank int sex, @NotBlank String region1, @NotBlank String region2, @NotBlank LocalDate birth) {
+            @NotBlank int sex, @NotBlank String region1, @NotBlank String region2, @NotBlank LocalDate birth,
+            String jwt) {
         this.id = id;
         this.userid = userid;
         this.password = password;
@@ -56,6 +59,7 @@ public class UserInfo {
         this.region1 = region1;
         this.region2 = region2;
         this.birth = birth;
+        this.jwt = jwt;
     }
 
     public Long getId() {
@@ -122,10 +126,12 @@ public class UserInfo {
         this.birth = birth;
     }
 
-    @Override
-    public String toString() {
-        return "UserInfo [id=" + id + ", userid=" + userid + ", password=" + password + ", email=" + email + ", sex="
-                + sex + ", region1=" + region1 + ", region2=" + region2 + ", birth=" + birth + "]";
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 
 }

@@ -24,7 +24,7 @@ export default function FoodSearchR() {
 
   useEffect(() => {
     // 서버에서 현재 로그인한 사용자 확인
-    fetch(`http://${config.SERVER_URL}/request/validate`, {
+    fetch(`http://${config.SERVER_URL}/login/validate`, {
       method: "GET",
       credentials: "include",
     })
@@ -45,7 +45,7 @@ export default function FoodSearchR() {
   // 음식 검색 API 호출
   const fetchData = () => {
     if (foodNm) {
-      fetch(`http://${config.SERVER_URL}/request/foodname/${foodNm}`, {
+      fetch(`http://${config.SERVER_URL}/food/foodname/${foodNm}`, {
         method: "GET",
         credentials: "include", // 쿠키 포함 요청
       })
@@ -72,7 +72,7 @@ export default function FoodSearchR() {
 
     console.log("전송할 데이터:", foodData); // 전송 전에 확인
 
-    fetch(`http://${config.SERVER_URL}/request/saveFoodRecord`, {
+    fetch(`http://${config.SERVER_URL}/food/saveFoodRecord`, {
       method: "POST",
       credentials: "include", // 쿠키 포함 요청
       headers: {

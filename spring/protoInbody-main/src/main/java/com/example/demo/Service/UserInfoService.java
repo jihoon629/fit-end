@@ -6,11 +6,14 @@ import org.springframework.stereotype.Service;
 import com.example.demo.DTO.UserInfoDTO;
 
 import com.example.demo.Entity.UserInfo;
+import com.example.demo.Jwt.JwtUtil;
 import com.example.demo.Repo.RepoUserInfo;
-import com.example.demo.Service.Convert.EntityConversionService;
+import com.example.demo.Service.Utile.EntityConversionService;
 
 @Service
 public class UserInfoService {
+    @Autowired
+    JwtUtil jwtUtil;
 
     @Autowired
     private RepoUserInfo RepoUserInfo;
@@ -24,14 +27,18 @@ public class UserInfoService {
     public UserInfoDTO registerUser(UserInfoDTO userInfoDTO) {
         userInfoDTO.setPassword(passwordEncoder.encode(userInfoDTO.getPassword()));
         RepoUserInfo.save(EntityConversionService.convertToEntity(userInfoDTO, UserInfo.class));
+        // generateAPiToken(userInfoDTO);
         return userInfoDTO;
     }
 
-    // 로그인 관련 서비스
-    public boolean authenticateUser(UserInfoDTO UserInfoDTO) {
-        UserInfo user = RepoUserInfo.findByUserid(UserInfoDTO.getUserid());
-        return user != null && passwordEncoder.matches(UserInfoDTO.getPassword(), user.getPassword()); // 해시 암호화된 비밀번호
-                                                                                                       // 비교
+    public void generateAPiToken(UserInfoDTO UserInfoDTO) {
+        UserInfo userInfo = RepoUserInfo.findByUserid(UserInfoDTO.getUserid()); // userInfo 객체 가져오기
+
+        if (userInfo != null) {
+            String jwt = jwtUtil.generateToken(UserInfoDTO.getUserid(), 24);
+            userInfo.setJwt(jwt);
+            RepoUserInfo.save(userInfo);
+        }
     }
 
 }

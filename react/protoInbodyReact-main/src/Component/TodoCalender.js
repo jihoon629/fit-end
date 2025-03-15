@@ -9,7 +9,7 @@ export default function TodoCalender() {
 
   useEffect(() => {
     // 서버에서 현재 로그인한 사용자 확인
-    fetch(`http://${config.SERVER_URL}/request/validate`, {
+    fetch(`http://${config.SERVER_URL}/login/validate`, {
       method: "GET",
       credentials: "include",
     })
@@ -22,13 +22,16 @@ export default function TodoCalender() {
         setUserid(data.userid);
 
         // 식단 기록 가져오기
-        return fetch(`http://${config.SERVER_URL}/request/diet-records/${data.userid}`, {
-          method: "GET",
-          credentials: "include", // 쿠키 포함 요청
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        return fetch(
+          `http://${config.SERVER_URL}/food/diet-records/${data.userid}`,
+          {
+            method: "GET",
+            credentials: "include", // 쿠키 포함 요청
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
       })
       .then((response) => {
         if (!response.ok) throw new Error("서버 응답이 실패했습니다.");
@@ -52,7 +55,12 @@ export default function TodoCalender() {
         userData.map((record, index) => (
           <div key={index}>
             <p>메모: {record.dietMemo || "메모 없음"}</p>
-            <p>날짜: {record.timestamp ? new Date(record.timestamp).toLocaleDateString("ko-KR") : "날짜 없음"}</p>
+            <p>
+              날짜:{" "}
+              {record.timestamp
+                ? new Date(record.timestamp).toLocaleDateString("ko-KR")
+                : "날짜 없음"}
+            </p>
             <p>음식: {record.foodNm || "음식 없음"}</p>
             <p>칼로리: {record.enerc || 0} kcal</p>
             <p>단백질: {record.prot || 0}g</p>

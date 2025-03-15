@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import com.example.demo.Service.Convert.HasUserInfo;
+import com.example.demo.Service.Utile.HasUserInfo;
 
 import jakarta.persistence.ManyToOne;
 

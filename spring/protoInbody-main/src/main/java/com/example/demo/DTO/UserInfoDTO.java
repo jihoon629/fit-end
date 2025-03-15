@@ -2,7 +2,7 @@ package com.example.demo.DTO;
 
 import java.time.LocalDate;
 
-import com.example.demo.Service.Convert.HasUserId;
+import com.example.demo.Service.Utile.HasUserId;
 
 public class UserInfoDTO implements HasUserId {
     private Long id;
@@ -13,13 +13,14 @@ public class UserInfoDTO implements HasUserId {
     private String region1;
     private String region2;
     private LocalDate birth;
+    private String jwt;
 
     public UserInfoDTO() {
 
     }
 
     public UserInfoDTO(Long id, String userid, String password, String email, int sex, String region1, String region2,
-            LocalDate birth) {
+            LocalDate birth, String jwt) {
         this.id = id;
         this.userid = userid;
         this.password = password;
@@ -28,6 +29,7 @@ public class UserInfoDTO implements HasUserId {
         this.region1 = region1;
         this.region2 = region2;
         this.birth = birth;
+        this.jwt = jwt;
     }
 
     public Long getId() {
@@ -92,6 +94,14 @@ public class UserInfoDTO implements HasUserId {
 
     public void setBirth(LocalDate birth) {
         this.birth = birth;
+    }
+
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 
 }
