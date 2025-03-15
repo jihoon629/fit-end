@@ -13,8 +13,15 @@ import org.springframework.web.bind.annotation.*;
 import com.example.demo.DTO.UserInfoDTO;
 import com.example.demo.Jwt.JwtUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController // 로그인 및 보안 관련 컨트롤러
 @RequestMapping("/login")
+@Tag(name = "Authentication", description = "로그인 및 보안 관련 API")
 public class LoginSecurity {
 
     @Autowired
@@ -23,8 +30,19 @@ public class LoginSecurity {
     @Autowired
     private LoginAttemptService loginAttemptService;
 
+    @Operation(
+            summary = "로그인",
+            description = "사용자 아이디와 비밀번호를 검증하여 로그인 처리합니다. 로그인 시도 횟수를 관리하며, 성공 시 JWT 토큰을 발급합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Login successful",
+                            content = @Content(schema = @Schema(implementation = Map.class))),
+                    @ApiResponse(responseCode = "401", description = "Invalid credentials", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "로그인 시도 횟수 초과", content = @Content)
+            }
+    )
     @PostMapping("/login") // 로그인 관련 컨트롤러
-    public ResponseEntity<?> loginUser(@RequestBody UserInfoDTO userInfoDTO, HttpServletRequest request) {
+    public ResponseEntity<?> loginUser(
+            @RequestBody UserInfoDTO userInfoDTO, HttpServletRequest request) {
         String clientIp = loginAttemptService.getClientIP(request);
         String loginKey = userInfoDTO.getUserid() + "|" + clientIp; // 사용자 ID + IP 기준
 
@@ -62,6 +80,14 @@ public class LoginSecurity {
         }
     }
 
+    @Operation(
+            summary = "로그아웃",
+            description = "사용자의 JWT 토큰을 만료시켜 로그아웃 처리합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Logged out successfully",
+                            content = @Content(schema = @Schema(implementation = Map.class)))
+            }
+    )
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser() {
         ResponseCookie jwtCookie = ResponseCookie.from("jwt", "")
@@ -77,6 +103,15 @@ public class LoginSecurity {
                 .body(Map.of("message", "Logged out successfully"));
     }
 
+    @Operation(
+            summary = "토큰 검증",
+            description = "요청에 포함된 JWT 토큰을 검증하여 사용자의 아이디를 반환합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "유효한 토큰",
+                            content = @Content(schema = @Schema(implementation = Map.class))),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+            }
+    )
     @GetMapping("/validate")
     public ResponseEntity<?> validateToken(HttpServletRequest request) {
         // 검사

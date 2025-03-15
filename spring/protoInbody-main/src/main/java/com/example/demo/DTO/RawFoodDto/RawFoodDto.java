@@ -1,24 +1,61 @@
 package com.example.demo.DTO.RawFoodDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "원재료 음식 정보 DTO. 음식 코드, 이름, 분류 코드 및 영양·메타 정보 등을 포함합니다.")
 public class RawFoodDto {
 
+    @Schema(description = "음식 코드", example = "F001")
     private String foodCd;
+
+    @Schema(description = "음식 이름", example = "배추")
     private String foodNm;
+
+    @Schema(description = "데이터 구분 코드", example = "D001")
     private String dataCd;
+
+    @Schema(description = "데이터 구분명", example = "채소")
     private String typeNm;
+
+    @Schema(description = "음식 원산지 코드", example = "O001")
     private String foodOriginCd;
+
+    @Schema(description = "음식 원산지 이름", example = "국내산")
     private String foodOriginNm;
+
+    @Schema(description = "대분류 음식 코드", example = "L3-001")
     private String foodLv3Cd;
+
+    @Schema(description = "대분류 음식 이름", example = "김치류")
     private String foodLv3Nm;
+
+    @Schema(description = "대표 음식 코드", example = "L4-001")
     private String foodLv4Cd;
+
+    @Schema(description = "대표 음식 이름", example = "발효 음식")
     private String foodLv4Nm;
+
+    @Schema(description = "중분류 음식 코드", example = "L5-001")
     private String foodLv5Cd;
+
+    @Schema(description = "중분류 음식 이름", example = "김치")
     private String foodLv5Nm;
+
+    @Schema(description = "소분류 음식 코드", example = "L6-001")
     private String foodLv6Cd;
+
+    @Schema(description = "소분류 음식 이름", example = "배추김치")
     private String foodLv6Nm;
+
+    @Schema(description = "세분류 음식 코드", example = "L7-001")
     private String foodLv7Cd;
+
+    @Schema(description = "세분류 음식 이름", example = "숙성 배추김치")
     private String foodLv7Nm;
+
+    @Schema(description = "영양 정보")
     private NutrientDto nutrient;
+
+    @Schema(description = "메타데이터 정보")
     private MetaDataDto metaData;
 
     public RawFoodDto() {

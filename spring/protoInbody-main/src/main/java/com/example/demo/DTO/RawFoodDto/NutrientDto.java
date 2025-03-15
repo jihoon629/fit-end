@@ -1,31 +1,83 @@
 package com.example.demo.DTO.RawFoodDto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "영양 정보 DTO. 각종 영양소 정보를 포함합니다.")
 public class NutrientDto {
 
+    @Schema(description = "영양성분함량기준량", example = "50.0")
     private Double nutConSrtrQua;
+
+    @Schema(description = "에너지 (kcal)", example = "100.0")
     private Double enerc;
+
+    @Schema(description = "수분 (g)", example = "80.0")
     private Double water;
+
+    @Schema(description = "단백질 (g)", example = "5.0")
     private Double prot;
+
+    @Schema(description = "지방 (g)", example = "3.0")
     private Double fatce;
+
+    @Schema(description = "회분 (g)", example = "1.0")
     private Double ash;
+
+    @Schema(description = "탄수화물 (g)", example = "20.0")
     private Double chocdf;
+
+    @Schema(description = "당 (g)", example = "10.0")
     private Double sugar;
+
+    @Schema(description = "식이섬유 (g)", example = "2.5")
     private Double fibtg;
+
+    @Schema(description = "칼슘 (mg)", example = "50.0")
     private Double ca;
+
+    @Schema(description = "철 (mg)", example = "1.0")
     private Double fe;
+
+    @Schema(description = "인 (mg)", example = "10.0")
     private Double p;
+
+    @Schema(description = "칼륨 (mg)", example = "100.0")
     private Double k;
+
+    @Schema(description = "나트륨 (mg)", example = "500.0")
     private Double nat;
+
+    @Schema(description = "비타민 A (RAE, µg)", example = "100.0")
     private Double vitaRae;
+
+    @Schema(description = "레티놀 (µg)", example = "20.0")
     private Double retol;
+
+    @Schema(description = "베타카로틴(μg)", example = "30.0")
     private Double cartb;
+
+    @Schema(description = "티아민 (mg)", example = "1.2")
     private Double thia;
+
+    @Schema(description = "리보플라빈 (mg)", example = "1.3")
     private Double ribf;
+
+    @Schema(description = "나이아신 (mg)", example = "12.0")
     private Double nia;
+
+    @Schema(description = "비타민 C (mg)", example = "60.0")
     private Double vitc;
+
+    @Schema(description = "비타민 D (µg)", example = "5.0")
     private Double vitd;
+
+    @Schema(description = "콜레스테롤 (mg)", example = "30.0")
     private Double chole;
+
+    @Schema(description = "포화지방 (g)", example = "2.0")
     private Double fasat;
+
+    @Schema(description = "트랜스지방 (g)", example = "0.5")
     private Double fatrn;
 
     public NutrientDto() {

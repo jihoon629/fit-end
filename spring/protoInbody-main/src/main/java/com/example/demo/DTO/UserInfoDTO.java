@@ -3,16 +3,35 @@ package com.example.demo.DTO;
 import java.time.LocalDate;
 
 import com.example.demo.Service.Utile.HasUserId;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "회원 정보 DTO. 사용자 ID, 비밀번호, 이메일, 성별, 지역 및 생년월일 등의 정보를 포함합니다.")
 public class UserInfoDTO implements HasUserId {
+    @Schema(description = "고유 식별자", example = "1")
     private Long id;
+
+    @Schema(description = "사용자 ID", example = "johnDoe")
     private String userid;
+
+    @Schema(description = "비밀번호", example = "password123")
     private String password;
+
+    @Schema(description = "이메일 주소", example = "john@example.com")
     private String email;
+
+    @Schema(description = "성별 (2: 여성, 1: 남성)", example = "1")
     private int sex;
+
+    @Schema(description = "기본 지역", example = "Seoul")
     private String region1;
+
+    @Schema(description = "상세 지역", example = "Gangnam")
     private String region2;
+
+    @Schema(description = "생년월일", example = "1990-01-01")
     private LocalDate birth;
+
+    @Schema(description = "JWT 토큰", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
     private String jwt;
 
     public UserInfoDTO() {
