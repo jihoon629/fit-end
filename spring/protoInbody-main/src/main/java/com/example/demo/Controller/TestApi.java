@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -42,16 +41,11 @@ public class TestApi {
     private RepoUserBodyInfo RepoUserBodyInfo;
 
     @GetMapping("/api/data")
-    @Operation(
-            summary = "RawFood 데이터 조회",
-            description = "JWT를 검증한 후 조건에 맞는 RawFood 데이터를 검색 및 페이징 처리하여 반환합니다.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "데이터 조회 성공",
-                            content = @Content(schema = @Schema(implementation = RawFood.class))),
-                    @ApiResponse(responseCode = "401", description = "JWT 검증 실패", content = @Content),
-                    @ApiResponse(responseCode = "404", description = "검색 결과가 없음", content = @Content)
-            }
-    )
+    @Operation(summary = "RawFood 데이터 조회", description = "JWT를 검증한 후 조건에 맞는 RawFood 데이터를 검색 및 페이징 처리하여 반환합니다.", responses = {
+            @ApiResponse(responseCode = "200", description = "데이터 조회 성공", content = @Content(schema = @Schema(implementation = RawFood.class))),
+            @ApiResponse(responseCode = "401", description = "JWT 검증 실패", content = @Content),
+            @ApiResponse(responseCode = "404", description = "검색 결과가 없음", content = @Content)
+    })
     public ResponseEntity<Map<String, Object>> getData(
             @Parameter(description = "JWT 토큰", example = "your.jwt.token") @RequestParam("jwt") String jwt,
             @Parameter(description = "페이지 번호", example = "1") @RequestParam("pageNo") int pageNo,
@@ -92,15 +86,10 @@ public class TestApi {
     }
 
     @GetMapping("/api/body")
-    @Operation(
-            summary = "User Body Info 데이터 조회",
-            description = "JWT를 검증한 후 조건에 맞는 사용자 신체 정보 데이터를 검색 및 페이징 처리하여 반환합니다.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "데이터 조회 성공",
-                            content = @Content(schema = @Schema(implementation = UserBodyInfoDTO.class))),
-                    @ApiResponse(responseCode = "401", description = "JWT 검증 실패", content = @Content)
-            }
-    )
+    @Operation(summary = "User Body Info 데이터 조회", description = "JWT를 검증한 후 조건에 맞는 사용자 신체 정보 데이터를 검색 및 페이징 처리하여 반환합니다.", responses = {
+            @ApiResponse(responseCode = "200", description = "데이터 조회 성공", content = @Content(schema = @Schema(implementation = UserBodyInfoDTO.class))),
+            @ApiResponse(responseCode = "401", description = "JWT 검증 실패", content = @Content)
+    })
     public ResponseEntity<Map<String, Object>> getBodyData(
             @Parameter(description = "JWT 토큰", example = "your.jwt.token") @RequestParam("jwt") String jwt,
             @Parameter(description = "페이지 번호", example = "1") @RequestParam("pageNo") int pageNo,

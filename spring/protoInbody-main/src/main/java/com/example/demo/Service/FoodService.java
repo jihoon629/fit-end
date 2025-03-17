@@ -26,6 +26,12 @@ public class FoodService {
     @Autowired
     private RepoRawFood RepoRawFood;
 
+    public boolean checkIfDataExists() {
+        // 예: 첫 번째 레코드 확인 또는 카운트 확인
+        long count = RepoRawFood.count();
+        return count > 0;
+    }
+
     public boolean saveFood(FoodDto FoodDto) {
         UserInfo userInfo = RepoUserInfo.findByUserid(FoodDto.getUserid());
         if (userInfo == null) {

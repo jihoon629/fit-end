@@ -19,7 +19,7 @@ import jakarta.persistence.ManyToOne;
 public class UserBodyInfo implements HasUserInfo {
 
     @ManyToOne
-    @JoinColumn(name = "userid", referencedColumnName = "userid", nullable = false)
+    @JoinColumn(name = "userid", referencedColumnName = "userid")
     private UserInfo userInfo;
 
     @Id
